@@ -29,7 +29,7 @@ namespace Phactor;
 final class GMP
 {
     /**
-     * Adds two numbers.
+     * Adds two arbitrary precision numbers.
      *
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -40,7 +40,7 @@ final class GMP
         return gmp_strval(gmp_add($a, $b));
     }
     /**
-     * Multiplies two numbers.
+     * Multiplies two arbitrary precision numbers.
      *
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -51,7 +51,7 @@ final class GMP
         return gmp_strval(gmp_mul($a, $b));
     }
     /**
-     * Divides two numbers.
+     * Divides two arbitrary precision numbers.
      *
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -62,7 +62,7 @@ final class GMP
         return gmp_strval(gmp_div($a, $b));
     }
     /**
-     * Subtracts two numbers.
+     * Subtracts two arbitrary precision numbers.
      *
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -94,7 +94,7 @@ final class GMP
     }
 
     /**
-     * Compares two numbers.
+     * Compares two arbitrary precision numbers.
      *
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -121,7 +121,6 @@ final class GMP
      * Returns the string value of a GMP resource.
      *
      * @param mixed $a
-     * @param mixed $b
      * @return string
      */
     public function normalize($a)
@@ -130,10 +129,10 @@ final class GMP
     }
 
     /**
-     * Raise base into power exp.
+     * Raises 'a' into power 'b'.
      *
-     * @param unknown $a
-     * @param unknown $b
+     * @param string $a
+     * @param string $b
      * @return string
      */
     public function power($a, $b)
