@@ -22,7 +22,7 @@
 namespace Phactor;
 
 /**
- * Class for working with assymetric keypairs.
+ * Class for working with asymmetric keypairs.
  *
  * @author Rich Morgan <rich.l.morgan@gmail.com>
  */
