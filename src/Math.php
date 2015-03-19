@@ -542,11 +542,9 @@ trait Math
         if ($this->math == null) {
             if (function_exists('gmp_add')) {
                 $this->math = new GMP();
-                //die("GMP exists!\n");
                 return;
             } else if (function_exists('bcadd')) {
                 $this->math = new BC();
-                //die("BC exists!\n");
                 return;
             } else {
                 throw new \Exception('Both GMP and BC Math extensions are missing on this system. Please install one to use this class.');
