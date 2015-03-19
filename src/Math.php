@@ -456,8 +456,6 @@ trait Math
      */
     public function SecureRandomNumber($length = 32)
     {
-        // COMMENTED OUT FOR DEBUGGING
-
         $cstrong = false;
 
         if (!function_exists('openssl_random_pseudo_bytes')) {
@@ -471,8 +469,6 @@ trait Math
         }
 
         return '0x' . strtolower(bin2hex($secure_random_number));
-
-        //return '0x02';
     }
 
     /**
@@ -495,20 +491,25 @@ trait Math
                 $chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
                 $orighex = $hex;
                 $return = '';
+
                 if (substr(strtolower($hex), 0, 2) != '0x') {
                     $hex = '0x' . strtolower($hex);
                 }
+
                 while (gmp_cmp($hex, '0') > 0) {
                     $dv = gmp_div_q($hex, '58');
                     $rem = gmp_strval(gmp_div_r($hex, '58'));
                     $hex = $dv;
                     $return = $return . $chars[$rem];
                 }
+
                 $return=strrev($return);
+
                 for ($i = 0; $i < strlen($orighex) && substr($orighex, $i, 2) == '00'; $i += 2) {
                     $return = '1' . $return;
                 }
             }
+
             return $return;
         } catch (\Exception $e) {
             return 'Error in ECSINgen::encodeBase58(): '.$e->getMessage();
