@@ -2,7 +2,7 @@
 
 ## Description
 
-Phactor is a high-performance PHP implementation of the elliptic curve math functions required to generate private/public EC keypairs and ECDSA signatures based on the secp256k1 curve parameters. Also includes class to generate Service Identification Numbers (SINs) based on the published Identity Protocol v1 spec. These PHP classes are designed to be used in conjunction with software used for Bitcoin-related cryptographic operations right now but the ultimate, long-range goal is to become a more general-purpose mathematics library that can also be used for scientific computing and other non-ecc cryptography projects - basically anywhere you need a convenient interface to arbitrary precision math functions implemented in PHP.
+Phactor is a high-performance PHP implementation of the elliptic curve math functions required to generate private/public EC keypairs and ECDSA signatures based on the secp256k1 curve parameters. Also includes a class to generate Service Identification Numbers (SINs) based on the published Identity Protocol v1 spec. These PHP classes are designed to be used in conjunction with software used for Bitcoin-related cryptographic operations right now but the ultimate, long-range goal is to become a more general-purpose mathematics library that can also be used for scientific computing and other non-ecc cryptography projects - basically anywhere you need a convenient interface to arbitrary precision math functions implemented in PHP.
 
 **Note:** These classes require either the BC or GMP math PHP extension (GMP is preferred but will use BC as the fallback).  You can read more about the GMP extention here: http://www.php.net/manual/en/book.gmp.php
 
