@@ -46,8 +46,6 @@ final class Signature
      */
     public function __construct($message = '', $private_key = '')
     {
-        //$this->Check();
-
         $this->encoded_signature = '';
         $this->r_coordinate      = '';
         $this->s_coordinate      = '';
@@ -127,7 +125,6 @@ final class Signature
             do {
 
                 if (substr($private_key, 0, 2) != '0x') {
-                //if ($this->Test($priv_key) != $priv_key) {
                     $d = '0x' . $private_key;
                 } else {
                     $d = $private_key;
@@ -231,9 +228,6 @@ final class Signature
         $r = $this->CoordinateCheck(trim(strtolower($r)));
         $s = $this->CoordinateCheck(trim(strtolower($s)));
 
-        //$this->RangeCheck($r);
-        //$this->RangeCheck($s);
-
         /* Convert the hash of the hex message to decimal */
         $e = $this->decodeHex(hash('sha256', $msg));
 
@@ -296,8 +290,6 @@ final class Signature
 
         $r = $this->CoordinateCheck(trim(strtolower($r)));
         $s = $this->CoordinateCheck(trim(strtolower($s)));
-
-        //$dec = $this->decodeHex($r);
 
         $byte = $this->binConv($r);
 
@@ -386,7 +378,6 @@ final class Signature
         }
 
         if (substr($hex, 0, 2) != '0x') {
-        //if ($this->Test($hex) != $hex) {
             $hex = '0x' . $hex;
 
             if (strlen($hex) < 64) {
