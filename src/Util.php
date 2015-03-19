@@ -27,13 +27,14 @@ namespace Phactor;
  *
  * @author Rich Morgan <rich.l.morgan@gmail.com>
  */
-class Util
+final class Util
 {
     /**
      * Encodes a hex value into BASE-58 format.
      *
      * @param  string $hex The value to encode.
      * @return string $ret The encoded value.
+     * @throws \Exception
      */
     public function EncodeBase58($hex)
     {
@@ -71,6 +72,7 @@ class Util
      * @param  string $value The value to pad.
      * @param  int    $amt   The amount to pad.
      * @return string $value The padded value.
+     * @throws \Exception
      */
     private function ZeroPad($value, $amt)
     {
@@ -97,6 +99,7 @@ class Util
      *
      * @param  string $byte The byte to check.
      * @return string $byte The validated byte.
+     * @throws \Exception
      */
     public function MsbCheck($byte)
     {
@@ -120,6 +123,7 @@ class Util
      *
      * @param  string  $value The coordinate to check.
      * @return boolean        The result of the check.
+     * @throws \Exception
      */
     public function RangeCheck($value)
     {
