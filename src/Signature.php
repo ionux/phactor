@@ -87,6 +87,7 @@ final class Signature
      * @param string $message     The message to be signed.
      * @param string $private_key The signer's private key in hex.
      * @return string $signature  The signature data.
+     * @throws \Exception
      */
     public function Generate($message, $private_key)
     {
@@ -198,6 +199,8 @@ final class Signature
      * @param string $s   The signature s coordinate in hex.
      * @param string $msg The message signed.
      * @param array  $Q   The base point.
+     * @return bool       The result of the verification.
+     * @throws \Exception
      */
     public function Verify($r, $s, $msg, $Q)
     {
@@ -272,6 +275,7 @@ final class Signature
      * @param  string $r      The r coordinate in hex.
      * @param  string $s      The s coordinate in hex.
      * @return string $retval The DER encoded signature info.
+     * @throws \Exception
      */
     public function Encode($r, $s)
     {
@@ -323,6 +327,7 @@ final class Signature
      *
      * @param  string $pem_data The data to decode.
      * @return array            The keypair info.
+     * @throws \Exception
      */
     public function Decode($pem_data)
     {
@@ -370,6 +375,7 @@ final class Signature
      *
      * @param  string $hex The coordinate to check.
      * @return string $hex The checked coordinate.
+     * @throws \Exception
      */
     private function CoordinateCheck($hex)
     {
