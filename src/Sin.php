@@ -120,6 +120,7 @@ final class Sin
      *
      * @param string $pubkey The public key to encode.
      * @return string        The encoded SIN string.
+     * @throws \Exception
      */
     public function Generate($pubkey)
     {
