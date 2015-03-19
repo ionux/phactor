@@ -37,7 +37,7 @@ final class BC
     }
 
     /**
-     * Adds two numbers.
+     * Adds two arbitrary precision numbers.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -52,7 +52,7 @@ final class BC
     }
 
     /**
-     * Multiplies two numbers.
+     * Multiplies two arbitrary precision numbers.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -67,7 +67,7 @@ final class BC
     }
 
     /**
-     * Divides two numbers.
+     * Divides two arbitrary precision numbers.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -82,7 +82,7 @@ final class BC
     }
 
     /**
-     * Subtracts two numbers.
+     * Subtracts two arbitrary precision numbers.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -97,7 +97,7 @@ final class BC
     }
 
     /**
-     * Calculates the modulo of two numbers.
+     * Calculates the modulo 'b' of 'a'.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -112,7 +112,7 @@ final class BC
     }
     
     /**
-     * Compares two numbers.
+     * Compares two arbitrary precision numbers.
      * 
      * @param string $a  The first number.
      * @param string $b  The second number.
@@ -170,7 +170,7 @@ final class BC
         $c = '0';
 
         $modulus = $this->normalize($modulus);
-        $number = $this->normalize($number);
+        $number  = $this->normalize($number);
 
         $mod = $modulus;
         $num = $number;
