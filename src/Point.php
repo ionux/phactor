@@ -178,10 +178,6 @@ trait Point
              */
             $left  = $this->Modulo($y2, $this->p);
             $right = $this->Modulo($this->Add($this->Add($x3, $ax), $this->b), $this->p);
-
-            //printf("\nleft = %s\nright = %s\n", $left, $right);
-            //die();
-
         } catch (\Exception $e) {
             throw $e;
         }
