@@ -16,7 +16,7 @@ use \Phactor\Sin;
 class PhactorTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function keyCreationTest()
+    public function testKeyCreation()
     {
         $key = new Key;
 
