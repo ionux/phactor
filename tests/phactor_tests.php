@@ -189,7 +189,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $expected_result = 'string';
         $a = $this->a;
 
-        $result = gettype($gmp->normalize($a, $b));
+        $result = gettype($gmp->normalize($a));
 
         $this->assertEquals($result, $expected_result);
     }
