@@ -140,7 +140,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $a = $this->a;
         $b = $this->b;
 
-        $result = $gmp->mod($a, $b);
+        $result = $gmp->mod($a, $b, false);
 
         $this->assertEquals($result, $expected_result);
     }
@@ -158,6 +158,22 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $b = $this->b;
 
         $result = $gmp->comp($a, $b);
+
+        $this->assertEquals($result, $expected_result);
+    }
+
+    public function testGmpInv()
+    {
+        // Test that our GMP calls are returning
+        // the correct result for inverse modulo.
+
+        $gmp = new GMP;
+
+        $expected_result = '16320031509886753001468114610224267914757061072957414462029557633094547166069133482767770945598158313244622262371';
+        $a = $this->a;
+        $b = $this->b;
+
+        $result = $gmp->inv($a, $b);
 
         $this->assertEquals($result, $expected_result);
     }
