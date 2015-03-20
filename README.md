@@ -88,6 +88,15 @@ Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY
 
 **Note:** When using this class to generate SINs for use in a Bitcoin-related project, the usage of *uncompressed* public keys is deprecated.  Use only the compressed public key when generating a SIN for this purpose to remain compatible with the Bitcoin network.
 
+## Found a bug?
+
+Let me know! Send a pull request or a patch. Questions? Ask! I will respond to all filed issues.
+
+**Support:**
+
+* [GitHub Issues](https://github.com/ionux/phactor/issues)
+  * Open an issue if you are having issues with this library
+
 
 ## License
 
