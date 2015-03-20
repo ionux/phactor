@@ -308,9 +308,6 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $expected_result);
     }
 
-    /**
-     * @covers BC::coprime
-     */
     public function testBcInv()
     {
         // Test that our BC calls are returning
