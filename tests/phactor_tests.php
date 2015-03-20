@@ -30,7 +30,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $info = $key->GenerateKeypair();
 
         $sin   = new \Phactor\Sin;
-        $sinfo = $sin->Generate($info['public_key_compressed']));
+        $sinfo = $sin->Generate($info['public_key_compressed']);
 
         $this->assertNotNull($sinfo);
     }
