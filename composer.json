@@ -3,13 +3,13 @@
     "description": "This project is a high-performance PHP implementation of the elliptic curve math functions required to generate EC keypairs, ECDSA signatures and Service Identification Numbers (SIN) based on the secp256k1 curve parameters.",
     "keywords": ["ecdsa","ec","dsa","bitcoin","elliptic","curve","cryptography","encryption","digital","signature","algorithm","asymmetric","public","private","keypair","keygen","key","math","SIN","service","identification","number"],
     "homepage": "https://github.com/ionux/phactor",
-    "license": "GPL",
+    "license": "MIT",
     "minimum-stability": "stable",
     "authors": [
         {
             "name": "Rich Morgan",
-            "email": "rich.l.morgan@gmail.com",
-            "role": "Lead Developer"
+            "email": "rich@bitpay.com",
+            "role": "Team Lead Developer"
         }
     ],
 
@@ -22,7 +22,7 @@
 
     "support": {
         "issues": "https://github.com/ionux/phactor/issues",
-        "email": "rich.l.morgan@gmail.com",
+        "email": "rich@bitpay.com",
         "source": "https://github.com/ionux/phactor"
     },
 
