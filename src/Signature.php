@@ -126,8 +126,6 @@ final class Signature
 
         $e = $this->decodeHex(hash('sha256', $message));
 
-        printf("\ne = %s\n", $e);
-
         try {
             do {
 
@@ -136,7 +134,6 @@ final class Signature
                 } else {
                     $d = $private_key;
                 }
-                printf("\nprivate_key = %s\n",$private_key);
 
                 $k = $this->SecureRandomNumber();
 
@@ -148,23 +145,13 @@ final class Signature
                 $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
                 $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
 
-                 printf("\nR = %s\n",var_export($R, true));
-
                 // r = x1 mod n
                 $r = $this->Modulo($Rx_hex, $this->n);
-                printf("\npre r = %s\n",$r);
-
-                printf("\nRx_hex = %s\n", $Rx_hex);
-                printf("\nRy_hex = %s\n", $Ry_hex);
 
                 // s = k^-1 * (e+d*r) mod n
                 $edr  = $this->Add($e, $this->Multiply($d, $r));
 
-                printf("\nedr = %s\n",$edr);
-
                 $invk = $this->Invert($k_hex, $this->n);
-
-                printf("\ninvk = %s\n",$invk);
 
                 $kedr = $this->Multiply($invk, $edr);
                 $s    = $this->Modulo($kedr, $this->n);
@@ -174,17 +161,10 @@ final class Signature
                                     'r' => str_pad($this->encodeHex($r), 64, "0", STR_PAD_LEFT),
                                     's' => str_pad($this->encodeHex($s), 64, "0", STR_PAD_LEFT)
                                   );
-
-               printf("\nr = %s\n",$r);
-               printf("\ns = %s\n",$s);
-
             } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
         } catch (\Exception $e) {
             throw $e;
         }
-
-        printf("\nr = %s\n",$signature['r']);
-        printf("\ns = %s\n",$signature['s']);
 
         $this->encoded_signature = $this->Encode($signature['r'], $signature['s']);
 
