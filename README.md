@@ -1,6 +1,6 @@
 # Phactor
 
-[![Build Status](https://travis-ci.org/ionux/phactor.svg?branch=master)](https://travis-ci.org/ionux/phactor)
+[![Build Status](https://travis-ci.org/ionux/phactor.svg?branch=master)](https://travis-ci.org/ionux/phactor) [![Software License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat)](LICENSE.md) [![Latest Release](https://img.shields.io/github/release/ionux/phactor.svg)](https://github.com/ionux/phactor/releases/latest)
 
 ## Description
 
@@ -97,6 +97,13 @@ Let me know! Send a pull request or a patch. Questions? Ask! I will respond to a
 * [GitHub Issues](https://github.com/ionux/phactor/issues)
   * Open an issue if you are having issues with this library
 
+## Contribute
+
+Would you like to help with this project?  Great!  You don't have to be a developer, either.  If you've found a bug or have an idea for an improvement, please open an [issue](https://github.com/ionux/phactor/issues) and tell me about it.
+
+If you *are* a developer wanting contribute an enhancement, bugfix or other patch to this project, please fork this repository and submit a pull request detailing your changes. I review all PRs!
+
+This open source project is released under the [MIT license](http://opensource.org/licenses/MIT) which means if you would like to use this project's code in your own project you are free to do so.  Speaking of, if you have used **Phactor** in a cool new project I would like to hear about it!
 
 ## License
 
