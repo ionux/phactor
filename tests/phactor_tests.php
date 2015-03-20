@@ -339,20 +339,4 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $expected_result);
     }
-
-    public function testBcNormalize()
-    {
-        // Test that our BC calls are returning
-        // the correct result for normalizing a
-        // value into a string.
-
-        $bc = new BC;
-
-        $expected_result = 'string';
-        $a = $this->a;
-
-        $result = gettype($bc->normalize($a));
-
-        $this->assertEquals($result, $expected_result);
-    }
 }
