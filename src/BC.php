@@ -49,7 +49,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function add($a, $b)
+    public function add($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -64,7 +64,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function mul($a, $b)
+    public function mul($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -79,7 +79,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function div($a, $b)
+    public function div($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -94,7 +94,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function sub($a, $b)
+    public function sub($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -109,7 +109,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function mod($a, $b)
+    public function mod($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -124,7 +124,7 @@ final class BC
      * @param string $b  The second number.
      * @return string
      */
-    private function comp($a, $b)
+    public function comp($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -139,7 +139,7 @@ final class BC
      * @param string $b
      * @return string
      */
-    private function power($a, $b)
+    public function power($a, $b)
     {
         $a = $this->normalize($a);
         $b = $this->normalize($b);
@@ -156,7 +156,7 @@ final class BC
      * @return string $a   The result.
      * @throws \Exception
      */
-    private function inv($number, $modulus)
+    public function inv($number, $modulus)
     {
         if (false === isset($number) || true === empty($number)) {
             throw new \Exception('Empty number parameter passed to bc_invert() function.');
