@@ -96,33 +96,13 @@ final class Key
     }
 
     /**
-     * Checks to see if a public key exists or not.
-     *
-     * @return bool The existence of a public key.
-     */
-    public function PublicKeyExists()
-    {
-        return !($this->publicKey == '');
-    }
-
-    /**
-     * Checks to see if a private key exists or not.
-     *
-     * @return bool The existence of a private key.
-     */
-    public function PrivateKeyExists()
-    {
-        return !($this->privateKey == '');
-    }
-
-    /**
      * Returns the private key value or false on failure.
      *
      * @return string|bool
      */
     public function GetPrivateKey()
     {
-        if ($this->PrivateKeyExists()) {
+        if (true === isset($this->privateKey) {
             return $this->privateKey;
         }
 
@@ -134,9 +114,9 @@ final class Key
      *
      * @return string|false
      */
-    public function GetPublicKey($format = 'compressed')
+    public function getPublicKey($format = 'compressed')
     {
-        if ($this->PublicKeyExists()) {
+        if (true === isset($this->privateKey) {
             if ($format == 'compressed') {
                 return $this->keyInfo['public_key_compressed'];
             }
@@ -150,15 +130,11 @@ final class Key
     /**
      * Returns the complete keypair info array or false on failure.
      *
-     * @return string|false
+     * @return array
      */
-    public function KeypairInfo()
+    public function getKeypairInfo()
     {
-        if ($this->PrivateKeyExists()) {
-            return $this->keyInfo;
-        }
-
-        return false;
+        return $this->keyInfo;
     }
 
     /**
@@ -172,7 +148,6 @@ final class Key
         $comp_prefix  = '';
 
         $point = $this->GenerateNewPoint();
-
 
         if (substr($point['Rx_hex'], 0, 2) == '0x') {
             $point['Rx_hex'] = substr($point['Rx_hex'], 2);
