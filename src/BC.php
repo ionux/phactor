@@ -30,7 +30,7 @@ namespace Phactor;
 /**
  * Binary Calculator math class used by the main math class.
  *
- * @author Rich Morgan <rich.l.morgan@gmail.com>
+ * @author Rich Morgan <rich@bitpay.com>
  */
 final class BC
 {
