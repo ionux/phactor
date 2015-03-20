@@ -33,7 +33,6 @@ final class Sin
 
     public $encoded;
 
-    private $math;
     private $SINtype;
     private $rawHashes;
     private $SINversion;
