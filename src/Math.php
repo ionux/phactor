@@ -569,4 +569,31 @@ trait Math
         $this->Gx = '0x' . substr(strtolower($this->G), 2, 64);
         $this->Gy = '0x' . substr(strtolower($this->G), 66, 64);
     }
+
+    /**
+     * Basic range check. Throws exception if
+     * coordinate value is out of range.
+     *
+     * @param  string     $value The coordinate to check.
+     * @return boolean           The result of the check.
+     * @throws \Exception
+     */
+    public function RangeCheck($value)
+    {
+        if (false === isset($value) || true === empty($value)) {
+            throw new \Exception('Empty value parameter passed to RangeCheck() function.');
+        }
+
+        try {
+            /* Check to see if $value is in the range [1, n-1] */
+            if ($this->math->comp($value, '1') <= 0 && $this->math->comp($value, $this->n) > 0) {
+                throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        return true;
+    }
+
 }
