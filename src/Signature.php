@@ -76,23 +76,13 @@ final class Signature
     }
 
     /**
-     * Checks to see if a signature exists or not.
-     *
-     * @return bool The existence of a signature.
-     */
-    public function Exists()
-    {
-        return !($this->encoded_signature == '');
-    }
-
-    /**
      * Generates an ECDSA signature for a message using the private key
      * parameter in hex format. Returns an associative array of all the
      * signature data including raw point information and the signature.
      *
-     * @param string $message     The message to be signed.
-     * @param string $private_key The signer's private key in hex.
-     * @return string $signature  The signature data.
+     * @param  string $message     The message to be signed.
+     * @param  string $private_key The private key in hex.
+     * @return string $signature   The signature data.
      * @throws \Exception
      */
     public function Generate($message, $private_key)
@@ -102,7 +92,7 @@ final class Signature
             false === isset($message)     ||
             true  === empty($message))
         {
-            throw new \Exception('The private key and message parameters are required.');
+            throw new \Exception('The private key and message parameters are required to generate a signature.');
         }
 
         $e         = '';
@@ -150,9 +140,7 @@ final class Signature
 
                 // s = k^-1 * (e+d*r) mod n
                 $edr  = $this->Add($e, $this->Multiply($d, $r));
-
                 $invk = $this->Invert($k_hex, $this->n);
-
                 $kedr = $this->Multiply($invk, $edr);
                 $s    = $this->Modulo($kedr, $this->n);
 
@@ -181,11 +169,11 @@ final class Signature
     /**
      * Verifies an ECDSA signature previously generated.
      *
-     * @param string $r   The signature r coordinate in hex.
-     * @param string $s   The signature s coordinate in hex.
-     * @param string $msg The message signed.
-     * @param array  $Q   The base point.
-     * @return bool       The result of the verification.
+     * @param  string $r   The signature r coordinate in hex.
+     * @param  string $s   The signature s coordinate in hex.
+     * @param  string $msg The message signed.
+     * @param  array  $Q   The base point.
+     * @return bool        The result of the verification.
      * @throws \Exception
      */
     public function Verify($r, $s, $msg, $Q)
@@ -199,7 +187,7 @@ final class Signature
             true  === empty($Q)   ||
             true  === empty($msg))
         {
-            throw new \Exception('The signature coordinates, point and message parameters are required.');
+            throw new \Exception('The signature coordinates, point and message parameters are required to verify a signature.');
         }
 
         $e         = '';
@@ -243,8 +231,6 @@ final class Signature
              * or in other words, if r - x1 is an integer multiple of n.
              */
             $rsubx     = $this->Subtract($r, $Zx_hex);
-
-            /* Used the gmp_div_r() function before. */
             $rsubx_rem = $this->Modulo($rsubx, $this->n);
 
             return (bool)($this->Compare($rsubx_rem, '0') == 0);
@@ -289,9 +275,8 @@ final class Signature
 
         $retval['bin_r'] = bin2hex($byte);
 
-        $seq = chr(0x02) . chr(strlen($byte)) . $byte;
-        $dec = $this->decodeHex($s);
-
+        $seq  = chr(0x02) . chr(strlen($byte)) . $byte;
+        $dec  = $this->decodeHex($s);
         $byte = $this->binConv($s);
 
         if ($this->Compare('0x' . bin2hex($byte[0]), '0x80') >= 0) {
