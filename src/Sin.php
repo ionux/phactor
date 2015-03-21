@@ -44,7 +44,10 @@ final class Sin
     private $SINversion;
 
     /**
-     * Constructor.
+     * Public constructor method.
+     *
+     * @param  string $pubkey
+     * @return string
      */
     public function __construct($pubkey = '')
     {
@@ -57,15 +60,15 @@ final class Sin
                                  'step6' => null,
                                 );
 
-        $this->encoded      = '';
+        $this->encoded   = '';
 
         /*
          * Type-2 (ephemeral) SINs may be generated at any
          * time, without network activity, much like bitcoin
          * addresses.
          */
-        $this->SINtype      = '02';
-        $this->SINversion   = '0F';
+        $this->SINtype    = '02';
+        $this->SINversion = '0F';
 
         if (false === empty($pubkey)) {
             return $this->Generate($pubkey);
@@ -83,41 +86,13 @@ final class Sin
     }
 
     /**
-     * Checks to see if a SIN exists or not.
-     *
-     * @return bool The existence of a SIN.
-     */
-    public function Exists()
-    {
-        return !($this->encoded == '');
-    }
-
-    /**
-     * Returns the encoded SIN value, if exists.
-     *
-     * @return string|false
-     */
-    public function getEncoded()
-    {
-        if ($this->Exists()) {
-            return $this->encoded;
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the raw hash value array, if exists.
      *
-     * @return string|false
+     * @return array
      */
-    public function GetRawHashes()
+    public function getRawHashes()
     {
-        if ($this->Exists()) {
-            return $this->rawHashes;
-        }
-
-        return false;
+        return $this->rawHashes;
     }
 
     /**
@@ -129,9 +104,8 @@ final class Sin
      */
     public function Generate($pubkey)
     {
-
         if (false === isset($pubkey) || true === empty($pubkey)) {
-            throw new \Exception('Missing or invalid public key parameter.');
+            throw new \Exception('Missing or invalid public key parameter for Sin::Generate.');
         }
 
         /* take the sha256 hash of the public key in binary form and returning binary */
