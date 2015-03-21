@@ -28,7 +28,7 @@
 namespace Phactor;
 
 /**
- * Class for working with asymmetric keypairs.
+ * Class for working with asymmetric keypairs in both hex and decimal forms.
  *
  * @author Rich Morgan <rich@bitpay.com>
  */
@@ -36,18 +36,18 @@ final class Key
 {
     use Point;
 
-    private $publicKey;
-    private $privateKey;
+    /**
+     * @var array
+     */
     private $keyInfo;
 
     /**
      * Public constructor class.
+     *
+     * @param array $parameters.
      */
     public function __construct(array $parameters = null)
     {
-        $this->publicKey  = '';
-        $this->privateKey = '';
-
         $this->keyInfo = array(
                                'private_key_hex'       => '',
                                'private_key_dec'       => '',
@@ -96,39 +96,37 @@ final class Key
     }
 
     /**
-     * Returns the private key value or false on failure.
+     * Returns the private key value in hex or decimal.
      *
-     * @return string|bool
+     * @param  bool
+     * @return string
      */
-    public function GetPrivateKey()
+    public function getPrivateKey($hex = true)
     {
-        if (true === isset($this->privateKey) {
-            return $this->privateKey;
+        if ($hex === true) {
+            return $this->keyInfo['private_key_hex'];
+        } else {
+            return $this->keyInfo['private_key_dec'];
         }
-
-        return false;
     }
 
     /**
-     * Returns the public key value or false on failure.
+     * Returns the compressed or uncompressed public key value.
      *
-     * @return string|false
+     * @param  string
+     * @return string
      */
     public function getPublicKey($format = 'compressed')
     {
-        if (true === isset($this->privateKey) {
-            if ($format == 'compressed') {
-                return $this->keyInfo['public_key_compressed'];
-            }
+        if ($format == 'compressed') {
+            return $this->keyInfo['public_key_compressed'];
         } else {
-            return $this->publicKey;
+            return $this->keyInfo['public_key'];
         }
-
-        return false;
     }
 
     /**
-     * Returns the complete keypair info array or false on failure.
+     * Returns the complete keypair info array.
      *
      * @return array
      */
@@ -138,7 +136,7 @@ final class Key
     }
 
     /**
-     * This is the main function for generating the new keypair.
+     * This is the main function for generating a new keypair.
      *
      * @param  bool   $verbose Shows extra debugging output.
      * @return array  $keyInfo The complete keypair array.
