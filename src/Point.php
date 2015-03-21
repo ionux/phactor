@@ -148,8 +148,8 @@ trait Point
      * Performs a test of an EC point by substituting the new
      * values into the equation for the standard form of the curve.
      *
-     * @param  array $P  The generated point to test.
-     * @return bool      Whether or not the point is valid.
+     * @param  array $P   The generated point to test.
+     * @return bool       Whether or not the point is valid.
      * @throws \Exception
      */
     public function PointTest($P)
@@ -192,7 +192,7 @@ trait Point
     }
 
     /**
-     * Pure PHP implementation of the doubleAndAdd algorithm, for more info see:
+     * Pure PHP implementation of the Double-And-Add algorithm, for more info see:
      * http://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
      *
      * @param  string       $x Scalar value.
@@ -211,7 +211,6 @@ trait Point
         }
 
         $tmp = $this->D2B($x);
-
         $n   = strlen($tmp) - 1;
         $S   = $this->Inf;
 
@@ -231,9 +230,8 @@ trait Point
     /**
      * Creates a new point on the elliptic curve.
      *
-     * @param string $random_number
-     * @throws \Exception
      * @return array
+     * @throws \Exception
      */
     public function GenerateNewPoint()
     {
