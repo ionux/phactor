@@ -61,9 +61,9 @@ trait Math
     /**
      * Multiplies two arbitrary precision numbers.
      *
-     * @param string $a  The first number to multiply.
-     * @param string $b  The second number to multiply.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number to multiply.
+     * @param  string $b  The second number to multiply.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Multiply($a, $b)
@@ -78,15 +78,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->mul($a, $b));
+        return $this->math->mul($a, $b);
     }
 
     /**
      * Adds two arbitrary precision numbers.
      *
-     * @param string $a  The first number to add.
-     * @param string $b  The second number to add.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number to add.
+     * @param  string $b  The second number to add.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Add($a, $b)
@@ -101,15 +101,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->add($a, $b));
+        return $this->math->add($a, $b);
     }
 
     /**
      * Subtracts two arbitrary precision numbers.
      *
-     * @param string $a  The first number to Subtract.
-     * @param string $b  The second number to Subtract.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number to Subtract.
+     * @param  string $b  The second number to Subtract.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Subtract($a, $b)
@@ -124,15 +124,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->sub($a, $b));
+        return $this->math->sub($a, $b);
     }
 
     /**
      * Divides two arbitrary precision numbers.
      *
-     * @param string $a  The first number to Divide.
-     * @param string $b  The second number to Divide.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number to Divide.
+     * @param  string $b  The second number to Divide.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Divide($a, $b)
@@ -147,15 +147,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->div($a, $b));
+        return $this->math->div($a, $b);
     }
 
     /**
      * Performs the modulo 'b' of an arbitrary precision number 'a'.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Modulo($a, $b)
@@ -170,15 +170,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->mod($a, $b));
+        return $this->math->mod($a, $b);
     }
 
     /**
      * Performs the inverse modulo of two arbitrary precision numbers.
      *
-     * @param string $a  The first number to Divide.
-     * @param string $b  The second number to Divide.
-     * @return string    The result of the operation.
+     * @param  string $a  The first number to Divide.
+     * @param  string $b  The second number to Divide.
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Invert($a, $b)
@@ -193,15 +193,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->inv($a, $b));
+        return $this->math->inv($a, $b);
     }
 
     /**
      * Compares two arbitrary precision numbers.
      *
-     * @param string $a  The first number to compare.
-     * @param string $b  The second number to compare.
-     * @return string    The result of the comparison.
+     * @param  string $a  The first number to compare.
+     * @param  string $b  The second number to compare.
+     * @return string     The result of the comparison.
      * @throws \Exception
      */
     public function Compare($a, $b)
@@ -216,15 +216,15 @@ trait Math
             $this->MathCheck();
         }
 
-        return ($this->math->comp($a, $b));
+        return $this->math->comp($a, $b);
     }
 
     /**
      * Raises an arbitrary precision number to an integer power.
      *
-     * @param string $a  The number to raise to the power.
-     * @param string $b  The integer power
-     * @return string    The result of the operation.
+     * @param  string $a  The number to raise to the power.
+     * @param  string $b  The integer power
+     * @return string     The result of the operation.
      * @throws \Exception
      */
     public function Power($a, $b)
@@ -245,8 +245,9 @@ trait Math
     /**
      * Encodes a decimal value into hexadecimal.
      *
-     * @param  string $dec
-     * @return string
+     * @param  string     $dec
+     * @return string     $hex
+     * @throws \Exception
      */
     public function encodeHex($dec)
     {
@@ -281,11 +282,13 @@ trait Math
 
         return '0x' . strrev($hex);
     }
+
     /**
      * Decodes a hexadecimal value into decimal.
      *
-     * @param  string $hex
-     * @return string
+     * @param  string     $hex
+     * @return string     $dec
+     * @throws \Exception
      */
     public function decodeHex($hex)
     {
@@ -319,8 +322,8 @@ trait Math
      * Returns the appropriate base digit string/array for the
      * requested base parameter.
      *
-     * @param string $base  The base requested.
-     * @return array|string The base character info.
+     * @param  string       $base  The base requested.
+     * @return array|string        The base character info.
      * @throws \Exception
      */
     public function BaseCheck($base)
@@ -351,8 +354,8 @@ trait Math
      * This method returns a binary string representation of
      * the decimal number.  Used for the doubleAndAdd() method.
      *
-     * @param  string $num The number to convert.
-     * @return string $bin The converted number.
+     * @param  string     $num The number to convert.
+     * @return string     $bin The converted number.
      * @throws \Exception
      */
     public function D2B($num)
@@ -392,7 +395,7 @@ trait Math
     }
 
     /**
-     * Converts hex value into octet (byte) string
+     * Converts hex value into octet (byte) string.
      *
      * @param  string
      * @return string
@@ -435,8 +438,8 @@ trait Math
     /**
      * Determines if the hex value needs '0x'.
      *
-     * @param  string $value The value to check.
-     * @return string $value If the value is present.
+     * @param  string     $value The value to check.
+     * @return string     $value If the value is present.
      * @throws \Exception
      */
     public function Test($value)
@@ -457,7 +460,8 @@ trait Math
     /**
      * Generates a secure random number using the OpenSSL extension.
      *
-     * @return string
+     * @param  int        Number of bytes to return.
+     * @return string     Random data in hex form.
      * @throws \Exception
      */
     public function SecureRandomNumber($length = 32)
@@ -480,36 +484,36 @@ trait Math
     /**
      * Converts a hex number to BASE-58 used for Bitcoin-related tasks.
      *
-     * @param unknown $hex
-     * @return string
+     * @param  string     $hex
+     * @return string     $return
      * @throws \Exception
      */
-    private function encodeBase58($hex)
+    private function encodeBase58($hex = '')
     {
         if ($this->math == null) {
             $this->MathCheck();
         }
 
         try {
-            if (empty($hex) || strlen($hex) % 2 != 0) {
+            if (true === empty($hex) || strlen($hex) % 2 != 0) {
                 $return = 'Error - uneven number of hex characters passed to encodeBase58().';
             } else {
-                $chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+                $chars   = $this->base58_chars;
                 $orighex = $hex;
-                $return = '';
+                $return  = '';
 
                 if (substr(strtolower($hex), 0, 2) != '0x') {
                     $hex = '0x' . strtolower($hex);
                 }
 
-                while (gmp_cmp($hex, '0') > 0) {
-                    $dv = gmp_div_q($hex, '58');
-                    $rem = gmp_strval(gmp_div_r($hex, '58'));
-                    $hex = $dv;
+                while ($this->math->comp($hex, '0') > 0) {
+                    $dv     = $this->math->div($hex, '58');
+                    $rem    = $this->math->mod($hex, '58');
+                    $hex    = $dv;
                     $return = $return . $chars[$rem];
                 }
 
-                $return=strrev($return);
+                $return = strrev($return);
 
                 for ($i = 0; $i < strlen($orighex) && substr($orighex, $i, 2) == '00'; $i += 2) {
                     $return = '1' . $return;
@@ -518,7 +522,7 @@ trait Math
 
             return $return;
         } catch (\Exception $e) {
-            return 'Error in ECSINgen::encodeBase58(): '.$e->getMessage();
+            throw $e;
         }
     }
 
@@ -558,7 +562,7 @@ trait Math
             }
         }
 
-        if (empty($this->bytes)) {
+        if (true === empty($this->bytes)) {
             $this->bytes = $this->GenBytes();
         }
 
