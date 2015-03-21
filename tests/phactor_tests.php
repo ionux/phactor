@@ -38,6 +38,13 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $info = $key->GenerateKeypair();
 
         $this->assertNotNull($info);
+
+        $this->assertNotNull($info['private_key_hex']);
+        $this->assertNotNull($info['private_key_dec']);
+        $this->assertNotNull($info['public_key']);
+        $this->assertNotNull($info['public_key_compressed']);
+        $this->assertNotNull($info['public_key_x']);
+        $this->assertNotNull($info['public_key_y']);
     }
 
     public function testSinCreation()
@@ -339,4 +346,6 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $expected_result);
     }
+
+    public function test
 }
