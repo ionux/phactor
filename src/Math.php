@@ -498,7 +498,7 @@ trait Math
             if (true === empty($hex) || strlen($hex) % 2 != 0) {
                 $return = 'Error - uneven number of hex characters passed to encodeBase58().';
             } else {
-                $chars   = $this->base58_chars;
+                $chars   = $this->b58_chars;
                 $orighex = $hex;
                 $return  = '';
 
