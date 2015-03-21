@@ -58,6 +58,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $sinfo = $sin->Generate($info['public_key_compressed']);
 
         $this->assertNotNull($sinfo);
+        $this->assertNotNull($sin->getRawHashes());
     }
 
     public function testSignatureCreation()
