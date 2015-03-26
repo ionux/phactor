@@ -274,7 +274,7 @@ trait Point
      * @return array
      * @throws \Exception
      */
-    public function GenerateNewPoint()
+    public function GenerateNewPoint($ladder=true)
     {
         $P = array('x' => strtolower(trim($this->Gx)), 'y' => strtolower(trim($this->Gy)));
 
@@ -282,7 +282,11 @@ trait Point
             $random_number = $this->SecureRandomNumber();
         } while ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0);
 
-        $R = $this->doubleAndAdd($random_number, $P);
+        if ($ladder !== true) {
+            $R = $this->doubleAndAdd($random_number, $P);
+        } else {
+            $R = $this->mLadder($random_number, $P);
+        }
 
         if ($this->PointTest($R)) {
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
