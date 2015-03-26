@@ -1,2 +1,27 @@
+1.0.2
+  * Corrected function scope, commit  c06b40c
+  * Added test coverage for all GMP class functions, commit  9efa7c2
+  * Removed extra parameter in call, commit  eb3ddaa
+  * Forgot test for inverse modulo, commit  65418dd
+  * Added test coverage for all BC class functions, commit  ab9edbb
+  * Removed @cover comment, commit  55d501b
+  * Removed call to private func BC::normalize, commit  8ce072f
+  * Removed useless code., commit  a16f836
+  * Optimized code, commit  896b50c
+  * Optimized code, commit  6a212dd
+  * Update Point.php, commit  0c93c36
+  * Update Math.php, commit  6abeb62
+  * Update Signature.php, commit  58886dd
+  * Update phactor_tests.php, commit  6555c66
+  * Update phactor_tests.php, commit  8da6c06
+  * Optimized code, commit  c5ef155
+  * Update phactor_tests.php, commit  4a97e71
+  * Added RangeCheck function, commit  bbe77e8
+  * Delete Util.php, commit  f67d73d
+  * Update TODO.md, commit  905c20c
+
+1.0.1
+  * Security release. Removed leftover debug code.
+
 1.0.0
   * Initial release.
