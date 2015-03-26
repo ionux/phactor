@@ -228,6 +228,47 @@ trait Point
     }
 
     /**
+     * Pure PHP implementation of the Montgomery Ladder algorithm which protects
+     * us against side-channel attacks.  This performs the same number of operations
+     * regardless of the scalar value being used as the multiplier.  It's slower than
+     * the traditional double-and-add algorithm because of that fact but safer to use.
+     *
+     * @param  string       $x Scalar value.
+     * @param  array        $P Base EC curve point.
+     * @return array|string $S Either 'infinity' or the new coordinates.
+     * @throws \Exception
+     */
+    public function mLadder($x, $P)
+    {
+        if (false === isset($P) || true === empty($P) || false == is_array($P)) {
+            throw new \Exception('You must provide a valid point to scale.');
+        }
+
+        if (false === isset($x) || true === empty($x)) {
+            throw new \Exception('Missing or invalid scalar value in mLadder() function.');
+        }
+
+        $tmp = $this->D2B($x);
+        $n   = strlen($tmp) - 1;
+        $S0  = $this->Inf;
+        $S1  = $P;
+
+        while ($n >= 0) {
+            if ($tmp[$n] == '0') {
+                $S1 = $this->pointAdd($S0, $S1);
+                $S0 = $this->pointDouble($S0);
+            } else {
+                $S0 = $this->pointAdd($S0, $S1);
+                $S1 = $this->pointDouble($S1);
+            }
+
+            $n--;
+        }
+
+        return $S0;
+    }
+
+    /**
      * Creates a new point on the elliptic curve.
      *
      * @return array
