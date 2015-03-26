@@ -1,3 +1,9 @@
+1.0.3
+  * Added 1.0.1 and 1.0.2 release information, commit a6f68a9
+  * Added Montgomery Ladder algorith, commit 6877781
+  * Update TODO.md, commit b215b1a
+  * Added logic to use mLadder() by default, commit 4069f61
+
 1.0.2
   * Corrected function scope, commit  c06b40c
   * Added test coverage for all GMP class functions, commit  9efa7c2
