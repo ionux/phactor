@@ -80,3 +80,4 @@ class SinTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($hashes);
         $this->assertEquals(count($hashes), 6);
     }
+}
