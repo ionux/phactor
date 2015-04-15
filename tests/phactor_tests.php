@@ -265,8 +265,9 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     public function testSamePointsAreGenerated()
     {
         // Check that the same points are created when calling the mladder and double-and-add methods using the same params.
-        $P = array('x' => strtolower(trim($this->Gx)), 'y' => strtolower(trim($this->Gy)));
+
         $mock = $this->getMockForTrait('\Phactor\Point');
+        $P = array('x' => strtolower(trim($mock->Gx)), 'y' => strtolower(trim($mock->Gy)));
         $random = '12345678';
 
         $ladder_point = $mock->mLadder($random, $P);
