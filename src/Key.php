@@ -247,7 +247,7 @@ final class Key
     		$byte = $byte . $digits[$rem];
     	}
 
-    	$byte = $beg_ec_text . "\r\n" . chunk_splt(base64_encode(strrev($byte)), 64) . $end_ec_text;
+    	$byte = $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
 
     	return $byte;
     }
@@ -291,7 +291,7 @@ final class Key
         }
 
         $private_key = $ecpemstruct['oct_sec_val'];
-        $public_key  = $ecpemstruct['bit_str_val'];
+        $public_key  = '04' . $ecpemstruct['bit_str_val'];
 
         if (strlen($private_key) < 64 || strlen($public_key) < 128) {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
