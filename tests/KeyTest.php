@@ -143,3 +143,4 @@ class KeyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($info['private_key_hex'], $priv_hex);
         $this->assertEquals($info['private_key_dec'], $priv_dec);
     }
+}
