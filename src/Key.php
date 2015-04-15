@@ -46,7 +46,7 @@ final class Key
      *
      * @param array $parameters.
      */
-    public function __construct(array $parameters = null)
+    public function __construct(array $params = null)
     {
         $this->keyInfo = array(
                                'private_key_hex'       => '',
