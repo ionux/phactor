@@ -309,57 +309,6 @@ final class Signature
     }
 
     /**
-     * Decodes PEM data to retrieve the keypair.
-     *
-     * @param  string $pem_data The data to decode.
-     * @return array            The keypair info.
-     * @throws \Exception
-     */
-    public function decodePEM($pem_data)
-    {
-        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
-        $end_ec_text = '-----END EC PRIVATE KEY-----';
-
-        $decoded = '';
-
-        $ecpemstruct = array();
-
-        $pem_data = str_ireplace($beg_ec_text, '', $pem_data);
-        $pem_data = str_ireplace($end_ec_text, '', $pem_data);
-        $pem_data = str_ireplace("\r", '', trim($pem_data));
-        $pem_data = str_ireplace("\n", '', trim($pem_data));
-        $pem_data = str_ireplace(' ',  '', trim($pem_data));
-
-        $decoded = bin2hex(base64_decode($pem_data));
-
-        if (strlen($decoded) < 230) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.');
-        }
-
-        $ecpemstruct = array(
-            'oct_sec_val'  => substr($decoded,14,64),
-            'obj_id_val'   => substr($decoded,86,10),
-            'bit_str_val'  => substr($decoded,106),
-        );
-
-        if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
-        }
-
-        $private_key = $ecpemstruct['oct_sec_val'];
-        $public_key  = $ecpemstruct['bit_str_val'];
-
-        if (strlen($private_key) < 64 || strlen($public_key) < 128) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
-        }
-
-        return array(
-                     'private_key' => $private_key,
-                     'public_key' => $public_key
-                    );
-    }
-
-    /**
      * Parses a ECDSA signature to retrieve the
      * r and s coordinate pair. Used to verify.
      *
