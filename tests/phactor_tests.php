@@ -50,7 +50,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     public function testKeypairEncodingToPEM()
     {
         // Verify the encodePEM function returns expected value.
-        $expected = "-----BEGIN EC PRIVATE KEY-----\n" .
+        $expected = "-----BEGIN EC PRIVATE KEY-----\r\n" .
                     "MHQCAQEEIOR/9DmhSgdW9VXD9pX7szYb760nL/yjxdZLds0xzZAjoAcGBSuBBAAK\n" .
                     "oUQDQgDoEeTJa62xAbgNZGMb8mVqgYBVpHggVkRFY/l1VtxFcq5adZRWueE5W1dD\n" .
                     "MiMuvZi+mj9ffpJiKlWOhzIvw2S9\n" .
@@ -75,6 +75,19 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $retrieved = $key->getKeypairInfo();
 
         $this->assertEquals($info['private_key_hex'], $retrieved['private_key_hex']);
+    }
+
+    public function testGetPublicKey()
+    {
+        // Verify the getPublicKey() function returns the same compressed & uncompressed values.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+        $compressed = $key->getPublicKey();
+        $uncompressed = $key->getPublicKey('uncompressed');
+
+        $this->assertEquals($info['public_key_compressed'], $compressed);
+        $this->assertEquals($info['public_key'], $uncompressed);
     }
 
     public function testSinCreation()
