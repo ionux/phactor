@@ -79,8 +79,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $result = $mock->pointAdd($P, $Q);
 
         $this->assertNotNull($result);
-        $this->assertGreaterThan($result['x']);
-        $this->assertGreaterThan($result['y']);
+        $this->assertGreaterThan(63, strlen($result['x']));
+        $this->assertGreaterThan(63, strlen($result['y']));
     }
 
     public function testPointDouble()
@@ -93,8 +93,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $result = $mock->pointDouble($Q);
 
         $this->assertNotNull($result);
-        $this->assertGreaterThan($result['x']);
-        $this->assertGreaterThan($result['y']);
+        $this->assertGreaterThan(63, strlen($result['x']));
+        $this->assertGreaterThan(63, strlen($result['y']));
     }
 
     public function testInfPointReturnsInf()
