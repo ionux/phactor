@@ -68,6 +68,23 @@ ytA16iEWr8PleZ59Yw5yHXtzI7KR
         $this->assertNotFalse(stripos($pem_data, '-----BEGIN EC PRIVATE KEY-----'));
     }
 
+    public function testKeypairDecodingFromPEM()
+    {
+        // Verify the decodePEM function returns expected value.
+
+        $pem_data = '-----BEGIN EC PRIVATE KEY-----MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP/MgGGYeuKYlOQqpi1BMoAcGBSuBBAAKoUQDQgDCoVua6L+/l6Ss1sUilghRSy6+HyFHxyTxdAL86s5q2p/N+RWKVtg1ItlgytA16iEWr8PleZ59Yw5yHXtzI7KR-----END EC PRIVATE KEY-----';
+
+        $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
+        $pub_key  = '04c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
+
+        $key  = new Key;
+        $keypair = $key->decodePEM($pem_data);
+
+        $this->assertEquals($keypair['private_key'], $priv_key);
+        $this->assertEquals($keypair['public_key'], $pub_key);
+    }
+
+
     public function testGetKeypairInfo()
     {
         // Test that the getKeypairInfo function returns the same values we got originally.
