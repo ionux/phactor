@@ -76,11 +76,11 @@ final class Key
             }
 
             if (true === isset($params['public_key_x'])) {
-            	$this->keyInfo['private_key_hex'] = $params['public_key_x'];
+            	$this->keyInfo['public_key_x'] = $params['public_key_x'];
             }
 
-            if (true === isset($params['public_key_x'])) {
-                $this->keyInfo['private_key_hex'] = $params['public_key_x'];
+            if (true === isset($params['public_key_y'])) {
+                $this->keyInfo['public_key_y'] = $params['public_key_y'];
             }
     	}
     }
@@ -209,25 +209,25 @@ final class Key
     	$digits = $this->GenBytes();
 
     	$ecpemstruct = array(
-    			'sequence_beg' => '30',
-    			'total_len'    => '74',
-    			'int_sec_beg'  => '02',
-    			'int_sec_len'  => '01',
-    			'int_sec_val'  => '01',
-    			'oct_sec_beg'  => '04',
-    			'oct_sec_len'  => '20',
-    			'oct_sec_val'  => $keypair[0],
-    			'a0_ele_beg'   => 'a0',
-    			'a0_ele_len'   => '07',
-    			'obj_id_beg'   => '06',
-    			'obj_id_len'   => '05',
-    			'obj_id_val'   => '2b8104000a',
-    			'a1_ele_beg'   => 'a1',
-    			'a1_ele_len'   => '44',
-    			'bit_str_beg'  => '03',
-    			'bit_str_len'  => '42',
-    			'bit_str_val'  => '00'.$keypair[1],
-    	);
+                             'sequence_beg' => '30',
+                             'total_len'    => '74',
+                             'int_sec_beg'  => '02',
+                             'int_sec_len'  => '01',
+                             'int_sec_val'  => '01',
+                             'oct_sec_beg'  => '04',
+                             'oct_sec_len'  => '20',
+                             'oct_sec_val'  => $keypair[0],
+                             'a0_ele_beg'   => 'a0',
+                             'a0_ele_len'   => '07',
+                             'obj_id_beg'   => '06',
+                             'obj_id_len'   => '05',
+                             'obj_id_val'   => '2b8104000a',
+                             'a1_ele_beg'   => 'a1',
+                             'a1_ele_len'   => '44',
+                             'bit_str_beg'  => '03',
+                             'bit_str_len'  => '42',
+                             'bit_str_val'  => '00'.$keypair[1],
+                             );
 
     	$beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
     	$end_ec_text = '-----END EC PRIVATE KEY-----';
@@ -281,10 +281,10 @@ final class Key
         }
 
         $ecpemstruct = array(
-            'oct_sec_val'  => substr($decoded,14,64),
-            'obj_id_val'   => substr($decoded,86,10),
-            'bit_str_val'  => substr($decoded,106),
-        );
+                             'oct_sec_val'  => substr($decoded,14,64),
+                             'obj_id_val'   => substr($decoded,86,10),
+                             'bit_str_val'  => substr($decoded,106),
+                            );
 
         if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
@@ -299,7 +299,7 @@ final class Key
 
         return array(
                      'private_key' => $private_key,
-                     'public_key' => $public_key
+                     'public_key'  => $public_key
                     );
     }
 }
