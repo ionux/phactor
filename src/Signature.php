@@ -1,5 +1,4 @@
 <?php
-<?php
 /******************************************************************************
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
