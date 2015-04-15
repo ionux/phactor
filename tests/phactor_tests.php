@@ -34,7 +34,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a keypair.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $this->assertNotNull($info);
@@ -55,7 +55,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
         $pub_key  = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $pem_data = $key->encodePEM(array($priv_key, $pub_key));
 
         $this->assertNotFalse(stripos($pem_data, 'MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP'));
@@ -73,7 +73,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
         $pub_key  = '04c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $keypair = $key->decodePEM($pem_data);
 
         $this->assertEquals($keypair['private_key'], $priv_key);
@@ -96,7 +96,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Verify the getPublicKey() function returns the same compressed & uncompressed values.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
         $compressed = $key->getPublicKey();
         $uncompressed = $key->getPublicKey('uncompressed');
@@ -109,7 +109,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Verify the getPrivateKey() function returns the same compressed & uncompressed values.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
         $priv_hex = $key->getPrivateKey();
         $priv_dec = $key->getPrivateKey(false);
@@ -123,7 +123,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a SIN using the generate() function.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sin   = new \Phactor\Sin;
@@ -141,7 +141,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a SIN when we instantiate the sin object.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sin   = new \Phactor\Sin($info['public_key_compressed']);
@@ -159,7 +159,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a SIN and get the raw hash array.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sin   = new \Phactor\Sin;
@@ -174,7 +174,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a signature with the generate method.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
@@ -187,7 +187,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if we can actually create a signature when we instantiate the signature object.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature('my message to sign...', $info['private_key_hex']);
@@ -200,7 +200,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if a signature we generate is valid.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
@@ -215,7 +215,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     {
         // Check to see if a signature we generate has the correct length.
 
-        $key  = new Key;
+        $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
@@ -281,7 +281,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for addition.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '957778639623943824492989179772563790452297673826798113877254533362403880379966704640742128266117263528754882861453007';
         $a = $this->a;
@@ -297,7 +297,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for subtraction.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '957463312757389099338965804296488596731362352241574317959372237927306452378735819740382112548151164886298499840338903';
         $a = $this->a;
@@ -313,7 +313,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for multiplication.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '150981810884639958700328085278405718749810206599288911717839892598416430383239698022998119007526637510937085529989130930737456136347911513955480178694591753112850253972637216399933791443453571052105672003128661792601294741343524660';
         $a = $this->a;
@@ -329,7 +329,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for division.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '6073';
         $a = $this->a;
@@ -345,7 +345,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for 'a' modulo 'b'.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '130945897243531723997858932200459971726019502129911268723296971515040641769262247374392803075686388719647737919159';
         $a = $this->a;
@@ -362,7 +362,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // the correct result for comparing two
         // arb precision values.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '1';
         $a = $this->a;
@@ -378,7 +378,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our GMP calls are returning
         // the correct result for inverse modulo.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '16320031509886753001468114610224267914757061072957414462029557633094547166069133482767770945598158313244622262371';
         $a = $this->a;
@@ -395,7 +395,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // the correct result for raising a number
         // to a power.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = '917037934040364982737244091531827293772718769617550961534802228981137468765677724565272391346532251949140929536931667224208094060917023615329647508125531895055074287250548098811179279399871619095442945851773292458773975997781235362025';
         $a = $this->a;
@@ -411,7 +411,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // the correct result for normalizing a
         // value into a string.
 
-        $gmp = new GMP;
+        $gmp = new \Phactor\GMP;
 
         $expected_result = 'string';
         $a = $this->a;
@@ -426,7 +426,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for addition.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '957778639623943824492989179772563790452297673826798113877254533362403880379966704640742128266117263528754882861453007';
         $a = $this->a;
@@ -442,7 +442,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for subtraction.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '957463312757389099338965804296488596731362352241574317959372237927306452378735819740382112548151164886298499840338903';
         $a = $this->a;
@@ -458,7 +458,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for multiplication.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '150981810884639958700328085278405718749810206599288911717839892598416430383239698022998119007526637510937085529989130930737456136347911513955480178694591753112850253972637216399933791443453571052105672003128661792601294741343524660';
         $a = $this->a;
@@ -474,7 +474,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for division.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '6073';
         $a = $this->a;
@@ -490,7 +490,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for 'a' modulo 'b'.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '130945897243531723997858932200459971726019502129911268723296971515040641769262247374392803075686388719647737919159';
         $a = $this->a;
@@ -507,7 +507,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // the correct result for comparing two
         // arb precision values.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '1';
         $a = $this->a;
@@ -523,7 +523,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // Test that our BC calls are returning
         // the correct result for inverse modulo.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '16320031509886753001468114610224267914757061072957414462029557633094547166069133482767770945598158313244622262371';
         $a = $this->a;
@@ -540,7 +540,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         // the correct result for raising a number
         // to a power.
 
-        $bc = new BC;
+        $bc = new \Phactor\BC;
 
         $expected_result = '917037934040364982737244091531827293772718769617550961534802228981137468765677724565272391346532251949140929536931667224208094060917023615329647508125531895055074287250548098811179279399871619095442945851773292458773975997781235362025';
         $a = $this->a;
