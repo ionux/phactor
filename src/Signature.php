@@ -1,4 +1,5 @@
 <?php
+<?php
 /******************************************************************************
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
@@ -43,11 +44,12 @@ final class Signature
     private $s_coordinate;
     private $raw_signature;
     private $P;
-    private $Q;
 
     /**
      * Public constructor method.
      *
+     * @param  string $message     The message to sign (optional).
+     * @param  string $private_key The signer's private key (optional).
      * @return array
      */
     public function __construct($message = '', $private_key = '')
@@ -57,8 +59,10 @@ final class Signature
         $this->s_coordinate      = '';
         $this->raw_signature     = '';
 
-        $this->P = array('x' => $this->Gx, 'y' => $this->Gy);
-        $this->Q = array('x' => $this->Gx, 'y' => $this->Gy);
+        $this->P = array(
+                         'x' => $this->Gx,
+                         'y' => $this->Gy
+                        );
 
         if ($message != '' && $private_key != '') {
             return $this->Generate($message, $private_key);
@@ -114,41 +118,51 @@ final class Signature
         $priv_key = trim(strtolower($private_key));
         $key_size = strlen($priv_key);
 
+        if ($key_size < 64) {
+            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.');
+        }
+
+        $message = trim($message);
+        $msg_len = strlen($message);
+
+        if ($msg_len <= 0) {
+            throw new \Exception('Cannot sign an empty message!');
+        }
+
         $e = $this->decodeHex(hash('sha256', $message));
 
         try {
             do {
 
-                if (substr($private_key, 0, 2) != '0x') {
-                    $d = '0x' . $private_key;
+                if (substr($priv_key, 0, 2) != '0x') {
+                    $d = '0x' . $priv_key;
                 } else {
-                    $d = $private_key;
+                    $d = $priv_key;
                 }
 
-                $k = $this->SecureRandomNumber();
-
+                $k     = $this->SecureRandomNumber();
                 $k_hex = $this->encodeHex($k);
 
-                // Calculate a new curve point from Q=k*G (x1,y1)
-                $R = $this->DoubleAndAdd($k, $this->P);
+                /* Calculate a new curve point from Q=k*G (x1,y1) */
+                $R = $this->DoubleAndAdd($k_hex, $this->P);
 
                 $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
                 $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
 
-                // r = x1 mod n
+                /* r = x1 mod n */
                 $r = $this->Modulo($Rx_hex, $this->n);
 
-                // s = k^-1 * (e+d*r) mod n
+                /* s = k^-1 * (e+d*r) mod n */
                 $edr  = $this->Add($e, $this->Multiply($d, $r));
                 $invk = $this->Invert($k_hex, $this->n);
                 $kedr = $this->Multiply($invk, $edr);
                 $s    = $this->Modulo($kedr, $this->n);
 
-                // The signature is the pair (r,s)
                 $signature = array(
                                     'r' => str_pad($this->encodeHex($r), 64, "0", STR_PAD_LEFT),
                                     's' => str_pad($this->encodeHex($s), 64, "0", STR_PAD_LEFT)
                                   );
+
             } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
         } catch (\Exception $e) {
             throw $e;
@@ -159,10 +173,6 @@ final class Signature
         $this->r_coordinate = $signature['r'];
         $this->s_coordinate = $signature['s'];
 
-        if ($this->Verify($this->r_coordinate, $this->s_coordinate, $message, $this->Q)) {
-            throw new \Exception('Signature verification failed! Do not use this value!');
-        }
-
         return $this->encoded_signature;
     }
 
@@ -172,22 +182,20 @@ final class Signature
      * @param  string $r   The signature r coordinate in hex.
      * @param  string $s   The signature s coordinate in hex.
      * @param  string $msg The message signed.
-     * @param  array  $Q   The base point.
+     * @param  array  $Q   The public key of the signer.
      * @return bool        The result of the verification.
      * @throws \Exception
      */
-    public function Verify($r, $s, $msg, $Q)
+    public function Verify($sig, $msg, $Q)
     {
-        if (false === isset($r)   ||
-            false === isset($s)   ||
+        if (false === isset($sig) ||
+            true  === empty($sig) ||
             false === isset($msg) ||
+            true  === empty($msg) ||
             false === isset($Q)   ||
-            true  === empty($r)   ||
-            true  === empty($s)   ||
-            true  === empty($Q)   ||
-            true  === empty($msg))
+            true  === empty($Q))
         {
-            throw new \Exception('The signature coordinates, point and message parameters are required to verify a signature.');
+            throw new \Exception('The signature, public key and message parameters are required to verify a signature.');
         }
 
         $e         = '';
@@ -202,25 +210,36 @@ final class Signature
         $Zb        = array();
         $Z         = array();
 
+        $coords = $this->parseSig($sig);
+
+        $r = $coords['r'];
+        $s = $coords['s'];
+
+        $r_dec = $this->decodeHex($r);
+        $s_dec = $this->decodeHex($s);
+
         $r = $this->CoordinateCheck(trim(strtolower($r)));
         $s = $this->CoordinateCheck(trim(strtolower($s)));
 
         /* Convert the hash of the hex message to decimal */
         $e = $this->decodeHex(hash('sha256', $msg));
 
+        $n_dec = $this->decodeHex($this->n);
+        $p_dec = $this->decodeHex($this->p);
+
         try {
             /* Calculate w = s^-1 (mod n) */
-            $w = $this->Invert($s, $this->n);
+            $w = $this->Invert($s_dec, $n_dec);
 
             /* Calculate u1 = e*w (mod n) */
-            $u1 = $this->Modulo($this->Multiply($e, $w), $this->n);
+            $u1 = $this->Modulo($this->Multiply($e, $w), $n_dec);
 
             /* Calculate u2 = r*w (mod n) */
-            $u2 = $this->Modulo($this->Multiply($r, $w), $this->n);
+            $u2 = $this->Modulo($this->Multiply($r_dec, $w), $n_dec);
 
             /* Get new point Z(x1,y1) = (u1 * G) + (u2 * Q) */
             $Za = $this->DoubleAndAdd($u1, $this->P);
-            $Zb = $this->DoubleAndAdd($u2, $this->Q);
+            $Zb = $this->DoubleAndAdd($u2, $Q);
             $Z  = $this->PointAdd($Za, $Zb);
 
             $Zx_hex = str_pad($this->encodeHex($Z['x']), 64, "0", STR_PAD_LEFT);
@@ -230,10 +249,7 @@ final class Signature
              * A signature is valid if r is congruent to x1 (mod n)
              * or in other words, if r - x1 is an integer multiple of n.
              */
-            $rsubx     = $this->Subtract($r, $Zx_hex);
-            $rsubx_rem = $this->Modulo($rsubx, $this->n);
-
-            return (bool)($this->Compare($rsubx_rem, '0') == 0);
+            return (bool)($this->Compare($r, $Z['x']) == 0);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -300,7 +316,7 @@ final class Signature
      * @return array            The keypair info.
      * @throws \Exception
      */
-    public function Decode($pem_data)
+    public function decodePEM($pem_data)
     {
         $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
         $end_ec_text = '-----END EC PRIVATE KEY-----';
@@ -318,7 +334,7 @@ final class Signature
         $decoded = bin2hex(base64_decode($pem_data));
 
         if (strlen($decoded) < 230) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.');
         }
 
         $ecpemstruct = array(
@@ -328,17 +344,128 @@ final class Signature
         );
 
         if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
         }
 
         $private_key = $ecpemstruct['oct_sec_val'];
         $public_key  = $ecpemstruct['bit_str_val'];
 
         if (strlen($private_key) < 64 || strlen($public_key) < 128) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
         }
 
-        return array('private_key' => $private_key, 'public_key' => $public_key);
+        return array(
+                     'private_key' => $private_key,
+                     'public_key' => $public_key
+                    );
+    }
+
+    /**
+     * Parses a ECDSA signature to retrieve the
+     * r and s coordinate pair. Used to verify.
+     *
+     * @param  string $signature The ECDSA signature to parse.
+     * @return array             The r and s coordinates.
+     * @throws \Exception
+     */
+    private function parseSig($signature)
+    {
+        if (false === isset($signature) || true === empty($signature)) {
+            throw new \Exception('You must provide a valid hex parameter.');
+        }
+
+        $signature = trim($signature);
+
+        /* This is the main structure we'll use for storing our parsed signature. */
+        $ecdsa_struct = array(
+                              'sigstart' => '',
+                              'siglen'   => '',
+                              'rtype'    => '',
+                              'rlen'     => '',
+                              'roffset'  => 0,
+                              'r'        => '',
+                              'stype'    => '',
+                              'slen'     => '',
+                              'soffset'  => 0,
+                              's'        => '',
+                              'original' => '',
+                              'totallen' => 0
+                             );
+
+        $ecdsa_struct['original'] = $signature;
+        $ecdsa_struct['totallen'] = strlen($signature);
+
+        if ($ecdsa_struct['totallen'] != '140' && $ecdsa_struct['totallen'] != '142' && $ecdsa_struct['totallen'] != '144') {
+            throw new \Exception('Invalid ECDSA signature provided! Length is invalid.');
+        }
+
+        $ecdsa_struct['sigstart'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['sigstart'] != '30') {
+            throw new \Exception('Invalid ECDSA signature provided! Unknown signature format.');
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['siglen'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['siglen'] != '44' && $ecdsa_struct['siglen'] != '45' && $ecdsa_struct['siglen'] != '46') {
+            throw new \Exception('Invalid ECDSA signature provided!  Total signature length is invalid.');
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['rtype'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['rtype'] != '02') {
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate data type is invalid.');
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['rlen'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['rlen'] != '20' && $ecdsa_struct['rlen'] != '21') {
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate length is invalid.');
+        } else {
+            if ($ecdsa_struct['rlen'] == '21') {
+                $ecdsa_struct['roffset'] = 2;
+            }
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['r'] = substr($signature, $ecdsa_struct['roffset'], 64);
+
+        if (ctype_xdigit($ecdsa_struct['r']) === false) {
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate is not in hex format.');
+        }
+
+        $signature = substr($signature, $ecdsa_struct['roffset']+64);
+        $ecdsa_struct['stype'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['stype'] != '02') {
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate data type is invalid.');
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['slen'] = substr($signature, 0, 2);
+
+        if ($ecdsa_struct['slen'] != '20' && $ecdsa_struct['slen'] != '21') {
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate length is invalid.');
+        } else {
+            if ($ecdsa_struct['slen'] == '21') {
+                $ecdsa_struct['soffset'] = 2;
+            }
+        }
+
+        $signature = substr($signature, 2);
+        $ecdsa_struct['s'] = substr($signature, $ecdsa_struct['soffset'], 64);
+
+        if (ctype_xdigit($ecdsa_struct['s']) === false) {
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate is not in hex format.');
+        }
+
+        return array(
+                     'r' => $ecdsa_struct['r'],
+                     's' => $ecdsa_struct['s']
+                    );
     }
 
     /**
@@ -360,6 +487,10 @@ final class Signature
             if (strlen($hex) < 64) {
                 throw new \Exception('The r parameter is invalid. Expected hex string of 64 characters (32-bytes).');
             }
+        }
+
+        if ($this->Compare($hex, '0') <= 0 || $this->Compare($hex, $this->n) >= 0) {
+            throw new \Exception('The r parameter is invalid!  Value is out of range.');
         }
 
         return $hex;
