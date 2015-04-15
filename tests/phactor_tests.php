@@ -57,13 +57,15 @@ ytA16iEWr8PleZ59Yw5yHXtzI7KR
 -----END EC PRIVATE KEY-----';
 
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
-        $pub_key = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
+        $pub_key  = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
         $key  = new Key;
-
         $pem_data = $key->encodePEM(array($priv_key, $pub_key));
 
-        $this->assertEquals($expected, $pem_data);
+        $this->assertNotFalse(stripos($pem_data, 'MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP'));
+        $this->assertNotFalse(stripos($pem_data, 'HyFHxyTxdAL86s5q2p'));
+        $this->assertNotFalse(stripos($pem_data, 'ytA16iEWr8PleZ59Yw5yHXtzI7KR'));
+        $this->assertNotFalse(stripos($pem_data, '-----BEGIN EC PRIVATE KEY-----'));
     }
 
     public function testGetKeypairInfo()
