@@ -138,7 +138,6 @@ final class Key
     /**
      * This is the main function for generating a new keypair.
      *
-     * @param  bool   $verbose Shows extra debugging output.
      * @return array  $keyInfo The complete keypair array.
      */
     public function GenerateKeypair()
@@ -185,30 +184,31 @@ final class Key
      *
      * @param  array  $keypair The keypair info.
      * @return string          The data to decode.
+     * @throws \Exception
      */
     public function encodePEM($keypair)
     {
-    	if (false === isset($keypair)    ||
-    	    false === is_array($keypair) ||
-    	    strlen($keypair[0]) < 64     ||
-    	    strlen($keypair[1]) < 128)
-    	{
-    		throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the keys to PEM format.');
-    	}
+        if (false === isset($keypair)    ||
+            false === is_array($keypair) ||
+            strlen($keypair[0]) < 64     ||
+            strlen($keypair[1]) < 128)
+        {
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the keys to PEM format.');
+        }
 
-    	$dec         = '';
-    	$byte        = '';
-    	$seq         = '';
-    	$decoded     = '';
-    	$beg_ec_text = '';
-    	$end_ec_text = '';
+        $dec         = '';
+        $byte        = '';
+        $seq         = '';
+        $decoded     = '';
+        $beg_ec_text = '';
+        $end_ec_text = '';
 
-    	$ecpemstruct = array();
-    	$digits      = array();
+        $ecpemstruct = array();
+        $digits      = array();
 
-    	$digits = $this->GenBytes();
+        $digits = $this->GenBytes();
 
-    	$ecpemstruct = array(
+        $ecpemstruct = array(
                              'sequence_beg' => '30',
                              'total_len'    => '74',
                              'int_sec_beg'  => '02',
@@ -229,27 +229,27 @@ final class Key
                              'bit_str_val'  => '00'.$keypair[1],
                              );
 
-    	$beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
-    	$end_ec_text = '-----END EC PRIVATE KEY-----';
+        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
+        $end_ec_text = '-----END EC PRIVATE KEY-----';
 
-    	$dec = trim(implode($ecpemstruct));
+        $dec = trim(implode($ecpemstruct));
 
-    	if (strlen($dec) < 230) {
-    		throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the supplied data.');
-    	}
+        if (strlen($dec) < 230) {
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the supplied data.');
+        }
 
-    	$dec = $this->decodeHex('0x' . $dec);
+        $dec = $this->decodeHex('0x' . $dec);
 
-    	while ($this->Compare($dec, '0') > 0) {
-    		$dv   = $this->Divide($dec, '256');
-    		$rem  = $this->Modulo($dec, '256');
-    		$dec  = $dv;
-    		$byte = $byte . $digits[$rem];
-    	}
+        while ($this->Compare($dec, '0') > 0) {
+            $dv   = $this->Divide($dec, '256');
+            $rem  = $this->Modulo($dec, '256');
+            $dec  = $dv;
+            $byte = $byte . $digits[$rem];
+        }
 
-    	$byte = $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
+        $byte = $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
 
-    	return $byte;
+        return $byte;
     }
 
     /**
