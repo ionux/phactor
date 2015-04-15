@@ -109,6 +109,20 @@ ytA16iEWr8PleZ59Yw5yHXtzI7KR
         $this->assertEquals($info['public_key'], $uncompressed);
     }
 
+    public function testGetPrivateKey()
+    {
+        // Verify the getPrivateKey() function returns the same compressed & uncompressed values.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+        $priv_hex = $key->getPrivateKey();
+        $priv_dec = $key->getPrivateKey(false);
+
+        $this->assertEquals($info['private_key_hex'], $priv_hex);
+        $this->assertEquals($info['private_key_dec'], $priv_dec);
+    }
+
+
     public function testSinCreation()
     {
         // Check to see if we can actually create a SIN.
