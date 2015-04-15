@@ -50,11 +50,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     public function testKeypairEncodingToPEM()
     {
         // Verify the encodePEM function returns expected value.
-        $expected = '-----BEGIN EC PRIVATE KEY-----
-MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP/MgGGYeuKYlOQqpi1BMoAcGBSuBBAAK
-oUQDQgDCoVua6L+/l6Ss1sUilghRSy6+HyFHxyTxdAL86s5q2p/N+RWKVtg1Itlg
-ytA16iEWr8PleZ59Yw5yHXtzI7KR
------END EC PRIVATE KEY-----';
+        $expected = '-----BEGIN EC PRIVATE KEY-----MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP/MgGGYeuKYlOQqpi1BMoAcGBSuBBAAKoUQDQgDCoVua6L+/l6Ss1sUilghRSy6+HyFHxyTxdAL86s5q2p/N+RWKVtg1ItlgytA16iEWr8PleZ59Yw5yHXtzI7KR-----END EC PRIVATE KEY-----';
 
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
         $pub_key  = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
@@ -123,18 +119,55 @@ ytA16iEWr8PleZ59Yw5yHXtzI7KR
     }
 
 
-    public function testSinCreation()
+    public function testSinGenerate()
     {
-        // Check to see if we can actually create a SIN.
+        // Check to see if we can actually create a SIN using the generate() function.
 
         $key  = new Key;
         $info = $key->GenerateKeypair();
 
         $sin   = new \Phactor\Sin;
         $sinfo = $sin->Generate($info['public_key_compressed']);
+        $sinfo_len = strlen($sinfo);
+        $sample_sin = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
+        $sample_sin_len = strlen($sample_sin);
 
         $this->assertNotNull($sinfo);
-        $this->assertNotNull($sin->getRawHashes());
+        $this->assertGreaterThan($sample_sin-1, $sinfo_len);
+        $this->assertEquals(substr($sinfo,0,1), 'T');
+    }
+
+    public function testSinOnObjectCreation()
+    {
+        // Check to see if we can actually create a SIN when we instantiate the sin object.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+
+        $sin   = new \Phactor\Sin($info['public_key_compressed']);
+
+        $sinfo_len = strlen($sin);
+        $sample_sin = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
+        $sample_sin_len = strlen($sample_sin);
+
+        $this->assertNotNull($sin);
+        $this->assertGreaterThan($sample_sin-1, $sinfo_len);
+        $this->assertEquals(substr($sin,0,1), 'T');
+    }
+
+    public function testSinGetRawHashes()
+    {
+        // Check to see if we can actually create a SIN and get the raw hash array.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+
+        $sin   = new \Phactor\Sin;
+        $sinfo = $sin->Generate($info['public_key_compressed']);
+        $hashes = $sin->getRawHashes();
+
+        $this->assertNotNull($hashes);
+        $this->assertEquals(count($hashes), 6);
     }
 
     public function testSignatureGenerate()
@@ -203,6 +236,43 @@ ytA16iEWr8PleZ59Yw5yHXtzI7KR
         $result = $sig->Encode($r_coord, $s_coord);
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function testGenerateNewPointUsingMladder()
+    {
+        // Verify the default new point generation using the mladder function returns a valid point.
+        // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
+
+        $mock = $this->getMockForTrait('\Phactor\Point');
+        $newpoint = $mock->GenerateNewPoint();
+
+        $this->assertNotNull($newpoint);
+        $this->assertEquals(count($newpoint), 4);
+    }
+
+    public function testGenerateNewPointUsingMladder()
+    {
+        // Verify the default new point generation using the double-and-add function returns a valid point.
+        // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
+
+        $mock = $this->getMockForTrait('\Phactor\Point');
+        $newpoint = $mock->GenerateNewPoint(false);
+
+        $this->assertNotNull($newpoint);
+        $this->assertEquals(count($newpoint), 4);
+    }
+
+    public function testSamePointsAreGenerated()
+    {
+        // Check that the same points are created when calling the mladder and double-and-add methods using the same params.
+        $P = array('x' => strtolower(trim($this->Gx)), 'y' => strtolower(trim($this->Gy)));
+        $mock = $this->getMockForTrait('\Phactor\Point');
+        $random = '12345678';
+
+        $ladder_point = $mock->mLadder($random, $P);
+        $dandadd_point = $mock->doubleAndAdd($random, $P);
+
+        $this->assertEquals($ladder_point, $dandadd_point);
     }
 
     public function testGmpAdd()
