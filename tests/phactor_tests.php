@@ -47,6 +47,23 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($info['public_key_y']);
     }
 
+    public function testKeypairEncodingToPEM()
+    {
+        // Verify the encodePEM function returns expected value.
+        $expected = "-----BEGIN EC PRIVATE KEY-----\n" .
+                    "MHQCAQEEIOR/9DmhSgdW9VXD9pX7szYb760nL/yjxdZLds0xzZAjoAcGBSuBBAAK\n" .
+                    "oUQDQgDoEeTJa62xAbgNZGMb8mVqgYBVpHggVkRFY/l1VtxFcq5adZRWueE5W1dD\n" .
+                    "MiMuvZi+mj9ffpJiKlWOhzIvw2S9\n" .
+                    "-----END EC PRIVATE KEY-----";
+
+        $priv_key = 'e47ff439a14a0756f555c3f695fbb3361befad272ffca3c5d64b76cd31cd9023';
+        $pub_key = 'e811e4c96badb101b80d64631bf2656a818055a4782056444563f97556dc4572ae5a759456b9e1395b574332232ebd98be9a3f5f7e92622a558e87322fc364bd';
+
+        $pem_data = $key->encodePEM(array($priv_key, $pub_key));
+
+        $this->assertEquals($expected, $pem_data);
+    }
+
     public function testSinCreation()
     {
         // Check to see if we can actually create a SIN.
@@ -95,9 +112,9 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
-        $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
+        $sigfo = $sig->generate('my message to sign...', '0x' . $info['private_key_hex']);
 
-        $result = $sig->Verify($sigfo, 'my message to sign...', array('x' => $info['public_key_x'], 'y' => $info['public_key_y']));
+        $result = $sig->Verify($sigfo, 'my message to sign...', array('x' => '0x' . $info['public_key_x'], 'y' => '0x' . $info['public_key_y']));
 
         $this->assertTrue($result);
     }
