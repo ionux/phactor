@@ -179,4 +179,127 @@ final class Key
 
         return $this->keyInfo;
     }
+
+    /**
+     * Encodes keypair data to PEM format.
+     *
+     * @param  array  $keypair The keypair info.
+     * @return string          The data to decode.
+     */
+    public function encodePEM($keypair)
+    {
+    	if (false === isset($keypair)    ||
+    	    false === is_array($keypair) ||
+    	    strlen($keypair[0]) < 64     ||
+    	    strlen($keypair[1]) < 128)
+    	{
+    		throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the keys to PEM format.');
+    	}
+
+    	$dec         = '';
+    	$byte        = '';
+    	$seq         = '';
+    	$decoded     = '';
+    	$beg_ec_text = '';
+    	$end_ec_text = '';
+
+    	$ecpemstruct = array();
+    	$digits      = array();
+
+    	$digits = $this->GenBytes();
+
+    	$ecpemstruct = array(
+    			'sequence_beg' => '30',
+    			'total_len'    => '74',
+    			'int_sec_beg'  => '02',
+    			'int_sec_len'  => '01',
+    			'int_sec_val'  => '01',
+    			'oct_sec_beg'  => '04',
+    			'oct_sec_len'  => '20',
+    			'oct_sec_val'  => $keypair[0],
+    			'a0_ele_beg'   => 'a0',
+    			'a0_ele_len'   => '07',
+    			'obj_id_beg'   => '06',
+    			'obj_id_len'   => '05',
+    			'obj_id_val'   => '2b8104000a',
+    			'a1_ele_beg'   => 'a1',
+    			'a1_ele_len'   => '44',
+    			'bit_str_beg'  => '03',
+    			'bit_str_len'  => '42',
+    			'bit_str_val'  => '00'.$keypair[1],
+    	);
+
+    	$beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
+    	$end_ec_text = '-----END EC PRIVATE KEY-----';
+
+    	$dec = trim(implode($ecpemstruct));
+
+    	if (strlen($dec) < 230) {
+    		throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the supplied data.');
+    	}
+
+    	$dec = $this->decodeHex('0x' . $dec);
+
+    	while ($this->Compare($dec, '0') > 0) {
+    		$dv   = $this->Divide($dec, '256');
+    		$rem  = $this->Modulo($dec, '256'));
+    		$dec  = $dv;
+    		$byte = $byte . $digits[$rem];
+    	}
+
+    	$byte = $beg_ec_text . "\r\n" . chunk_splt(base64_encode(strrev($byte)), 64) . $end_ec_text;
+
+    	return $byte;
+    }
+
+    /**
+     * Decodes PEM data to retrieve the keypair.
+     *
+     * @param  string $pem_data The data to decode.
+     * @return array            The keypair info.
+     * @throws \Exception
+     */
+    public function decodePEM($pem_data)
+    {
+        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
+        $end_ec_text = '-----END EC PRIVATE KEY-----';
+
+        $decoded = '';
+
+        $ecpemstruct = array();
+
+        $pem_data = str_ireplace($beg_ec_text, '', $pem_data);
+        $pem_data = str_ireplace($end_ec_text, '', $pem_data);
+        $pem_data = str_ireplace("\r", '', trim($pem_data));
+        $pem_data = str_ireplace("\n", '', trim($pem_data));
+        $pem_data = str_ireplace(' ',  '', trim($pem_data));
+
+        $decoded = bin2hex(base64_decode($pem_data));
+
+        if (strlen($decoded) < 230) {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.');
+        }
+
+        $ecpemstruct = array(
+            'oct_sec_val'  => substr($decoded,14,64),
+            'obj_id_val'   => substr($decoded,86,10),
+            'bit_str_val'  => substr($decoded,106),
+        );
+
+        if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
+        }
+
+        $private_key = $ecpemstruct['oct_sec_val'];
+        $public_key  = $ecpemstruct['bit_str_val'];
+
+        if (strlen($private_key) < 64 || strlen($public_key) < 128) {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
+        }
+
+        return array(
+                     'private_key' => $private_key,
+                     'public_key' => $public_key
+                    );
+    }
 }
