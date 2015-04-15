@@ -13,7 +13,6 @@
     <testsuites>
         <testsuite name="PHP component test suite">
             <directory>./tests/</directory>
-            <file>./tests/phactor_tests.php</file>
         </testsuite>
     </testsuites>
     <logging>
