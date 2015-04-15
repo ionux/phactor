@@ -242,7 +242,7 @@ final class Key
 
     	while ($this->Compare($dec, '0') > 0) {
     		$dv   = $this->Divide($dec, '256');
-    		$rem  = $this->Modulo($dec, '256'));
+    		$rem  = $this->Modulo($dec, '256');
     		$dec  = $dv;
     		$byte = $byte . $digits[$rem];
     	}
