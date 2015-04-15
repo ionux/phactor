@@ -47,6 +47,33 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($info['public_key_y']);
     }
 
+    public function testAssignPreviousKeyInfo()
+    {
+        // Check to see if we can assign/retrieve previously generated key values to the object.
+
+        $previous_key_info = array(
+                                  'private_key_hex'       => '7a4fbece43963538cb8f9149b094906168d71be36cfb405e6930fddb42da2c7d',
+                                  'private_key_dec'       => '55323065337948610870652254548527896513063178460294714145329611159009536650365',
+                                  'public_key'            => '043fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313',
+                                  'public_key_compressed' => '033fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206',
+                                  'public_key_x'          => '3fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206',
+                                  'public_key_y'          => 'fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313',
+                                  );
+
+        $key  = new \Phactor\Key($previous_key_info);
+        $info = $key->getKeypairInfo();
+
+        $this->assertNotNull($key);
+        $this->assertNotNull($info);
+
+        $this->assertEquals($info['private_key_hex'], $previous_key_info['private_key_hex']);
+        $this->assertEquals($info['private_key_dec'], $previous_key_info['private_key_dec']);
+        $this->assertEquals($info['public_key'], $previous_key_info['public_key']);
+        $this->assertEquals($info['public_key_compressed'], $previous_key_info['public_key_compressed']);
+        $this->assertEquals($info['public_key_x'], $previous_key_info['public_key_x']);
+        $this->assertEquals($info['public_key_y'], $previous_key_info['public_key_y']);
+    }
+
     public function testKeypairEncodingToPEM()
     {
         // Verify the encodePEM function returns expected value.
