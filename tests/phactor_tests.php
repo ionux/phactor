@@ -50,14 +50,14 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
     public function testKeypairEncodingToPEM()
     {
         // Verify the encodePEM function returns expected value.
-        $expected = "-----BEGIN EC PRIVATE KEY-----\r\n" .
-                    "MHQCAQEEIOR/9DmhSgdW9VXD9pX7szYb760nL/yjxdZLds0xzZAjoAcGBSuBBAAK\n" .
-                    "oUQDQgDoEeTJa62xAbgNZGMb8mVqgYBVpHggVkRFY/l1VtxFcq5adZRWueE5W1dD\n" .
-                    "MiMuvZi+mj9ffpJiKlWOhzIvw2S9\n" .
-                    "-----END EC PRIVATE KEY-----";
+        $expected = '-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP/MgGGYeuKYlOQqpi1BMoAcGBSuBBAAK
+oUQDQgDCoVua6L+/l6Ss1sUilghRSy6+HyFHxyTxdAL86s5q2p/N+RWKVtg1Itlg
+ytA16iEWr8PleZ59Yw5yHXtzI7KR
+-----END EC PRIVATE KEY-----';
 
-        $priv_key = 'e47ff439a14a0756f555c3f695fbb3361befad272ffca3c5d64b76cd31cd9023';
-        $pub_key = 'e811e4c96badb101b80d64631bf2656a818055a4782056444563f97556dc4572ae5a759456b9e1395b574332232ebd98be9a3f5f7e92622a558e87322fc364bd';
+        $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
+        $pub_key = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
         $key  = new Key;
 
