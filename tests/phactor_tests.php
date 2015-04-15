@@ -250,7 +250,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count($newpoint), 4);
     }
 
-    public function testGenerateNewPointUsingMladder()
+    public function testGenerateNewPointUsingDaA()
     {
         // Verify the default new point generation using the double-and-add function returns a valid point.
         // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
