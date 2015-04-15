@@ -112,7 +112,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $sig   = new \Phactor\Signature;
         $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
 
-        $this->assertTrue(139, strlen($sigfo));
+        $this->assertGreaterThan(139, strlen($sigfo));
     }
 
     public function testSignatureEncode()
