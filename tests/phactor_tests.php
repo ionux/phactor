@@ -97,7 +97,7 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $sig   = new \Phactor\Signature;
         $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
 
-        $result = $sig->Verify($sigfo, 'my message to sign...', array($info['public_key_x'], $info['public_key_y']));
+        $result = $sig->Verify($sigfo, 'my message to sign...', array('x' => $info['public_key_x'], 'y' => $info['public_key_y']));
 
         $this->assertTrue($result);
     }
