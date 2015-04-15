@@ -61,17 +61,72 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($sin->getRawHashes());
     }
 
-    public function testSignatureCreation()
+    public function testSignatureGenerate()
     {
-        // Check to see if we can actually create a signature.
+        // Check to see if we can actually create a signature with the generate method.
 
         $key  = new Key;
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
         $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
-  
+
         $this->assertNotNull($sigfo);
+    }
+
+    public function testSignatureOnObjectCreation()
+    {
+        // Check to see if we can actually create a signature when we instantiate the signature object.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+
+        $sig   = new \Phactor\Signature('my message to sign...', $info['private_key_hex']);
+        $sigfo = $sig->encoded_signature;
+
+        $this->assertNotNull($sigfo);
+    }
+
+    public function testSignatureVerification()
+    {
+        // Check to see if a signature we generate is valid.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+
+        $sig   = new \Phactor\Signature;
+        $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
+
+        $result = $sig->Verify($sigfo, 'my message to sign...', array($info['public_key_x'], $info['public_key_y']));
+
+        $this->assertTrue($result);
+    }
+
+    public function testSignatureLength()
+    {
+        // Check to see if a signature we generate has the correct length.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+
+        $sig   = new \Phactor\Signature;
+        $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
+
+        $this->assertTrue(139, strlen($sigfo));
+    }
+
+    public function testSignatureEncode()
+    {
+        // Test the encoding method for the expected output.
+        $expected = '304502203870f3c946c177b03745571aa71fa487639d0008289d5f43e04b3a71aa7db454022100fb53e6212026736118e311a11862683dedfcde2ef3d44b090eae23048e3e2b8a';
+
+        $r_coord = '3870f3c946c177b03745571aa71fa487639d0008289d5f43e04b3a71aa7db454';
+        $s_coord = 'fb53e6212026736118e311a11862683dedfcde2ef3d44b090eae23048e3e2b8a';
+
+        $sig = new \Phactor\Signature;
+        $result = $sig->Encode($r_coord, $s_coord);
+
+        $this->assertEquals($expected, $result);
     }
 
     public function testGmpAdd()
