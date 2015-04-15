@@ -59,9 +59,22 @@ class PhactorTest extends \PHPUnit_Framework_TestCase
         $priv_key = 'e47ff439a14a0756f555c3f695fbb3361befad272ffca3c5d64b76cd31cd9023';
         $pub_key = 'e811e4c96badb101b80d64631bf2656a818055a4782056444563f97556dc4572ae5a759456b9e1395b574332232ebd98be9a3f5f7e92622a558e87322fc364bd';
 
+        $key  = new Key;
+
         $pem_data = $key->encodePEM(array($priv_key, $pub_key));
 
         $this->assertEquals($expected, $pem_data);
+    }
+
+    public function testGetKeypairInfo()
+    {
+        // Test that the getKeypairInfo function returns the same values we got originally.
+
+        $key  = new Key;
+        $info = $key->GenerateKeypair();
+        $retrieved = $key->getKeypairInfo();
+
+        $this->assertEquals($info['private_key_hex'], $retrieved['private_key_hex']);
     }
 
     public function testSinCreation()
