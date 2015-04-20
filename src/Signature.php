@@ -181,18 +181,18 @@ final class Signature
      * @param  string $r   The signature r coordinate in hex.
      * @param  string $s   The signature s coordinate in hex.
      * @param  string $msg The message signed.
-     * @param  array  $Q   The public key of the signer.
+     * @param  string $Q   The uncompressed public key of the signer.
      * @return bool        The result of the verification.
      * @throws \Exception
      */
-    public function Verify($sig, $msg, $Q)
+    public function Verify($sig, $msg, $pubkey)
     {
-        if (false === isset($sig) ||
-            true  === empty($sig) ||
-            false === isset($msg) ||
-            true  === empty($msg) ||
-            false === isset($Q)   ||
-            true  === empty($Q))
+        if (false === isset($sig)     ||
+            true  === empty($sig)     ||
+            false === isset($msg)     ||
+            true  === empty($msg)     ||
+            false === isset($pubkey)  ||
+            true  === empty($pubkey))
         {
             throw new \Exception('The signature, public key and message parameters are required to verify a signature.');
         }
@@ -225,6 +225,26 @@ final class Signature
 
         $n_dec = $this->decodeHex($this->n);
         $p_dec = $this->decodeHex($this->p);
+
+        $pubkey = trim($pubkey);
+
+        if (strlen($pubkey) < 128) {
+            throw new \Exception('Unknown public key format - provided value was too short. The uncompressed public key is expected.');
+        }
+
+        if (substr($pubkey, 0, 2) == '04') {
+            $pubkey = substr($pubkey, 2);
+        }
+
+        /* Parse the x,y coordinates */
+        $Q = array(
+                   'x' => substr($pubkey, 0, 64),
+                   'y' => substr($pubkey, 64)
+                  );
+
+        if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64 ) {
+            throw new \Exception('Unknown public key format - could not parse the x,y coordinates. The uncompressed public key is expected.');
+        }
 
         try {
             /* Calculate w = s^-1 (mod n) */
@@ -417,7 +437,7 @@ final class Signature
     }
 
     /**
-     * Basic coordinate check.
+     * Basic coordinate check: verifies 
      *
      * @param  string $hex The coordinate to check.
      * @return string $hex The checked coordinate.
@@ -426,19 +446,26 @@ final class Signature
     private function CoordinateCheck($hex)
     {
         if (false === isset($hex) || true === empty($hex)) {
-            throw new \Exception('You must provide a valid hex parameter.');
+            throw new \Exception('You must provide a valid coordinate parameter in hex format to check.');
         }
 
-        if (substr($hex, 0, 2) != '0x') {
-            $hex = '0x' . $hex;
+        $tempval = trim(strtolower($hex));
+        $prefix  = substr($tempval, 0, 2);
 
-            if (strlen($hex) < 64) {
-                throw new \Exception('The r parameter is invalid. Expected hex string of 64 characters (32-bytes).');
-            }
+        if ($prefix == '0x') {
+            $tempval = substr($tempval, 2);
+        } else {
+            $prefix  = '';
         }
 
-        if ($this->Compare($hex, '0') <= 0 || $this->Compare($hex, $this->n) >= 0) {
-            throw new \Exception('The r parameter is invalid!  Value is out of range.');
+        if (false === ctype_xdigit($tempval) || strlen($tempval) < 64) {
+            throw new \Exception('The coordinate value checked was not in hex format or was invalid.');
+        }
+
+        $hex = $prefix . $tempval;
+
+        if ($this->Compare($hex, '1') <= 0 || $this->Compare($hex, $this->n) >= 0) {
+            throw new \Exception('The coordinate parameter is invalid!  Value is out of range: ' . $hex);
         }
 
         return $hex;
