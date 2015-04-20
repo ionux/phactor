@@ -54,7 +54,7 @@ An associative array will be returned upon success:
 
 Depending on the speed of your hardware, keys can be generated in approximately 10ms or less using GMP.
 
-And to generate/validate ECDSA signatures:
+To generate ECDSA signatures:
 
 ```php
   $sig = new \Phactor\Signature;
@@ -66,6 +66,18 @@ Which will return the signature encoded in the ASN.1 DER format:
 
 ```sh
 30440220421cfa96cb4f735cc768e8e2acd6bdf87c9b731ded3184f05a146ba0709cf24802204a21831926b140c1fd41b4bae037a0e56df935904f14cf701705d7ad120632c7
+```
+
+To verify an existing signature, call the Verify() function which returns a boolean true/false:
+
+```php
+  $sig = new \Phactor\Signature;
+
+  if ($sig->Verify($signature, $message, $publickey) == false) {
+      // The signature is invalid - reject!
+  } else {
+      // The signature is valid.
+  }
 ```
 
 Signatures and keys have been tested against OpenSSL and are interoperable.  In fact, any other project that can import/export correct EC keypairs and ECDSA signatures will be compatible with this library.
