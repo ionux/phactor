@@ -66,7 +66,7 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $sig   = new \Phactor\Signature;
         $sigfo = $sig->generate('my message to sign...', '0x' . $info['private_key_hex']);
 
-        $result = $sig->Verify($sigfo, 'my message to sign...', array('x' => '0x' . $info['public_key_x'], 'y' => '0x' . $info['public_key_y']));
+        $result = $sig->Verify($sigfo, 'my message to sign...', $info['public_key']);
 
         $this->assertTrue($result);
     }
