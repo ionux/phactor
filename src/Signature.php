@@ -455,7 +455,7 @@ final class Signature
         if ($prefix == '0x') {
             $tempval = substr($tempval, 2);
         } else {
-            $prefix  = '';
+            $prefix  = '0x';
         }
 
         if (false === ctype_xdigit($tempval) || strlen($tempval) < 64) {
