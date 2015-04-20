@@ -238,8 +238,8 @@ final class Signature
 
         /* Parse the x,y coordinates */
         $Q = array(
-                   'x' => substr($pubkey, 0, 64),
-                   'y' => substr($pubkey, 64)
+                   'x' => '0x' . substr($pubkey, 0, 64),
+                   'y' => '0x' . substr($pubkey, 64)
                   );
 
         if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64 ) {
