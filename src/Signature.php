@@ -98,59 +98,34 @@ final class Signature
         }
 
         $e         = '';
-        $d         = '';
         $k         = '';
         $r         = '';
         $s         = '';
-        $edr       = '';
-        $invk      = '';
-        $kedr      = '';
-        $priv_key  = '';
-        $Rx_hex    = '';
-        $key_size  = 0;
+
         $R         = array();
         $signature = array();
 
-        $priv_key = trim(strtolower($private_key));
-        $key_size = strlen($priv_key);
+        $private_key = $this->encodeHex(trim(strtolower($private_key)));
 
-        if ($key_size < 64) {
-            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.  Value checked was "' . var_export($priv_key, true) . '".');
+        if (strlen($private_key) < 64) {
+            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.  Value checked was "' . var_export($private_key, true) . '".');
         }
-
-        $message = trim($message);
-        $msg_len = strlen($message);
-
-        if ($msg_len <= 0) {
-            throw new \Exception('Cannot sign an empty message!');
-        }
-
-        $e = $this->decodeHex(hash('sha256', $message));
 
         try {
             do {
-
-                if (substr($priv_key, 0, 2) != '0x') {
-                    $d = '0x' . $priv_key;
-                } else {
-                    $d = $priv_key;
-                }
-
+                /* Get the message hash and a new random number */
+                $e = $this->decodeHex(hash('sha256', $message));
                 $k = $this->SecureRandomNumber();
 
-                /* Calculate a new curve point from Q=k*G (x1,y1) */
-                $R = $this->DoubleAndAdd($k, $this->P);
-
-                $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
+                /* Calculate a new curve point from R=k*G (x1,y1) */
+                $R      = $this->DoubleAndAdd($k, $this->P);
+                $R['x'] = '0x' . str_pad(substr($this->encodeHex($R['x']), 2), 64, "0", STR_PAD_LEFT);
 
                 /* r = x1 mod n */
-                $r = $this->Modulo($Rx_hex, $this->n);
+                $r = $this->Modulo($R['x'], $this->n);
 
                 /* s = k^-1 * (e+d*r) mod n */
-                $edr  = $this->Add($e, $this->Multiply($d, $r));
-                $invk = $this->Invert($k, $this->n);
-                $kedr = $this->Multiply($invk, $edr);
-                $s    = $this->Modulo($kedr, $this->n);
+                $s = $this->Modulo($this->Multiply($this->Invert($k, $this->n), $this->Add($e, $this->Multiply($private_key, $r))), $this->n);
 
             } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
         } catch (\Exception $e) {
@@ -162,10 +137,10 @@ final class Signature
                            's' => '0x' . str_pad(substr($this->encodeHex($s), 2), 64, "0", STR_PAD_LEFT)
                           );
 
-        $this->encoded_signature = $this->Encode($signature['r'], $signature['s']);
-
         $this->r_coordinate = $signature['r'];
         $this->s_coordinate = $signature['s'];
+
+        $this->encoded_signature = $this->Encode($this->r_coordinate, $this->s_coordinate);
 
         return $this->encoded_signature;
     }
