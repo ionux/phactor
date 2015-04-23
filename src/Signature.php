@@ -49,7 +49,6 @@ final class Signature
      *
      * @param  string $message     The message to sign (optional).
      * @param  string $private_key The signer's private key (optional).
-     * @return array
      */
     public function __construct($message = '', $private_key = '')
     {
@@ -109,7 +108,6 @@ final class Signature
         $k_hex     = '';
         $priv_key  = '';
         $Rx_hex    = '';
-        $Rx_hex    = '';
         $key_size  = 0;
         $R         = array();
         $signature = array();
@@ -146,7 +144,6 @@ final class Signature
                 $R = $this->DoubleAndAdd($k_hex, $this->P);
 
                 $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
-                $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
 
                 /* r = x1 mod n */
                 $r = $this->Modulo($Rx_hex, $this->n);
@@ -200,10 +197,6 @@ final class Signature
         $w         = '';
         $u1        = '';
         $u2        = '';
-        $Zx_hex    = '';
-        $Zy_hex    = '';
-        $rsubx     = '';
-        $rsubx_rem = '';
         $Za        = array();
         $Zb        = array();
         $Z         = array();
@@ -213,17 +206,16 @@ final class Signature
         $r = $coords['r'];
         $s = $coords['s'];
 
-        $r_dec = $this->decodeHex($r);
-        $s_dec = $this->decodeHex($s);
-
         $r = $this->CoordinateCheck(trim(strtolower($r)));
         $s = $this->CoordinateCheck(trim(strtolower($s)));
+
+        $r_dec = $this->decodeHex($r);
+        $s_dec = $this->decodeHex($s);
 
         /* Convert the hash of the hex message to decimal */
         $e = $this->decodeHex(hash('sha256', $msg));
 
         $n_dec = $this->decodeHex($this->n);
-        $p_dec = $this->decodeHex($this->p);
 
         $pubkey = trim($pubkey);
 
@@ -259,9 +251,6 @@ final class Signature
             $Za = $this->DoubleAndAdd($u1, $this->P);
             $Zb = $this->DoubleAndAdd($u2, $Q);
             $Z  = $this->PointAdd($Za, $Zb);
-
-            $Zx_hex = str_pad($this->encodeHex($Z['x']), 64, "0", STR_PAD_LEFT);
-            $Zy_hex = str_pad($this->encodeHex($Z['y']), 64, "0", STR_PAD_LEFT);
 
             /*
              * A signature is valid if r is congruent to x1 (mod n)
@@ -300,7 +289,6 @@ final class Signature
 
         $byte   = '';
         $seq    = '';
-        $dec    = '';
         $retval = array();
 
         $r = $this->CoordinateCheck(trim(strtolower($r)));
@@ -315,7 +303,6 @@ final class Signature
         $retval['bin_r'] = bin2hex($byte);
 
         $seq  = chr(0x02) . chr(strlen($byte)) . $byte;
-        $dec  = $this->decodeHex($s);
         $byte = $this->binConv($s);
 
         if ($this->Compare('0x' . bin2hex($byte[0]), '0x80') >= 0) {
