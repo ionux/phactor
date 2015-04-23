@@ -94,7 +94,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         $returned_bin = $mock->D2B($decimal);
 
         $this->assertNotNull($returned_bin);
-        $this->assertEquals($returned_bin, $expected_bin);
+        $this->assertEquals($expected_bin, $returned_bin);
     }
 
     public function testBinConv()
