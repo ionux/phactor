@@ -118,7 +118,6 @@ trait Point
             $mm   = $this->Add($this->Multiply('3', $this->Multiply($P['x'], $P['x'])), $this->a);
             $oo   = $this->Multiply('2', $P['y']);
             $nn   = $this->Invert($oo, $this->p);
-            $n2   = $this->Modulo($oo, $this->p);
             $st   = $this->Multiply($mm, $nn);
             $ss   = $this->Modulo($st, $this->p);
             $xmul = $this->Multiply('2', $P['x']);
