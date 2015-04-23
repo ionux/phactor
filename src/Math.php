@@ -265,7 +265,9 @@ trait Math
             $dec = substr($dec, 1);
         }
 
-        if (substr($dec, 0, 2) == '0x') {
+        $prefix = substr($dec, 0, 2);
+
+        if ($prefix == '0x') {
             return $dec;
         }
 
@@ -586,7 +588,7 @@ trait Math
 
         try {
             /* Check to see if $value is in the range [1, n-1] */
-            if ($this->math->comp($value, '1') <= 0 && $this->math->comp($value, $this->n) > 0) {
+            if ($this->math->comp($value, '0x01') <= 0 && $this->math->comp($value, $this->n) > 0) {
                 throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
             }
         } catch (\Exception $e) {
