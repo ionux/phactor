@@ -44,7 +44,7 @@ final class Key
     /**
      * Public constructor class.
      *
-     * @param array $parameters.
+     * @param array $params Precalculated key values to load into this object.
      */
     public function __construct(array $params = null)
     {
@@ -173,9 +173,6 @@ final class Key
                                'public_key_y'          => $point['Ry_hex'],
                               );
 
-        $this->publicKey  = '04' . $point['Rx_hex'] . $point['Ry_hex'];
-        $this->privateKey = $point['random_number'];
-
         return $this->keyInfo;
     }
 
@@ -196,15 +193,8 @@ final class Key
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
         }
 
-        $dec         = '';
-        $byte        = '';
-        $seq         = '';
-        $decoded     = '';
-        $beg_ec_text = '';
-        $end_ec_text = '';
-
-        $ecpemstruct = array();
-        $digits      = array();
+        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
+        $end_ec_text = '-----END EC PRIVATE KEY-----';
 
         $digits = $this->GenBytes();
 
@@ -228,9 +218,6 @@ final class Key
                              'bit_str_len'  => '42',
                              'bit_str_val'  => '00' . $keypair[1],
                              );
-
-        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
-        $end_ec_text = '-----END EC PRIVATE KEY-----';
 
         $dec = trim(implode($ecpemstruct));
 
@@ -264,10 +251,6 @@ final class Key
         $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
         $end_ec_text = '-----END EC PRIVATE KEY-----';
 
-        $decoded = '';
-
-        $ecpemstruct = array();
-
         $pem_data = str_ireplace($beg_ec_text, '', $pem_data);
         $pem_data = str_ireplace($end_ec_text, '', $pem_data);
         $pem_data = str_ireplace("\r", '', trim($pem_data));
@@ -281,9 +264,9 @@ final class Key
         }
 
         $ecpemstruct = array(
-                             'oct_sec_val'  => substr($decoded,14,64),
-                             'obj_id_val'   => substr($decoded,86,10),
-                             'bit_str_val'  => substr($decoded,106),
+                             'oct_sec_val'  => substr($decoded, 14, 64),
+                             'obj_id_val'   => substr($decoded, 86, 10),
+                             'bit_str_val'  => substr($decoded, 106),
                             );
 
         if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
