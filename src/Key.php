@@ -193,7 +193,7 @@ final class Key
             strlen($keypair[0]) < 64     ||
             strlen($keypair[1]) < 128)
         {
-            throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the keys to PEM format.');
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
         }
 
         $dec         = '';
@@ -235,7 +235,7 @@ final class Key
         $dec = trim(implode($ecpemstruct));
 
         if (strlen($dec) < 230) {
-            throw new \Exception('Invalid or corrupt secp256k1 keypair provided. Cannot encode the supplied data.');
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the supplied data.  Value checked was "' . var_export($dec, true) . '".');
         }
 
         $dec = $this->decodeHex('0x' . $dec);
@@ -277,7 +277,7 @@ final class Key
         $decoded = bin2hex(base64_decode($pem_data));
 
         if (strlen($decoded) < 230) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.  Value received was "' . var_export($pem_data, true) . '" which decoded into "' . var_export($decoded, true) . '".');
         }
 
         $ecpemstruct = array(
@@ -287,14 +287,14 @@ final class Key
                             );
 
         if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.  Value checked was "' . var_export($ecpemstruct['obj_id_val'], true) . '".');
         }
 
         $private_key = $ecpemstruct['oct_sec_val'];
         $public_key  = '04' . $ecpemstruct['bit_str_val'];
 
         if (strlen($private_key) < 64 || strlen($public_key) < 128) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($private_key, true) . '" and "' . var_export($public_key, true) . '".');
         }
 
         return array(
