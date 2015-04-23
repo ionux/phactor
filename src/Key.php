@@ -227,6 +227,8 @@ final class Key
 
         $dec = $this->decodeHex('0x' . $dec);
 
+        $byte = '';
+
         while ($this->Compare($dec, '0') > 0) {
             $dv   = $this->Divide($dec, '256');
             $rem  = $this->Modulo($dec, '256');
