@@ -70,7 +70,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Multiply() function.');
+                throw new \Exception('Empty or invalid parameters passed to Multiply() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -93,7 +93,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Add() function.');
+                throw new \Exception('Empty or invalid parameters passed to Add() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -116,7 +116,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Subtract() function.');
+                throw new \Exception('Empty or invalid parameters passed to Subtract() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -139,7 +139,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Divide() function.');
+                throw new \Exception('Empty or invalid parameters passed to Divide() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -162,7 +162,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Modulo() function.');
+                throw new \Exception('Empty or invalid parameters passed to Modulo() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -185,7 +185,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Invert() function.');
+                throw new \Exception('Empty or invalid parameters passed to Invert() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -208,7 +208,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Compare() function.');
+                throw new \Exception('Empty or invalid parameters passed to Compare() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -231,7 +231,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($a) || false === isset($b) || false === is_string($a) || false === is_string($b)) {
-                throw new \Exception('Empty or invalid parameters passed to Power() function.');
+                throw new \Exception('Empty or invalid parameters passed to Power() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
         }
 
@@ -253,7 +253,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($dec) || (false === is_string($dec) && false === ctype_digit($dec))) {
-                throw new \Exception('Empty or invalid decimal parameter passed to encodeHex function.');
+                throw new \Exception('Empty or invalid decimal parameter passed to encodeHex function.  Value received was "' . var_export($dec, true) . '".');
             }
         }
 
@@ -294,7 +294,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($hex) || false === is_string($hex) || (false === ctype_xdigit($hex) && '0x' != substr($hex, 0, 2))) {
-                throw new \Exception('Argument must be a string of hex digits.');
+                throw new \Exception('Argument must be a string of hex digits.  Value received was "' . var_export($hex, true) . '".');
             }
         }
 
@@ -330,7 +330,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($base) || true === empty($base)) {
-                throw new \Exception('Empty base parameter passed to BaseCheck() function.');
+                throw new \Exception('Empty base parameter passed to BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
             }
         }
 
@@ -346,7 +346,7 @@ trait Math
             case '10':
                 return $this->dec_chars;
             default:
-                throw new \Exception('Unknown base parameter passed to BaseCheck() function.');
+                throw new \Exception('Unknown base parameter passed to BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
         }
     }
 
@@ -362,7 +362,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($num) || true === empty($num) || false === is_string($num)) {
-                throw new \Exception('Missing or invalid number parameter passed to the D2B() function.');
+                throw new \Exception('Missing or invalid number parameter passed to the D2B() function.  Value received was "' . var_export($num, true) . '".');
             }
         }
 
@@ -405,7 +405,7 @@ trait Math
     {
         if ($this->param_checking == true) {
             if (false === isset($hex) || true === empty($hex) || false === is_string($hex)) {
-                throw new \Exception('Missing or invalid number parameter passed to the binConv() function.');
+                throw new \Exception('Missing or invalid number parameter passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
             }
         }
 
@@ -445,13 +445,13 @@ trait Math
     public function Test($value)
     {
         if (false === isset($value) || true === empty($value) || false === is_string($value)) {
-            throw new \Exception('Empty or non-string value parameter passed to Test() function.');
+            throw new \Exception('Empty or non-string value parameter passed to Test() function.  Value received was "' . var_export($value, true) . '".');
         }
 
         $value = strtolower(trim($value));
 
         if (substr($value, 0, 2) != '0x' && ctype_xdigit($value) === false) {
-            throw new \Exception('Invalid value parameter passed to Test() function.');
+            throw new \Exception('Invalid value parameter passed to Test() function.  Value received was "' . var_export($value, true) . '".');
         }
 
         return $value;
@@ -496,7 +496,7 @@ trait Math
 
         try {
             if (true === empty($hex) || strlen($hex) % 2 != 0) {
-                $return = 'Error - uneven number of hex characters passed to encodeBase58().';
+                $return = 'Error - uneven number of hex characters passed to encodeBase58().  Value received was "' . var_export($hex, true) . '".';
             } else {
                 $chars   = $this->b58_chars;
                 $orighex = $hex;
@@ -558,7 +558,7 @@ trait Math
                 $this->math = new BC();
                 return;
             } else {
-                throw new \Exception('Both GMP and BC Math extensions are missing on this system. Please install one to use this class.');
+                throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
             }
         }
 
@@ -581,13 +581,13 @@ trait Math
     public function RangeCheck($value)
     {
         if (false === isset($value) || true === empty($value)) {
-            throw new \Exception('Empty value parameter passed to RangeCheck() function.');
+            throw new \Exception('Empty value parameter passed to RangeCheck() function.  Value received was "' . var_export($value, true) . '".');
         }
 
         try {
             /* Check to see if $value is in the range [1, n-1] */
             if ($this->math->comp($value, '1') <= 0 && $this->math->comp($value, $this->n) > 0) {
-                throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.');
+                throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
             }
         } catch (\Exception $e) {
             throw $e;
