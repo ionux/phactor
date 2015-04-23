@@ -86,7 +86,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
     {
         // Verify the D2B function correctly converts a known decimal value to a binary string.
 
-        $expected_bin = '111010110111100110100010101';
+        $expected_bin = '101010001111101000001011001101011101001011011001011011011';
         $decimal  = '123456789123456789';
 
         $mock = $this->getMockForTrait('\Phactor\Math');
