@@ -60,29 +60,29 @@ final class Key
 
         if (true === isset($params) && true === is_array($params)) {
             if (true === isset($params['private_key_hex'])) {
-            	$this->keyInfo['private_key_hex'] = $params['private_key_hex'];
+                $this->keyInfo['private_key_hex'] = $params['private_key_hex'];
             }
 
             if (true === isset($params['private_key_dec'])) {
-            	$this->keyInfo['private_key_dec'] = $params['private_key_dec'];
+                $this->keyInfo['private_key_dec'] = $params['private_key_dec'];
             }
 
             if (true === isset($params['public_key'])) {
-            	$this->keyInfo['public_key'] = $params['public_key'];
+                $this->keyInfo['public_key'] = $params['public_key'];
             }
 
             if (true === isset($params['public_key_compressed'])) {
-            	$this->keyInfo['public_key_compressed'] = $params['public_key_compressed'];
+                $this->keyInfo['public_key_compressed'] = $params['public_key_compressed'];
             }
 
             if (true === isset($params['public_key_x'])) {
-            	$this->keyInfo['public_key_x'] = $params['public_key_x'];
+                $this->keyInfo['public_key_x'] = $params['public_key_x'];
             }
 
             if (true === isset($params['public_key_y'])) {
                 $this->keyInfo['public_key_y'] = $params['public_key_y'];
             }
-    	}
+        }
     }
 
     /**
