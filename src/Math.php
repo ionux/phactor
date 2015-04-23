@@ -271,8 +271,6 @@ trait Math
             return $dec;
         }
 
-        $hex = '';
-
         $digits = $this->hex_chars;
 
         while ($this->math->comp($dec, '0') > 0) {
@@ -377,7 +375,6 @@ trait Math
         }
 
         $tmp = $num;
-        $bin = '';
 
         try {
             while ($this->math->comp($tmp, '0') > 0) {
@@ -410,12 +407,6 @@ trait Math
                 throw new \Exception('Missing or invalid number parameter passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
             }
         }
-
-        $rem    = '';
-        $dv     = '';
-        $byte   = '';
-
-        $digits = array();
 
         if ($this->math == null) {
             $this->MathCheck();
@@ -502,7 +493,6 @@ trait Math
             } else {
                 $chars   = $this->b58_chars;
                 $orighex = $hex;
-                $return  = '';
 
                 if (substr(strtolower($hex), 0, 2) != '0x') {
                     $hex = '0x' . strtolower($hex);
@@ -535,8 +525,6 @@ trait Math
      */
     private function GenBytes()
     {
-        $tempvals = array();
-
         for ($x = 0; $x < 256; $x++) {
             $tempvals[$x] = chr($x);
         }
