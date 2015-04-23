@@ -37,8 +37,8 @@ final class GMP
     /**
      * Adds two arbitrary precision numbers.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function add($a, $b)
@@ -48,8 +48,8 @@ final class GMP
     /**
      * Multiplies two arbitrary precision numbers.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function mul($a, $b)
@@ -59,8 +59,8 @@ final class GMP
     /**
      * Divides two arbitrary precision numbers.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function div($a, $b)
@@ -70,8 +70,8 @@ final class GMP
     /**
      * Subtracts two arbitrary precision numbers.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function sub($a, $b)
@@ -84,11 +84,12 @@ final class GMP
      * so this returns a mathematically correct answer
      * if you specify the $correct parameter.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string  $a        The first number.
+     * @param  string  $b        The second number.
+     * @param  boolean $correct  Flag to calculate mathematically correct modulo.
      * @return string
      */
-    public function mod($a, $b, $correct=false)
+    public function mod($a, $b, $correct = false)
     {
         if ($correct === true) {
             if (gmp_cmp($a, '0') < 0) {
@@ -102,8 +103,8 @@ final class GMP
     /**
      * Compares two arbitrary precision numbers.
      *
-     * @param string $a  The first number.
-     * @param string $b  The second number.
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return integer
      */
     public function comp($a, $b)
@@ -114,8 +115,8 @@ final class GMP
     /**
      * GMP's inverse modulo function, where ax = 1(mod p).
      *
-     * @param  string $num The number to inverse modulo.
-     * @param  string $mod The modulus.
+     * @param  string $a  The number to inverse modulo.
+     * @param  string $b  The modulus.
      * @return string
      */
     public function inv($a, $b)
@@ -126,7 +127,7 @@ final class GMP
     /**
      * Returns the string value of a GMP resource.
      *
-     * @param mixed $a
+     * @param  mixed  $a
      * @return string
      */
     public function normalize($a)
@@ -137,8 +138,8 @@ final class GMP
     /**
      * Raises 'a' into power 'b'.
      *
-     * @param string $a
-     * @param string $b
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function power($a, $b)
