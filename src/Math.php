@@ -397,7 +397,7 @@ trait Math
     /**
      * Converts hex value into octet (byte) string.
      *
-     * @param  string
+     * @param  string     $hex
      * @return string
      * @throws \Exception
      */
@@ -460,8 +460,8 @@ trait Math
     /**
      * Generates a secure random number using the OpenSSL extension.
      *
-     * @param  int        Number of bytes to return.
-     * @return string     Random data in hex form.
+     * @param  int        $length Number of bytes to return.
+     * @return string             Random data in hex form.
      * @throws \Exception
      */
     public function SecureRandomNumber($length = 32)
@@ -595,5 +595,4 @@ trait Math
 
         return true;
     }
-
 }
