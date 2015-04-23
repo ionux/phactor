@@ -265,9 +265,7 @@ trait Math
             $dec = substr($dec, 1);
         }
 
-        $prefix = substr($dec, 0, 2);
-
-        if ($prefix == '0x') {
+        if (substr($dec, 0, 2) == '0x' || preg_match('/^[a-f0-9]*$/', $dec)) {
             return $dec;
         }
 
@@ -372,7 +370,7 @@ trait Math
             $this->MathCheck();
         }
 
-        if (substr($num, 0, 2) == '0x') {
+        if (substr($num, 0, 2) == '0x' || preg_match('/^[a-f0-9]*$/', $num)) {
             $num = $this->decodeHex($num);
         }
 
@@ -467,7 +465,7 @@ trait Math
     {
         $cstrong = false;
 
-        if (!function_exists('openssl_random_pseudo_bytes')) {
+        if (false === function_exists('openssl_random_pseudo_bytes')) {
             throw new \Exception('This class requires the OpenSSL extension for PHP. Please install this extension.');
         }
 
