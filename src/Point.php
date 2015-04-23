@@ -120,7 +120,6 @@ trait Point
             $nn   = $this->Invert($oo, $this->p);
             $n2   = $this->Modulo($oo, $this->p);
             $st   = $this->Multiply($mm, $nn);
-            $st2  = $this->Multiply($mm, $n2);
             $ss   = $this->Modulo($st, $this->p);
             $xmul = $this->Multiply('2', $P['x']);
             $smul = $this->Multiply($ss, $ss);
