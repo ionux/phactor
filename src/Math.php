@@ -49,7 +49,7 @@ trait Math
     public $Gx  = '0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798';
     public $Gy  = '0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8';
 
-    private $bytes     = '';
+    private $bytes     = array();
     private $math      = null;
     private $b58_chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
     private $dec_chars = '0123456789';
@@ -273,6 +273,8 @@ trait Math
 
         $digits = $this->hex_chars;
 
+        $hex = '';
+
         while ($this->math->comp($dec, '0') > 0) {
             $qq  = $this->math->div($dec, '16');
             $rem = $this->math->mod($dec, '16');
@@ -377,6 +379,8 @@ trait Math
         $tmp = $num;
 
         try {
+            $bin = '';
+
             while ($this->math->comp($tmp, '0') > 0) {
                 if ($this->math->mod($tmp, '2') == '1') {
                     $bin .= '1';
@@ -417,6 +421,8 @@ trait Math
         if (substr(strtolower($hex), 0, 2) != '0x') {
             $hex = '0x' . strtolower($hex);
         }
+
+        $byte = '';
 
         while ($this->math->comp($hex, '0') > 0) {
             $dv   = $this->math->div($hex, '256');
@@ -498,6 +504,8 @@ trait Math
                     $hex = '0x' . strtolower($hex);
                 }
 
+                $return = '';
+
                 while ($this->math->comp($hex, '0') > 0) {
                     $dv     = $this->math->div($hex, '58');
                     $rem    = $this->math->mod($hex, '58');
@@ -525,6 +533,8 @@ trait Math
      */
     private function GenBytes()
     {
+        $tempvals = array();
+
         for ($x = 0; $x < 256; $x++) {
             $tempvals[$x] = chr($x);
         }
