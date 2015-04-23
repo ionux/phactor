@@ -157,15 +157,15 @@ final class Signature
                 $kedr = $this->Multiply($invk, $edr);
                 $s    = $this->Modulo($kedr, $this->n);
 
-                $signature = array(
-                                    'r' => str_pad($this->encodeHex($r), 64, "0", STR_PAD_LEFT),
-                                    's' => str_pad($this->encodeHex($s), 64, "0", STR_PAD_LEFT)
-                                  );
-
             } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
         } catch (\Exception $e) {
             throw $e;
         }
+
+        $signature = array(
+                           'r' => str_pad($this->encodeHex($r), 64, "0", STR_PAD_LEFT),
+                           's' => str_pad($this->encodeHex($s), 64, "0", STR_PAD_LEFT)
+                          );
 
         $this->encoded_signature = $this->Encode($signature['r'], $signature['s']);
 
