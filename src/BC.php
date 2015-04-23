@@ -217,11 +217,11 @@ final class BC
     private function coprime($a, $b)
     {
         if (false === isset($a) || true === empty($a)) {
-            throw new \Exception('Empty first number parameter passed to coprime() function.');
+            throw new \Exception('Empty first number parameter passed to coprime() function.  Value received was "' . var_export($a, true) . '".');
         }
 
         if (false === isset($b) || true === empty($b)) {
-            throw new \Exception('Empty second number parameter passed to coprime() function.');
+            throw new \Exception('Empty second number parameter passed to coprime() function.  Value received was "' . var_export($b, true) . '".');
         }
 
         $small = 0;
