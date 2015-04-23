@@ -122,7 +122,6 @@ trait Point
             $st   = $this->Multiply($mm, $nn);
             $st2  = $this->Multiply($mm, $n2);
             $ss   = $this->Modulo($st, $this->p);
-            $s2   = $this->Modulo($st2, $this->p);
             $xmul = $this->Multiply('2', $P['x']);
             $smul = $this->Multiply($ss, $ss);
             $xsub = $this->Subtract($smul, $xmul);
@@ -169,10 +168,10 @@ trait Point
         $right = '';
 
         try {
-            /* Left $y^2 term */
+            /* Left y^2 term */
             $y2 = $this->Multiply($P['y'], $P['y']);
 
-            /* Right, first $x^3 term */
+            /* Right, first x^3 term */
             $x3 = $this->Multiply($this->Multiply($P['x'], $P['x']), $P['x']);
 
             /* Right, second ax term */
