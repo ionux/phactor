@@ -297,6 +297,8 @@ final class Signature
             $byte = chr(0x00) . $byte;
         }
 
+        $retval = array();
+
         $retval['bin_r'] = bin2hex($byte);
 
         $seq  = chr(0x02) . chr(strlen($byte)) . $byte;
