@@ -288,13 +288,13 @@ final class Signature
         $r = $this->binConv($this->CoordinateCheck(trim(strtolower($r))));
         $s = $this->binConv($this->CoordinateCheck(trim(strtolower($s))));
 
-        $retval = array('bin_r' => '', 'bin_s' => '');
+        $retval = array(
+                        'bin_r' => bin2hex($this->msbCheck($r[0]) . $r),
+                        'bin_s' => bin2hex($this->msbCheck($s[0]) . $s)
+                       );
 
-        $retval['bin_r'] = bin2hex($this->msbCheck($r[0]) . $r);
-        $retval['bin_s'] = bin2hex($this->msbCheck($s[0]) . $s);
-
-        $seq = chr(0x02) . chr(strlen($retval['bin_r'])) . $retval['bin_r'] .
-               chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s'];
+        $seq = bin2hex(chr(0x02) . chr(strlen($retval['bin_r'])) . $retval['bin_r'] .
+                       chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s']);
 
         return bin2hex(chr(0x30) . chr(strlen($seq)) . $seq);
     }
