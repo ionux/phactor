@@ -83,9 +83,9 @@ final class Signature
      * parameter in hex format. Returns an associative array of all the
      * signature data including raw point information and the signature.
      *
-     * @param  string $message     The message to be signed.
-     * @param  string $private_key The private key in hex.
-     * @return string $signature   The signature data.
+     * @param  string    $message     The message to be signed.
+     * @param  string    $private_key The private key in hex.
+     * @return string    $signature   The signature data.
      * @throws \Exception
      */
     public function Generate($message, $private_key)
@@ -178,11 +178,10 @@ final class Signature
     /**
      * Verifies an ECDSA signature previously generated.
      *
-     * @param  string $r   The signature r coordinate in hex.
-     * @param  string $s   The signature s coordinate in hex.
-     * @param  string $msg The message signed.
-     * @param  string $Q   The uncompressed public key of the signer.
-     * @return bool        The result of the verification.
+     * @param  string $sig     The signature in hex.
+     * @param  string $msg     The message signed.
+     * @param  string $pubkey  The uncompressed public key of the signer.
+     * @return bool            The result of the verification.
      * @throws \Exception
      */
     public function Verify($sig, $msg, $pubkey)
@@ -410,7 +409,7 @@ final class Signature
             throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate is not in hex format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
-        $signature = substr($signature, $ecdsa_struct['roffset']+64);
+        $signature = substr($signature, $ecdsa_struct['roffset'] + 64);
         $ecdsa_struct['stype'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['stype'] != '02') {
@@ -469,7 +468,7 @@ final class Signature
 
         $hex = $prefix . $tempval;
 
-        if ($this->Compare($hex, '1') <= 0 || $this->Compare($hex, $this->n) >= 0) {
+        if ($this->Compare($hex, '0x01') <= 0 || $this->Compare($hex, $this->n) >= 0) {
             throw new \Exception('The coordinate parameter is invalid!  Value is out of range.  Value checked was "' . var_export($hex, true) . '".');
         }
 
