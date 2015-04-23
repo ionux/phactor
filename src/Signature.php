@@ -136,7 +136,7 @@ final class Signature
                     $d = $priv_key;
                 }
 
-                $k     = $this->SecureRandomNumber();
+                $k = $this->SecureRandomNumber();
 
                 /* Calculate a new curve point from Q=k*G (x1,y1) */
                 $R = $this->DoubleAndAdd($k, $this->P);
@@ -157,12 +157,9 @@ final class Signature
             throw $e;
         }
 
-        $r = substr($this->encodeHex($r), 2);
-        $s = substr($this->encodeHex($s), 2);
-
         $signature = array(
-                           'r' => '0x' . str_pad($r, 64, "0", STR_PAD_LEFT),
-                           's' => '0x' . str_pad($s, 64, "0", STR_PAD_LEFT)
+                           'r' => '0x' . str_pad(substr($this->encodeHex($r), 2), 64, "0", STR_PAD_LEFT),
+                           's' => '0x' . str_pad(substr($this->encodeHex($s), 2), 64, "0", STR_PAD_LEFT)
                           );
 
         $this->encoded_signature = $this->Encode($signature['r'], $signature['s']);
@@ -289,12 +286,12 @@ final class Signature
         $s = $this->binConv($this->CoordinateCheck(trim(strtolower($s))));
 
         $retval = array(
-                        'bin_r' => bin2hex($this->msbCheck($r[0]) . $r),
-                        'bin_s' => bin2hex($this->msbCheck($s[0]) . $s)
+                        'bin_r' => $this->msbCheck($r[0]) . $r,
+                        'bin_s' => $this->msbCheck($s[0]) . $s
                        );
 
-        $seq = bin2hex(chr(0x02) . chr(strlen($retval['bin_r'])) . $retval['bin_r'] .
-                       chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s']);
+        $seq = chr(0x02) . chr(strlen($retval['bin_r'])) . $retval['bin_r'] .
+               chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s'];
 
         return bin2hex(chr(0x30) . chr(strlen($seq)) . $seq);
     }
