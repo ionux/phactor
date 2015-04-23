@@ -47,7 +47,6 @@ final class Sin
      * Public constructor method.
      *
      * @param  string $pubkey
-     * @return string
      */
     public function __construct($pubkey = '')
     {
