@@ -193,7 +193,7 @@ final class Signature
             false === isset($pubkey)  ||
             true  === empty($pubkey))
         {
-            throw new \Exception('The signature, public key and message parameters are required to verify a signature.  Value received for first parameter was "' . var_export($sig, true) . '", second parameter was "' . var_export($msg, true) . '" and third parameter was "'  . var_export($pubkey, true) . '".');
+            throw new \Exception('The signature, public key and message parameters are required to verify a signature.  Value received for first parameter was "' . var_export($sig, true) . '", second parameter was "' . var_export($msg, true) . '" and third parameter was "' . var_export($pubkey, true) . '".');
         }
 
         $e         = '';
@@ -241,7 +241,7 @@ final class Signature
                    'y' => '0x' . substr($pubkey, 64)
                   );
 
-        if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64 ) {
+        if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64) {
             throw new \Exception('Unknown public key format - could not parse the x,y coordinates.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
         }
 
