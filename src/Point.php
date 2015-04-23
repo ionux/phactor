@@ -202,7 +202,7 @@ trait Point
      */
     public function doubleAndAdd($x, $P)
     {
-        if (false === isset($P) || true === empty($P) || false == is_array($P)) {
+        if (false === isset($P) || true === empty($P) || false === is_array($P)) {
             throw new \Exception('You must provide a valid point to scale.');
         }
 
@@ -240,7 +240,7 @@ trait Point
      */
     public function mLadder($x, $P)
     {
-        if (false === isset($P) || true === empty($P) || false == is_array($P)) {
+        if (false === isset($P) || true === empty($P) || false === is_array($P)) {
             throw new \Exception('You must provide a valid point to scale.');
         }
 
