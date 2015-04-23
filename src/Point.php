@@ -148,8 +148,8 @@ trait Point
      * Performs a test of an EC point by substituting the new
      * values into the equation for the standard form of the curve.
      *
-     * @param  array $P   The generated point to test.
-     * @return bool       Whether or not the point is valid.
+     * @param  array|string $P   The generated point to test.
+     * @return bool              Whether or not the point is valid.
      * @throws \Exception
      */
     public function PointTest($P)
