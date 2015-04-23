@@ -95,7 +95,7 @@ final class Signature
             false === isset($message)     ||
             true  === empty($message))
         {
-            throw new \Exception('The private key and message parameters are required to generate a signature.');
+            throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
         }
 
         $e         = '';
@@ -118,7 +118,7 @@ final class Signature
         $key_size = strlen($priv_key);
 
         if ($key_size < 64) {
-            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.');
+            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.  Value checked was "' . var_export($priv_key, true) . '".');
         }
 
         $message = trim($message);
@@ -194,7 +194,7 @@ final class Signature
             false === isset($pubkey)  ||
             true  === empty($pubkey))
         {
-            throw new \Exception('The signature, public key and message parameters are required to verify a signature.');
+            throw new \Exception('The signature, public key and message parameters are required to verify a signature.  Value received for first parameter was "' . var_export($sig, true) . '", second parameter was "' . var_export($msg, true) . '" and third parameter was "'  . var_export($pubkey, true) . '".');
         }
 
         $e         = '';
@@ -229,7 +229,7 @@ final class Signature
         $pubkey = trim($pubkey);
 
         if (strlen($pubkey) < 128) {
-            throw new \Exception('Unknown public key format - provided value was too short. The uncompressed public key is expected.');
+            throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
         }
 
         if (substr($pubkey, 0, 2) == '04') {
@@ -243,7 +243,7 @@ final class Signature
                   );
 
         if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64 ) {
-            throw new \Exception('Unknown public key format - could not parse the x,y coordinates. The uncompressed public key is expected.');
+            throw new \Exception('Unknown public key format - could not parse the x,y coordinates.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
         }
 
         try {
@@ -291,7 +291,7 @@ final class Signature
             true  === empty($r)   ||
             true  === empty($s))
         {
-            throw new \Exception('The signature coordinate parameters are required.');
+            throw new \Exception('The signature coordinate parameters are required.  Value received for first parameter was "' . var_export($r, true) . '" and second parameter was "' . var_export($s, true) . '".');
         }
 
         $byte   = '';
@@ -339,7 +339,7 @@ final class Signature
     private function parseSig($signature)
     {
         if (false === isset($signature) || true === empty($signature)) {
-            throw new \Exception('You must provide a valid hex parameter.');
+            throw new \Exception('You must provide a valid hex parameter.  Value received was "' . var_export($signature, true) . '".');
         }
 
         $signature = trim($signature);
@@ -364,34 +364,34 @@ final class Signature
         $ecdsa_struct['totallen'] = strlen($signature);
 
         if ($ecdsa_struct['totallen'] != '140' && $ecdsa_struct['totallen'] != '142' && $ecdsa_struct['totallen'] != '144') {
-            throw new \Exception('Invalid ECDSA signature provided! Length is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  Length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $ecdsa_struct['sigstart'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['sigstart'] != '30') {
-            throw new \Exception('Invalid ECDSA signature provided! Unknown signature format.');
+            throw new \Exception('Invalid ECDSA signature provided!  Unknown signature format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $signature = substr($signature, 2);
         $ecdsa_struct['siglen'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['siglen'] != '44' && $ecdsa_struct['siglen'] != '45' && $ecdsa_struct['siglen'] != '46') {
-            throw new \Exception('Invalid ECDSA signature provided!  Total signature length is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  Total signature length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $signature = substr($signature, 2);
         $ecdsa_struct['rtype'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['rtype'] != '02') {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate data type is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate data type is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $signature = substr($signature, 2);
         $ecdsa_struct['rlen'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['rlen'] != '20' && $ecdsa_struct['rlen'] != '21') {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate length is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         } else {
             if ($ecdsa_struct['rlen'] == '21') {
                 $ecdsa_struct['roffset'] = 2;
@@ -402,21 +402,21 @@ final class Signature
         $ecdsa_struct['r'] = substr($signature, $ecdsa_struct['roffset'], 64);
 
         if (ctype_xdigit($ecdsa_struct['r']) === false) {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate is not in hex format.');
+            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate is not in hex format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $signature = substr($signature, $ecdsa_struct['roffset']+64);
         $ecdsa_struct['stype'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['stype'] != '02') {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate data type is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate data type is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         $signature = substr($signature, 2);
         $ecdsa_struct['slen'] = substr($signature, 0, 2);
 
         if ($ecdsa_struct['slen'] != '20' && $ecdsa_struct['slen'] != '21') {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate length is invalid.');
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         } else {
             if ($ecdsa_struct['slen'] == '21') {
                 $ecdsa_struct['soffset'] = 2;
@@ -427,7 +427,7 @@ final class Signature
         $ecdsa_struct['s'] = substr($signature, $ecdsa_struct['soffset'], 64);
 
         if (ctype_xdigit($ecdsa_struct['s']) === false) {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate is not in hex format.');
+            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate is not in hex format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         }
 
         return array(
@@ -446,7 +446,7 @@ final class Signature
     private function CoordinateCheck($hex)
     {
         if (false === isset($hex) || true === empty($hex)) {
-            throw new \Exception('You must provide a valid coordinate parameter in hex format to check.');
+            throw new \Exception('You must provide a valid coordinate parameter in hex format to check.  Value received was "' . var_export($hex, true) . '".');
         }
 
         $tempval = trim(strtolower($hex));
@@ -459,13 +459,13 @@ final class Signature
         }
 
         if (false === ctype_xdigit($tempval) || strlen($tempval) < 64) {
-            throw new \Exception('The coordinate value checked was not in hex format or was invalid.');
+            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($tempval, true) . '".');
         }
 
         $hex = $prefix . $tempval;
 
         if ($this->Compare($hex, '1') <= 0 || $this->Compare($hex, $this->n) >= 0) {
-            throw new \Exception('The coordinate parameter is invalid!  Value is out of range: ' . $hex);
+            throw new \Exception('The coordinate parameter is invalid!  Value is out of range.  Value checked was "' . var_export($hex, true) . '".');
         }
 
         return $hex;
