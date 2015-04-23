@@ -142,7 +142,7 @@ final class Key
      */
     public function GenerateKeypair()
     {
-        $comp_prefix  = '';
+        $comp_prefix = '';
 
         $point = $this->GenerateNewPoint();
 
@@ -158,7 +158,7 @@ final class Key
             $point['random_number'] = substr($point['random_number'], 2);
         }
 
-        if ($this->Modulo('0x' . $point['Ry_hex'] , '0x02') == '1') {
+        if ($this->Modulo('0x' . $point['Ry_hex'], '0x02') == '1') {
             $comp_prefix = '03';
         } else {
             $comp_prefix = '02';
@@ -226,7 +226,7 @@ final class Key
                              'a1_ele_len'   => '44',
                              'bit_str_beg'  => '03',
                              'bit_str_len'  => '42',
-                             'bit_str_val'  => '00'.$keypair[1],
+                             'bit_str_val'  => '00' . $keypair[1],
                              );
 
         $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
@@ -272,7 +272,7 @@ final class Key
         $pem_data = str_ireplace($end_ec_text, '', $pem_data);
         $pem_data = str_ireplace("\r", '', trim($pem_data));
         $pem_data = str_ireplace("\n", '', trim($pem_data));
-        $pem_data = str_ireplace(' ',  '', trim($pem_data));
+        $pem_data = str_ireplace(' ', '', trim($pem_data));
 
         $decoded = bin2hex(base64_decode($pem_data));
 
