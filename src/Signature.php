@@ -288,10 +288,6 @@ final class Signature
             throw new \Exception('The signature coordinate parameters are required.  Value received for first parameter was "' . var_export($r, true) . '" and second parameter was "' . var_export($s, true) . '".');
         }
 
-        $byte   = '';
-        $seq    = '';
-        $retval = array();
-
         $r = $this->CoordinateCheck(trim(strtolower($r)));
         $s = $this->CoordinateCheck(trim(strtolower($s)));
 
