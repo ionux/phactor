@@ -268,7 +268,12 @@ final class Signature
              * A signature is valid if r is congruent to x1 (mod n)
              * or in other words, if r - x1 is an integer multiple of n.
              */
-            return (bool)($this->Compare($r, $Z['x']) == 0);
+            if ($this->Compare($r, $Z['x']) == 0) {
+                return true;
+            } else {
+                throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($Z['x'], true) . '".');
+            }
+
         } catch (\Exception $e) {
             throw $e;
         }
