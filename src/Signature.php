@@ -204,11 +204,8 @@ final class Signature
 
         $coords = $this->parseSig($sig);
 
-        $r = $coords['r'];
-        $s = $coords['s'];
-
-        $r = $this->CoordinateCheck(trim(strtolower($r)));
-        $s = $this->CoordinateCheck(trim(strtolower($s)));
+        $r = $this->CoordinateCheck(trim(strtolower($coords['r'])));
+        $s = $this->CoordinateCheck(trim(strtolower($coords['s'])));
 
         $r_dec = $this->decodeHex($r);
         $s_dec = $this->decodeHex($s);
@@ -218,7 +215,7 @@ final class Signature
 
         $n_dec = $this->decodeHex($this->n);
 
-        $pubkey = trim($pubkey);
+        $pubkey = trim(strtolower($pubkey));
 
         if (strlen($pubkey) < 128) {
             throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
@@ -288,34 +285,33 @@ final class Signature
             throw new \Exception('The signature coordinate parameters are required.  Value received for first parameter was "' . var_export($r, true) . '" and second parameter was "' . var_export($s, true) . '".');
         }
 
-        $r = $this->CoordinateCheck(trim(strtolower($r)));
-        $s = $this->CoordinateCheck(trim(strtolower($s)));
+        $r = $this->binConv($this->CoordinateCheck(trim(strtolower($r))));
+        $s = $this->binConv($this->CoordinateCheck(trim(strtolower($s))));
 
-        $byte = $this->binConv($r);
+        $retval = array('bin_r' => '', 'bin_s' => '');
 
-        if ($this->Compare('0x' . bin2hex($byte[0]), '0x80') >= 0) {
-            $byte = chr(0x00) . $byte;
+        $retval['bin_r'] = bin2hex($this->msbCheck($r[0]) . $r);
+        $retval['bin_s'] = bin2hex($this->msbCheck($s[0]) . $s);
+
+        $seq = chr(0x02) . chr(strlen($retval['bin_r'])) . $retval['bin_r'] .
+               chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s'];
+
+        return bin2hex(chr(0x30) . chr(strlen($seq)) . $seq);
+    }
+
+    /**
+     * Determines if the msb is set.
+     *
+     * @param  string $value The binary data to check.
+     * @return string
+     */
+    private function msbCheck($value)
+    {
+        if ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) {
+            return chr(0x00);
+        } else {
+            return;
         }
-
-        $retval = array();
-
-        $retval['bin_r'] = bin2hex($byte);
-
-        $seq  = chr(0x02) . chr(strlen($byte)) . $byte;
-        $byte = $this->binConv($s);
-
-        if ($this->Compare('0x' . bin2hex($byte[0]), '0x80') >= 0) {
-            $byte = chr(0x00) . $byte;
-        }
-
-        $retval['bin_s'] = bin2hex($byte);
-
-        $seq = $seq . chr(0x02) . chr(strlen($byte)) . $byte;
-        $seq = chr(0x30) . chr(strlen($seq)) . $seq;
-
-        $retval['seq'] = bin2hex($seq);
-
-        return $retval['seq'];
     }
 
     /**
