@@ -102,7 +102,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         // Verify the binConv function correctly converts a known hexadecimal value to a byte string.
 
         $expected_bytes = chr(0x10) . chr(0x13) . chr(0x00) . chr(0xa3) . chr(0x09) . chr(0xf8) . chr(0x15) . chr(0x32);
-        $hexdecimal  = '0x101300a309f81532';
+        $hexadecimal  = '0x101300a309f81532';
 
         $mock = $this->getMockForTrait('\Phactor\Math');
 
