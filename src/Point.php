@@ -271,12 +271,16 @@ trait Point
     /**
      * Creates a new point on the elliptic curve.
      *
+     * @param  boolean   $ladder Whether or not to use the mladder method.
      * @return array
      * @throws \Exception
      */
-    public function GenerateNewPoint($ladder=true)
+    public function GenerateNewPoint($ladder = true)
     {
-        $P = array('x' => strtolower(trim($this->Gx)), 'y' => strtolower(trim($this->Gy)));
+        $P = array(
+                   'x' => strtolower(trim($this->Gx)),
+                   'y' => strtolower(trim($this->Gy))
+                  );
 
         do {
             $random_number = $this->SecureRandomNumber();
@@ -295,6 +299,12 @@ trait Point
             throw new \Exception('Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
         }
 
-        return array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
+        return array(
+                     'random_number' => $random_number,
+                     'R'             => $R,
+                     'Rx_hex'        => $Rx_hex,
+                     'Ry_hex'        => $Ry_hex
+                    );
+
     }
 }
