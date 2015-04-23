@@ -151,9 +151,9 @@ final class BC
      * Binary Calculator implementation of GMP's inverse
      * modulo function, where ax = 1(mod p).
      *
-     * @param  string $num The number to inverse modulo.
-     * @param  string $mod The modulus.
-     * @return string $a   The result.
+     * @param  string $number  The number to inverse modulo.
+     * @param  string $modulus The modulus.
+     * @return string $a       The result.
      * @throws \Exception
      */
     public function inv($number, $modulus)
