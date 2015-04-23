@@ -105,7 +105,6 @@ final class Signature
         $edr       = '';
         $invk      = '';
         $kedr      = '';
-        $k_hex     = '';
         $priv_key  = '';
         $Rx_hex    = '';
         $key_size  = 0;
@@ -138,10 +137,9 @@ final class Signature
                 }
 
                 $k     = $this->SecureRandomNumber();
-                $k_hex = $this->encodeHex($k);
 
                 /* Calculate a new curve point from Q=k*G (x1,y1) */
-                $R = $this->DoubleAndAdd($k_hex, $this->P);
+                $R = $this->DoubleAndAdd($k, $this->P);
 
                 $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
 
@@ -150,7 +148,7 @@ final class Signature
 
                 /* s = k^-1 * (e+d*r) mod n */
                 $edr  = $this->Add($e, $this->Multiply($d, $r));
-                $invk = $this->Invert($k_hex, $this->n);
+                $invk = $this->Invert($k, $this->n);
                 $kedr = $this->Multiply($invk, $edr);
                 $s    = $this->Modulo($kedr, $this->n);
 
@@ -159,9 +157,12 @@ final class Signature
             throw $e;
         }
 
+        $r = substr($this->encodeHex($r), 2);
+        $s = substr($this->encodeHex($s), 2);
+
         $signature = array(
-                           'r' => str_pad($this->encodeHex($r), 64, "0", STR_PAD_LEFT),
-                           's' => str_pad($this->encodeHex($s), 64, "0", STR_PAD_LEFT)
+                           'r' => '0x' . str_pad($r, 64, "0", STR_PAD_LEFT),
+                           's' => '0x' . str_pad($s, 64, "0", STR_PAD_LEFT)
                           );
 
         $this->encoded_signature = $this->Encode($signature['r'], $signature['s']);
