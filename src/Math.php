@@ -505,6 +505,10 @@ trait Math
         if (true === is_string($value)) {
             $value = strtolower(trim($value));
 
+            if (substr($value, 0, 1) == '-') {
+                $value = substr($value, 1);
+            }
+
             $h_prefix = false;
             $h_digits = false;
             $d_digits = false;
