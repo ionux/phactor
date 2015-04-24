@@ -511,7 +511,7 @@ trait Math
             $b_digits = false;
 
             /* Determine if we have a hex prefix to begin with. */
-            if ($value[0] . $value[1] == '0x') {
+            if (substr($value, 0, 2) == '0x') {
                 $h_prefix = true;
                 $value = substr($value, 2);
             }
