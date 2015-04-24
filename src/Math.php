@@ -477,7 +477,7 @@ trait Math
     public function Test($value)
     {
         /* Let's get the non-numeric data types out of the way first... */
-        if (false === isset($value) || true === is_null($value) || true === empty($value)) {
+        if (false === isset($value) || true === is_null($value)) {
             return 'null';
         }
 
