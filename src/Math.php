@@ -517,17 +517,17 @@ trait Math
             }
 
             /* Both hex and regular decimal numbers will pass this check. */
-            if (preg_match('/^[a-f0-9]*$/', $num) == 1) {
+            if (preg_match('/^[a-f0-9]*$/', $value) == 1) {
                 $h_digits = true;
             }
 
             /* But, if this test is true, it's definitely a pure decimal number. */
-            if (preg_match('/^[0-9]*$/', $num) == 1) {
+            if (preg_match('/^[0-9]*$/', $value) == 1) {
                 $d_digits = true;
             }
 
             /* Finally, if this test is true, it's definitely a pure binary number string. */
-            if (preg_match('/^[0-1]*$/', $num) == 1) {
+            if (preg_match('/^[0-1]*$/', $value) == 1) {
                 $b_digits = true;
             }
 
