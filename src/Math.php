@@ -481,6 +481,11 @@ trait Math
             return 'null';
         }
 
+        /* Special case. */
+        if ($value == '0') {
+            return 'zer';
+        }
+
         if (true === is_object($value)) {
             return 'obj';
         }
@@ -568,6 +573,7 @@ trait Math
             case 'dec':
             case 'bin':
             case 'int':
+            case 'zer':
                 return true;
             default:
                 return false;
