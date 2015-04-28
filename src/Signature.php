@@ -89,11 +89,7 @@ final class Signature
      */
     public function Generate($message, $private_key)
     {
-        if (false === isset($private_key) ||
-            true  === empty($private_key) ||
-            false === isset($message)     ||
-            true  === empty($message))
-        {
+        if ($this->numberCheck($private_key) === false || false === isset($message) || true  === empty($message)) {
             throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
         }
 
@@ -105,7 +101,7 @@ final class Signature
         $R         = array();
         $signature = array();
 
-        $private_key = $this->encodeHex(trim(strtolower($private_key)));
+        $private_key = $this->encodeHex($private_key);
 
         if (strlen($private_key) < 64) {
             throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.  Value checked was "' . var_export($private_key, true) . '".');
@@ -119,7 +115,7 @@ final class Signature
 
                 /* Calculate a new curve point from R=k*G (x1,y1) */
                 $R      = $this->DoubleAndAdd($k, $this->P);
-                $R['x'] = '0x' . str_pad(substr($this->encodeHex($R['x']), 2), 64, "0", STR_PAD_LEFT);
+                $R['x'] = '0x' . str_pad($this->encodeHex($R['x'], false), 64, "0", STR_PAD_LEFT);
 
                 /* r = x1 mod n */
                 $r = $this->Modulo($R['x'], $this->n);
@@ -133,8 +129,8 @@ final class Signature
         }
 
         $signature = array(
-                           'r' => '0x' . str_pad(substr($this->encodeHex($r), 2), 64, "0", STR_PAD_LEFT),
-                           's' => '0x' . str_pad(substr($this->encodeHex($s), 2), 64, "0", STR_PAD_LEFT)
+                           'r' => '0x' . str_pad($this->encodeHex($r, false), 64, "0", STR_PAD_LEFT),
+                           's' => '0x' . str_pad($this->encodeHex($s, false), 64, "0", STR_PAD_LEFT)
                           );
 
         $this->r_coordinate = $signature['r'];
@@ -218,9 +214,7 @@ final class Signature
             $u2 = $this->Modulo($this->Multiply($r_dec, $w), $n_dec);
 
             /* Get new point Z(x1,y1) = (u1 * G) + (u2 * Q) */
-            $Za = $this->DoubleAndAdd($u1, $this->P);
-            $Zb = $this->DoubleAndAdd($u2, $Q);
-            $Z  = $this->PointAdd($Za, $Zb);
+            $Z  = $this->PointAdd($this->DoubleAndAdd($u1, $this->P), $this->DoubleAndAdd($u2, $Q));
 
             /*
              * A signature is valid if r is congruent to x1 (mod n)
@@ -249,16 +243,12 @@ final class Signature
      */
     public function Encode($r, $s)
     {
-        if (false === isset($r)   ||
-            false === isset($s)   ||
-            true  === empty($r)   ||
-            true  === empty($s))
-        {
+        if ($this->numberCheck($r) === false || $this->numberCheck($s) === false) {
             throw new \Exception('The signature coordinate parameters are required.  Value received for first parameter was "' . var_export($r, true) . '" and second parameter was "' . var_export($s, true) . '".');
         }
 
-        $r = $this->binConv($this->CoordinateCheck(trim(strtolower($r))));
-        $s = $this->binConv($this->CoordinateCheck(trim(strtolower($s))));
+        $r = $this->binConv($this->CoordinateCheck($r));
+        $s = $this->binConv($this->CoordinateCheck($s));
 
         $retval = array(
                         'bin_r' => $this->msbCheck($r[0]) . $r,
@@ -403,28 +393,17 @@ final class Signature
      */
     private function CoordinateCheck($hex)
     {
-        if (false === isset($hex) || true === empty($hex)) {
+        if ($this->numberCheck($hex) === false) {
             throw new \Exception('You must provide a valid coordinate parameter in hex format to check.  Value received was "' . var_export($hex, true) . '".');
         }
 
-        $tempval = trim(strtolower($hex));
-        $prefix  = substr($tempval, 0, 2);
+        $hex = $this->encodeHex($hex);
 
-        if ($prefix == '0x') {
-            $tempval = substr($tempval, 2);
-        } else {
-            $prefix  = '0x';
-        }
-
-        if (false === ctype_xdigit($tempval) || strlen($tempval) < 64) {
+        if (strlen($hex) < 64) {
             throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($tempval, true) . '".');
         }
 
-        $hex = $prefix . $tempval;
-
-        if ($this->Compare($hex, '0x01') <= 0 || $this->Compare($hex, $this->n) >= 0) {
-            throw new \Exception('The coordinate parameter is invalid!  Value is out of range.  Value checked was "' . var_export($hex, true) . '".');
-        }
+        $this->RangeCheck($hex);
 
         return $hex;
     }
