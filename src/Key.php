@@ -221,7 +221,7 @@ final class Key
 
         $dec = trim(implode($ecpemstruct));
 
-        if (strlen($dec) < 230) {
+        if (strlen($dec) < 220) {
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the supplied data.  Value checked was "' . var_export($dec, true) . '".');
         }
 
@@ -261,7 +261,7 @@ final class Key
 
         $decoded = bin2hex(base64_decode($pem_data));
 
-        if (strlen($decoded) < 230) {
+        if (strlen($decoded) < 220) {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.  Value received was "' . var_export($pem_data, true) . '" which decoded into "' . var_export($decoded, true) . '".');
         }
 
