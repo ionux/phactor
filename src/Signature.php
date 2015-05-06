@@ -183,7 +183,7 @@ final class Signature
 
         $pubkey = (substr($pubkey, 0, 2) == '04') ? trim(strtolower(substr($pubkey, 2))) : trim(strtolower($pubkey));
 
-        if (strlen($pubkey) < 128) {
+        if (strlen($pubkey) < 126) {
             throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
         }
 
