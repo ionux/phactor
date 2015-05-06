@@ -89,7 +89,7 @@ final class Signature
      */
     public function Generate($message, $private_key)
     {
-        if ($this->numberCheck($private_key) === false || false === isset($message) || true  === empty($message)) {
+        if ($this->numberCheck($private_key) === false || false === isset($message) || true === empty($message)) {
             throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
         }
 
@@ -166,8 +166,6 @@ final class Signature
         $w         = '';
         $u1        = '';
         $u2        = '';
-        $Za        = array();
-        $Zb        = array();
         $Z         = array();
 
         $coords = $this->parseSig($sig);
