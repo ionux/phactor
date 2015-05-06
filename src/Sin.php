@@ -69,9 +69,7 @@ final class Sin
         $this->SINtype    = '02';
         $this->SINversion = '0F';
 
-        if (false === empty($pubkey)) {
-            return $this->Generate($pubkey);
-        }
+        return (false === empty($pubkey)) ? $this->Generate($pubkey) : $this;
     }
 
     /**
