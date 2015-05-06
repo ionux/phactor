@@ -62,9 +62,7 @@ final class Signature
                          'y' => $this->Gy
                         );
 
-        if ($message != '' && $private_key != '') {
-            return $this->Generate($message, $private_key);
-        }
+        return ($message != '' && $private_key != '') ? $this->Generate($message, $private_key) : $this;
     }
 
     /**
@@ -108,6 +106,7 @@ final class Signature
         }
 
         try {
+
             do {
                 /* Get the message hash and a new random number */
                 $e = $this->decodeHex(hash('sha256', $message));
@@ -124,6 +123,7 @@ final class Signature
                 $s = $this->Modulo($this->Multiply($this->Invert($k, $this->n), $this->Add($e, $this->Multiply($private_key, $r))), $this->n);
 
             } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
+
         } catch (\Exception $e) {
             throw $e;
         }
@@ -181,14 +181,10 @@ final class Signature
 
         $n_dec = $this->decodeHex($this->n);
 
-        $pubkey = trim(strtolower($pubkey));
+        $pubkey = (substr($pubkey, 0, 2) == '04') ? trim(strtolower(substr($pubkey, 2))) : trim(strtolower($pubkey));
 
         if (strlen($pubkey) < 128) {
             throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
-        }
-
-        if (substr($pubkey, 0, 2) == '04') {
-            $pubkey = substr($pubkey, 2);
         }
 
         /* Parse the x,y coordinates */
@@ -267,11 +263,7 @@ final class Signature
      */
     private function msbCheck($value)
     {
-        if ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) {
-            return chr(0x00);
-        } else {
-            return;
-        }
+        return ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) ? chr(0x00) : /* Nothing */;
     }
 
     /**
@@ -339,9 +331,7 @@ final class Signature
         if ($ecdsa_struct['rlen'] != '20' && $ecdsa_struct['rlen'] != '21') {
             throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         } else {
-            if ($ecdsa_struct['rlen'] == '21') {
-                $ecdsa_struct['roffset'] = 2;
-            }
+            $ecdsa_struct['roffset'] = ($ecdsa_struct['rlen'] == '21') ? 2 : 0;
         }
 
         $signature = substr($signature, 2);
@@ -364,9 +354,7 @@ final class Signature
         if ($ecdsa_struct['slen'] != '20' && $ecdsa_struct['slen'] != '21') {
             throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
         } else {
-            if ($ecdsa_struct['slen'] == '21') {
-                $ecdsa_struct['soffset'] = 2;
-            }
+            $ecdsa_struct['soffset'] = ($ecdsa_struct['slen'] == '21') ? 2 : 0;
         }
 
         $signature = substr($signature, 2);
