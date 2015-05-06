@@ -51,10 +51,7 @@ final class BC
      */
     public function add($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcadd($a, $b);
+        return (string)bcadd($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -66,10 +63,7 @@ final class BC
      */
     public function mul($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcmul($a, $b);
+        return (string)bcmul($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -81,10 +75,7 @@ final class BC
      */
     public function div($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcdiv($a, $b);
+        return (string)bcdiv($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -96,10 +87,7 @@ final class BC
      */
     public function sub($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcsub($a, $b);
+        return (string)bcsub($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -111,10 +99,7 @@ final class BC
      */
     public function mod($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcmod($a, $b);
+        return (string)bcmod($this->normalize($a), $this->normalize($b));
     }
     
     /**
@@ -126,10 +111,7 @@ final class BC
      */
     public function comp($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bccomp($a, $b);
+        return (string)bccomp($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -141,10 +123,7 @@ final class BC
      */
     public function power($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
-
-        return (string)bcpow($a, $b);
+        return (string)bcpow($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -158,15 +137,7 @@ final class BC
      */
     public function inv($number, $modulus)
     {
-        if (false === isset($number) || true === empty($number)) {
-            throw new \Exception('Empty number parameter passed to bc_invert() function.');
-        }
-
-        if (false === isset($modulus) || true === empty($modulus)) {
-            throw new \Exception('Empty modulus parameter passed to bc_invert() function.');
-        }
-
-        if (!$this->coprime($number, $modulus)) {
+        if (false === $this->coprime($number, $modulus)) {
             return '0';
         }
 
@@ -195,14 +166,11 @@ final class BC
                 $b = $z;
             } while (bccomp($mod, '0') > 0);
 
-            if (bccomp($a, '0') < 0) {
-                $a = bcadd($a, $modulus);
-            }
         } catch (\Exception $e) {
             throw $e;
         }
 
-        return (string)$a;
+        return (string)(bccomp($a, '0') < 0) ? bcadd($a, $modulus) : $a;
     }
 
     /**
@@ -216,14 +184,6 @@ final class BC
      */
     private function coprime($a, $b)
     {
-        if (false === isset($a) || true === empty($a)) {
-            throw new \Exception('Empty first number parameter passed to coprime() function.  Value received was "' . var_export($a, true) . '".');
-        }
-
-        if (false === isset($b) || true === empty($b)) {
-            throw new \Exception('Empty second number parameter passed to coprime() function.  Value received was "' . var_export($b, true) . '".');
-        }
-
         $small = 0;
         $diff  = 0;
 
@@ -231,34 +191,32 @@ final class BC
         $b = $this->normalize($b);
 
         try {
+
             while (bccomp($a, '0') > 0 && bccomp($b, '0') > 0) {
-                if (bccomp($a, $b) == -1) {
-                    $small = $a;
-                    $diff  = bcmod($b, $a);
-                }
-
-                if (bccomp($a, $b) == 1) {
-                    $small = $b;
-                    $diff  = bcmod($a, $b);
-                }
-
-                if (bccomp($a, $b) == 0) {
-                    $small = $a;
-                    $diff  = bcmod($b, $a);
+                switch (bccomp($a, $b)) {
+                    case 0:
+                    case -1:
+                        $small = $a;
+                        $diff  = bcmod($b, $a);
+                        break;
+                    case 1:
+                        $small = $b;
+                        $diff  = bcmod($a, $b);
+                        break;
+                    default:
+                        // Nothing
+                        break;
                 }
 
                 $a = $small;
                 $b = $diff;
             }
 
-            if (bccomp($a, '1') == 0) {
-                return true;
-            }
         } catch (\Exception $e) {
             throw $e;
         }
 
-        return false;
+        return (bccomp($a, '1') == 0) ? true : false;
     }
 
     /**
@@ -269,10 +227,6 @@ final class BC
      */
     private function normalize($a)
     {
-        if (substr($a, 0, 2) == '0x') {
-            $a = substr($a, 2);
-        }
-
-        return (string)$a;
+        return (string)(substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
     }
 }
