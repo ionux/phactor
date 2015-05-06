@@ -76,7 +76,7 @@ trait Math
      */
     public function Multiply($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Multiply() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -99,7 +99,7 @@ trait Math
      */
     public function Add($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Add() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -122,7 +122,7 @@ trait Math
      */
     public function Subtract($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Subtract() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -145,7 +145,7 @@ trait Math
      */
     public function Divide($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Divide() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -168,7 +168,7 @@ trait Math
      */
     public function Modulo($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Modulo() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -191,7 +191,7 @@ trait Math
      */
     public function Invert($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Invert() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -214,7 +214,7 @@ trait Math
      */
     public function Compare($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Compare() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -237,7 +237,7 @@ trait Math
      */
     public function Power($a, $b)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
                 throw new \Exception('Empty or invalid parameters passed to Power() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
             }
@@ -260,7 +260,7 @@ trait Math
      */
     public function encodeHex($dec, $prefix = true)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($dec) === false) {
                 throw new \Exception('Empty or invalid decimal parameter passed to encodeHex function.  Value received was "' . var_export($dec, true) . '".');
             }
@@ -313,7 +313,7 @@ trait Math
      */
     public function decodeHex($hex)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($hex) === false) {
                 throw new \Exception('Argument must be a string of hex digits.  Value received was "' . var_export($hex, true) . '".');
             }
@@ -353,7 +353,7 @@ trait Math
      */
     public function BaseCheck($base)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if (false === isset($base) || true === empty($base)) {
                 throw new \Exception('Empty base parameter passed to BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
             }
@@ -385,7 +385,7 @@ trait Math
      */
     public function D2B($num)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($num) === false) {
                 throw new \Exception('Missing or invalid number parameter passed to the D2B() function.  Value received was "' . var_export($num, true) . '".');
             }
@@ -429,7 +429,7 @@ trait Math
      */
     public function binConv($hex)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($hex) === false) {
                 throw new \Exception('Missing or invalid number parameter passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
             }
@@ -514,14 +514,12 @@ trait Math
                 $value = substr($value, 1);
             }
 
-            $h_prefix = false;
             $h_digits = false;
             $d_digits = false;
             $b_digits = false;
 
             /* Determine if we have a hex prefix to begin with. */
             if (substr($value, 0, 2) == '0x') {
-                $h_prefix = true;
                 $value = substr($value, 2);
             }
 
@@ -541,16 +539,16 @@ trait Math
             }
 
             /* The first two cases are straightforward... */
-            if ($b_digits == true) {
+            if ($b_digits === true) {
                 return 'bin';
             }
 
-            if ($d_digits == true) {
+            if ($d_digits === true) {
                 return 'dec';
             }
 
             /* Now we're probably dealing with a hex number. */
-            if ($h_digits == true) {
+            if ($h_digits === true) {
                 return 'hex';
             }
         }
@@ -613,7 +611,7 @@ trait Math
      */
     private function encodeBase58($hex)
     {
-        if ($this->param_checking == true) {
+        if ($this->param_checking === true) {
             if ($this->numberCheck($hex) === false) {
                 throw new \Exception('Missing or invalid number parameter passed to the encodeBase58() function.  Value received was "' . var_export($hex, true) . '".');
             }
@@ -623,7 +621,7 @@ trait Math
             $this->MathCheck();
         }
 
-        $hex     = strtolower(trim($hex));
+        $hex = strtolower(trim($hex));
 
         try {
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
