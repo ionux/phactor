@@ -217,7 +217,7 @@ final class Signature
             if ($this->Compare($r, $this->encodeHex($Z['x'])) == 0) {
                 return true;
             } else {
-                throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($Z['x'], true) . '".');
+                throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($this->encodeHex($Z['x']), true) . '".');
             }
 
         } catch (\Exception $e) {
