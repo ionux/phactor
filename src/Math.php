@@ -270,18 +270,10 @@ trait Math
             $this->MathCheck();
         }
 
-        $dec = strtolower(trim($dec));
-
-        if (substr($dec, 0, 1) == '-') {
-            $dec = substr($dec, 1);
-        }
+        $dec = ($dec[0] == '-') ? substr(strtolower(trim($dec)), 1) : strtolower(trim($dec));
 
         if ($this->Test($dec) == 'hex') {
-            if (substr($dec, 0, 2) != '0x') {
-                return '0x' . $dec;
-            } else {
-                return $dec;
-            }
+            return (substr($dec, 0, 2) != '0x') ? '0x' . $dec : $dec;
         }
 
         $digits = $this->hex_chars;
@@ -295,13 +287,7 @@ trait Math
             $hex = $hex . $digits[$rem];
         }
 
-        $hex = strrev($hex);
-
-        if ($prefix === true) {
-            return '0x' . $hex;
-        } else {
-            return $hex;
-        }
+        return ($prefix === true) ? '0x' . strrev($hex) : strrev($hex);
     }
 
     /**
@@ -323,15 +309,11 @@ trait Math
             $this->MathCheck();
         }
 
-        $hex = strtolower(trim($hex));
-
         if ($this->Test($hex) == 'dec') {
             return $hex;
         }
 
-        if (substr($hex, 0, 2) == '0x') {
-            $hex = substr($hex, 2);
-        }
+        $hex = (substr($hex, 0, 2) == '0x') ? substr(strtolower(trim($hex2)), 2) : strtolower(trim($hex));
 
         $hex_len = strlen($hex);
 
@@ -395,11 +377,7 @@ trait Math
             $this->MathCheck();
         }
 
-        $num = strtolower(trim($num));
-
-        if ($this->Test($num) == 'hex') {
-            $num = $this->decodeHex($num);
-        }
+        $num = ($this->Test($num) == 'hex') ? $this->decodeHex(strtolower(trim($num))) : strtolower(trim($num));
 
         try {
             $bin = '';
@@ -447,9 +425,7 @@ trait Math
                 $hex = $this->encodeHex($hex);
                 break;
             case 'hex':
-                if ($hex[0] . $hex[1] != '0x') {
-                    $hex = '0x' . $hex;
-                }
+                $hex = ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
                 break;
             default:
                 throw new \Exception('Unknown data type passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
@@ -508,35 +484,20 @@ trait Math
 
         /* This is what the data should be really. */
         if (true === is_string($value)) {
-            $value = strtolower(trim($value));
 
-            if (substr($value, 0, 1) == '-') {
-                $value = substr($value, 1);
-            }
-
-            $h_digits = false;
-            $d_digits = false;
-            $b_digits = false;
+            $value = ($value[0] == '-') ? substr(strtolower(trim($value)), 1) : strtolower(trim($value));
 
             /* Determine if we have a hex prefix to begin with. */
-            if (substr($value, 0, 2) == '0x') {
-                $value = substr($value, 2);
-            }
+            $value = (substr($value, 0, 2) == '0x') ? substr($value, 2) : $value;
 
             /* Both hex and regular decimal numbers will pass this check. */
-            if (preg_match('/^[a-f0-9]*$/', $value) == 1) {
-                $h_digits = true;
-            }
+            $h_digits = (preg_match('/^[a-f0-9]*$/', $value) == 1) ? true : false;
 
             /* But, if this test is true, it's definitely a pure decimal number. */
-            if (preg_match('/^[0-9]*$/', $value) == 1) {
-                $d_digits = true;
-            }
+            $d_digits = (preg_match('/^[0-9]*$/', $value) == 1) ? true : false;
 
             /* Finally, if this test is true, it's definitely a pure binary number string. */
-            if (preg_match('/^[0-1]*$/', $value) == 1) {
-                $b_digits = true;
-            }
+            $b_digits = (preg_match('/^[0-1]*$/', $value) == 1) ? true : false;
 
             /* The first two cases are straightforward... */
             if ($b_digits === true) {
@@ -624,17 +585,14 @@ trait Math
         $hex = strtolower(trim($hex));
 
         try {
+
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
                 $return = 'Error - uneven number of hex characters passed to encodeBase58().  Value received was "' . var_export($hex, true) . '".';
             } else {
                 $chars   = $this->b58_chars;
                 $orighex = $hex;
-
-                if ($hex[0] . $hex[1] != '0x') {
-                    $hex = '0x' . $hex;
-                }
-
-                $return = '';
+                $hex     = ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
+                $return  = '';
 
                 while ($this->math->comp($hex, '0') > 0) {
                     $dv     = $this->math->div($hex, '58');
@@ -651,6 +609,7 @@ trait Math
             }
 
             return $return;
+
         } catch (\Exception $e) {
             throw $e;
         }
@@ -692,17 +651,9 @@ trait Math
             }
         }
 
-        if (true === empty($this->bytes)) {
-            $this->bytes = $this->GenBytes();
-        }
-
-        if ($this->Gx == '') {
-            $this->Gx = '0x' . substr(strtolower($this->G), 2, 64);
-        }
-
-        if ($this->Gx == '') {
-            $this->Gy = '0x' . substr(strtolower($this->G), 66, 64);
-        }
+        $this->bytes = (true === empty($this->bytes)) ? $this->GenBytes() : $this->bytes;
+        $this->Gx = ($this->Gx == '') ? '0x' . substr(strtolower($this->G), 2, 64) : $this->Gx;
+        $this->Gy = ($this->Gx == '') ? '0x' . substr(strtolower($this->G), 66, 64) : $this->Gy;
     }
 
     /**
