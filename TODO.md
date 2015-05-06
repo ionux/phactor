@@ -10,4 +10,4 @@ Items partially or fully completed:
 * Protection against side-channel attacks
   * Added Montgomery Ladder method to protect against simple power/timing analysis
 * Better functional tests
-  * Test coverage increasing
+  * Test coverage increasing (greatly improved in 1.0.4 release)
