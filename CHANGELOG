@@ -1,3 +1,98 @@
+1.0.4
+  * Fixed verify function, commit 275d870
+  * Duplicate starting tag removed, commit 0b9de05
+  * Added new signature tests, commit 7b4847b
+  * Added PEM encoding and, commit 083a71d
+  * Moved the pem decode function to the keypair class, commit 62da379
+  * Removed extra parenthesis, commit dcc1fbb
+  * Fixed typo in function name, commit 2d00111
+  * Fixed error in assert function name, commit a960067
+  * Added missing key indices, commit ff5978d
+  * Added keypair PEM encoding test, commit 6b1beb1
+  * Added new getKeypairInfo test, commit 9805fee
+  * Added getPublicKey tests, commit 5f1bfea
+  * Fix for pem encoding test, commit d826938
+  * Fix for pem encoding test again, commit 4f9af04
+  * Added pem decoding test, commit 6697978
+  * Added getPrivateKey function test, commit 77e34a1
+  * Added point trait tests, commit 2749362
+  * Fixed duplicate test name, commit 79c5fa7
+  * Update phactor_tests.php, commit 6c0bf87
+  * Update phactor_tests.php, commit e48e76d
+  * Added test for previously generated keys, commit b83bae0
+  * Fixed bug in constructor assignment of key info, commit c8d3d62
+  * Fixed variable name, commit 892945e
+  * Removed incorrect doc @param, commit fdf4770
+  * Create KeyTest.php, commit 9924f5b
+  * Moved key tests to KeyTest.php, commit 81f1f42
+  * Update phpunit.xml.dist, commit 39a6ae3
+  * Update .travis.yml, commit 9fd8e9f
+  * Create SinTest.php, commit ce7b2a5
+  * Update KeyTest.php, commit 51f13a8
+  * Update SinTest.php, commit 9695bd7
+  * Create SignatureTest.php, commit 9afa6a9
+  * Create PointTest.php, commit 3b29152
+  * Create GMPTest.php, commit 3bf8caa
+  * Create BCTest.php, commit f482df8
+  * Moved tests to individual class test files, commit 0be401b
+  * Update PointTest.php, commit dbd607a
+  * Added missing greaterthan arguments, commit 2457a5f
+  * Added signature verification example, commit 012af98
+  * Updated Verify() to support public key strings, commit f844684
+  * Fixed hex value bug, commit 5bf93b5
+  * Update verify() test with new function signature, commit 3f3fa18
+  * Fixed missing hex prefixes, commit b665c44
+  * Create MathTest.php, commit fb9ef10
+  * Fix for var name typo & expected bin value, commit 22e7856
+  * Swapped assert parameters, commit 9b945f0
+  * Improved error messages, commit 1e7b3d8
+  * Fixed test value error, commit cd7e062
+  * Fixed missing hex prefixes, commit a74e8b6
+  * Improved error messages, commit 8211454
+  * Improved error messages, commit bf2e579
+  * Improved error messages, commit 7911375
+  * Minor refactor, commit 28dc999
+  * Added exception to Verify() function, commit ff652bb
+  * Formatting, commit 8e04ce4
+  * Formatting, commit fbecfd6
+  * Formatting, commit 3d9be40
+  * Method documentation update, commit 395d9d9
+  * Updated documentation and formatting, commit 33f8cbf
+  * Updated documentation and formatting, commit 58e82bc
+  * Formatting, commit aeaeab0
+  * Formatting, commit bac9cf1
+  * Fixed loose type comparison, commit 229264c
+  * Corrected missing param doc value, commit 26bd9ae
+  * Removed dead code, commit 97fba75
+  * Removed dead code, commit d8047b8
+  * Minor refactor for code quality, commit a58a9a6
+  * Removed dead code, commit b8b8282
+  * Removed dead code, commit d5e9c63
+  * Fixed missing hex prefixes, commit 7e25237
+  * Fix for invalid hex length bug, commit d88ebcf
+  * Fix for invalid comparison bug, commit 6ec3e08
+  * Updated documentation, commit 6508fb3
+  * Removed dead code, commit c90c4cc
+  * Updated documentation, commit 7fc8abc
+  * Removed dead code, commit 15d2d57
+  * Removed dead code, commit 3db97f7
+  * Added missing var initialization & types, commit 1bf2d87
+  * Added missing var initialization, commit cef24de
+  * Added missing var initialization, commit 3cbb0a5
+  * Refactored encode() method, commit fe15573
+  * Fix for incorrect data type encoding, commit 0decd96
+  * Fix to incorrect incoding, commit 245f68e
+  * Refactored Generate() method, commit 9ad4546
+  * Added hex digit check, commit 6f34dd4
+  * Refactor class to improve, commit 449e3c8
+  * Fixed incorrect variable name, commit e878344
+  * Fixed uninitialized offset error, commit 1768e59
+  * Fix for negative sign error, commit 9fb5ca7
+  * Added special case for zero, commit 4fbef8c
+  * Empty check causing 0 to not pass checks, commit e8efab6
+  * Fix for minimum PEM data size, commit 11ab386
+  * Refactor to use new Math trait code, commit 53900ba
+
 1.0.3
   * Added 1.0.1 and 1.0.2 release information, commit a6f68a9
   * Added Montgomery Ladder algorith, commit 6877781
