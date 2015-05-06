@@ -49,40 +49,14 @@ final class Key
     public function __construct(array $params = null)
     {
         $this->keyInfo = array(
-                               'private_key_hex'       => '',
-                               'private_key_dec'       => '',
-                               'public_key'            => '',
-                               'public_key_compressed' => '',
-                               'public_key_x'          => '',
-                               'public_key_y'          => '',
+                               'private_key_hex'       => (isset($params['private_key_hex']))       ? $params['private_key_hex']       : '',
+                               'private_key_dec'       => (isset($params['private_key_dec']))       ? $params['private_key_dec']       : '',
+                               'public_key'            => (isset($params['public_key']))            ? $params['public_key']            : '',
+                               'public_key_compressed' => (isset($params['public_key_compressed'])) ? $params['public_key_compressed'] : '',
+                               'public_key_x'          => (isset($params['public_key_x']))          ? $params['public_key_x']          : '',
+                               'public_key_y'          => (isset($params['public_key_y']))          ? $params['public_key_y']          : '',
                                'generation_time'       => '',
                               );
-
-        if (true === isset($params) && true === is_array($params)) {
-            if (true === isset($params['private_key_hex'])) {
-                $this->keyInfo['private_key_hex'] = $params['private_key_hex'];
-            }
-
-            if (true === isset($params['private_key_dec'])) {
-                $this->keyInfo['private_key_dec'] = $params['private_key_dec'];
-            }
-
-            if (true === isset($params['public_key'])) {
-                $this->keyInfo['public_key'] = $params['public_key'];
-            }
-
-            if (true === isset($params['public_key_compressed'])) {
-                $this->keyInfo['public_key_compressed'] = $params['public_key_compressed'];
-            }
-
-            if (true === isset($params['public_key_x'])) {
-                $this->keyInfo['public_key_x'] = $params['public_key_x'];
-            }
-
-            if (true === isset($params['public_key_y'])) {
-                $this->keyInfo['public_key_y'] = $params['public_key_y'];
-            }
-        }
     }
 
     /**
@@ -103,11 +77,7 @@ final class Key
      */
     public function getPrivateKey($hex = true)
     {
-        if ($hex === true) {
-            return $this->keyInfo['private_key_hex'];
-        } else {
-            return $this->keyInfo['private_key_dec'];
-        }
+        return ($hex === true) ? $this->keyInfo['private_key_hex'] : $this->keyInfo['private_key_dec'];
     }
 
     /**
@@ -118,11 +88,7 @@ final class Key
      */
     public function getPublicKey($format = 'compressed')
     {
-        if ($format == 'compressed') {
-            return $this->keyInfo['public_key_compressed'];
-        } else {
-            return $this->keyInfo['public_key'];
-        }
+        return ($format == 'compressed') ? $this->keyInfo['public_key_compressed'] : $this->keyInfo['public_key'];
     }
 
     /**
@@ -146,23 +112,12 @@ final class Key
 
         $point = $this->GenerateNewPoint();
 
-        if (substr($point['Rx_hex'], 0, 2) == '0x') {
-            $point['Rx_hex'] = substr($point['Rx_hex'], 2);
-        }
+        $point['Rx_hex'] = (substr($point['Rx_hex'], 0, 2) == '0x') ? substr($point['Rx_hex'], 2) : $point['Rx_hex'];
+        $point['Ry_hex'] = (substr($point['Ry_hex'], 0, 2) == '0x') ? substr($point['Ry_hex'], 2) : $point['Ry_hex'];
 
-        if (substr($point['Ry_hex'], 0, 2) == '0x') {
-            $point['Ry_hex'] = substr($point['Ry_hex'], 2);
-        }
+        $point['random_number'] = (substr($point['random_number'], 0, 2) == '0x') ? substr($point['random_number'], 2) : $point['random_number'];
 
-        if (substr($point['random_number'], 0, 2) == '0x') {
-            $point['random_number'] = substr($point['random_number'], 2);
-        }
-
-        if ($this->Modulo('0x' . $point['Ry_hex'], '0x02') == '1') {
-            $comp_prefix = '03';
-        } else {
-            $comp_prefix = '02';
-        }
+        $comp_prefix = ($this->Modulo('0x' . $point['Ry_hex'], '0x02') == '1') ? '03' : '02';
 
         $this->keyInfo = array(
                                'private_key_hex'       => $point['random_number'],
@@ -225,8 +180,7 @@ final class Key
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the supplied data.  Value checked was "' . var_export($dec, true) . '".');
         }
 
-        $dec = $this->decodeHex('0x' . $dec);
-
+        $dec  = $this->decodeHex('0x' . $dec);
         $byte = '';
 
         while ($this->Compare($dec, '0') > 0) {
@@ -236,9 +190,7 @@ final class Key
             $byte = $byte . $digits[$rem];
         }
 
-        $byte = $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
-
-        return $byte;
+        return $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
     }
 
     /**
