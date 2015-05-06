@@ -313,7 +313,7 @@ trait Math
             return $hex;
         }
 
-        $hex = (substr($hex, 0, 2) == '0x') ? substr(strtolower(trim($hex2)), 2) : strtolower(trim($hex));
+        $hex = (substr($hex, 0, 2) == '0x') ? substr(strtolower(trim($hex)), 2) : strtolower(trim($hex));
 
         $hex_len = strlen($hex);
 
