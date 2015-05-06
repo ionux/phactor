@@ -1,4 +1,4 @@
-# Phactor
+[![Phactor Logo](https://raw.githubusercontent.com/ionux/phactor/master/phactor_logo.png)](https://github.com/ionux/phactor)
 
 [![Build Status](https://travis-ci.org/ionux/phactor.svg?branch=master)](https://travis-ci.org/ionux/phactor) [![Software License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat)](LICENSE.md) [![Latest Release](https://img.shields.io/github/release/ionux/phactor.svg)](https://github.com/ionux/phactor/releases/latest)
 
@@ -15,7 +15,7 @@ These PHP classes are designed to be used in conjunction with software used for 
 Installation of this project is very easy using composer:
 
 ```php
-php composer.phar require ionux/phactor:1.0.0
+php composer.phar require ionux/phactor:1.0.4
 ```
 
 If you have git installed, you can clone the repository:
@@ -40,16 +40,15 @@ $info = $key->GenerateKeypair();
 An associative array will be returned upon success:
 
 ```sh
-  Array
+Array
 (
-    [private_key_hex] => 7a4fbece43963538cb8f9149b094906168d71be36cfb405e6930fddb42da2c7d
-    [private_key_dec] => 55323065337948610870652254548527896513063178460294714145329611159009536650365
-    [public_key] => 043fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313
-    [public_key_compressed] => 033fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206
-    [public_key_x] => 3fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206
-    [public_key_y] => fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313
+  [private_key_hex] => 7a4fbece43963538cb8f9149b094906168d71be36cfb405e6930fddb42da2c7d
+  [private_key_dec] => 55323065337948610870652254548527896513063178460294714145329611159009536650365
+  [public_key] => 043fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313
+  [public_key_compressed] => 033fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206
+  [public_key_x] => 3fbbf44c3da3fec12bf7bac254fd176adc3eaed79470932b574d8d60728eb206
+  [public_key_y] => fb7ac7ac6959f75a6859a1a8d745db7e825a3c5c826e5b2e4950892b35772313
 )
-
 ```
 
 Depending on the speed of your hardware, keys can be generated in approximately 10ms or less using GMP.
@@ -57,9 +56,9 @@ Depending on the speed of your hardware, keys can be generated in approximately 
 To generate ECDSA signatures:
 
 ```php
-  $sig = new \Phactor\Signature;
+$sig = new \Phactor\Signature;
 
-  $signature = $sig->generate('my message to sign...', $info['private_key_hex']);
+$signature = $sig->generate('my message to sign...', $info['private_key_hex']);
 ```
 
 Which will return the signature encoded in the ASN.1 DER format:
@@ -71,13 +70,13 @@ Which will return the signature encoded in the ASN.1 DER format:
 To verify an existing signature, call the Verify() function which returns a boolean true/false:
 
 ```php
-  $sig = new \Phactor\Signature;
+$sig = new \Phactor\Signature;
 
-  if ($sig->Verify($signature, $message, $publickey) == false) {
-      // The signature is invalid - reject!
-  } else {
-      // The signature is valid.
-  }
+if ($sig->Verify($signature, $message, $publickey) == false) {
+  // The signature is invalid - reject!
+} else {
+  // The signature is valid.
+}
 ```
 
 Signatures and keys have been tested against OpenSSL and are interoperable.  In fact, any other project that can import/export correct EC keypairs and ECDSA signatures will be compatible with this library.
