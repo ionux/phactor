@@ -213,10 +213,7 @@ trait Point
 
         while ($n >= 0) {
             $S = $this->pointDouble($S);
-
-            if ($tmp[$n] == '1') {
-                $S = $this->pointAdd($S, $P);
-            }
+            $S = ($tmp[$n] == '1') ? $this->pointAdd($S, $P) : $S;
 
             $n--;
         }
@@ -251,12 +248,15 @@ trait Point
         $S1  = $P;
 
         while ($n >= 0) {
-            if ($tmp[$n] == '0') {
-                $S1 = $this->pointAdd($S0, $S1);
-                $S0 = $this->pointDouble($S0);
-            } else {
-                $S0 = $this->pointAdd($S0, $S1);
-                $S1 = $this->pointDouble($S1);
+            switch ($tmp[$n]) {
+                case '0':
+                    $S1 = $this->pointAdd($S0, $S1);
+                    $S0 = $this->pointDouble($S0);
+                    break;
+                default:
+                    $S0 = $this->pointAdd($S0, $S1);
+                    $S1 = $this->pointDouble($S1);
+                    break;
             }
 
             $n--;
@@ -283,11 +283,7 @@ trait Point
             $random_number = $this->SecureRandomNumber();
         } while ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0);
 
-        if ($ladder !== true) {
-            $R = $this->doubleAndAdd($random_number, $P);
-        } else {
-            $R = $this->mLadder($random_number, $P);
-        }
+        $R = ($ladder === true) ? $this->mLadder($random_number, $P) : $this->doubleAndAdd($random_number, $P);
 
         if ($this->PointTest($R)) {
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
