@@ -263,7 +263,11 @@ final class Signature
      */
     private function msbCheck($value)
     {
-        return ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) ? chr(0x00) : /* Nothing */;
+        if ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) {
+            return chr(0x00);
+        }
+
+        return;
     }
 
     /**
