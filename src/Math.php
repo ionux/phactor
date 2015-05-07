@@ -95,6 +95,11 @@ trait Math
     private $math = null;
 
     /**
+     * @var boolean
+     */
+    private $openSSL = false;
+
+    /**
      * @var string
      */
     private $b58_chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -536,7 +541,6 @@ trait Math
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
                 throw new \Exception('Error in encodeBase58(): Uneven number of hex characters passed to function.  Value received was "' . var_export($hex, true) . '".');
             } else {
-                $chars   = $this->b58_chars;
                 $orighex = $hex;
                 $hex     = $this->addHexPrefix($this->prepAndClean($hex));
                 $return  = strrev($this->encodeValue($hex, '58'));
