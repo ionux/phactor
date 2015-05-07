@@ -144,9 +144,6 @@ final class Key
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
         }
 
-        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
-        $end_ec_text = '-----END EC PRIVATE KEY-----';
-
         $digits = $this->GenBytes();
 
         $ecpemstruct = array(
@@ -186,7 +183,7 @@ final class Key
             $byte = $byte . $digits[$rem];
         }
 
-        return $beg_ec_text . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . $end_ec_text;
+        return '-----BEGIN EC PRIVATE KEY-----' . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . '-----END EC PRIVATE KEY-----';
     }
 
     /**
@@ -198,11 +195,8 @@ final class Key
      */
     public function decodePEM($pem_data)
     {
-        $beg_ec_text = '-----BEGIN EC PRIVATE KEY-----';
-        $end_ec_text = '-----END EC PRIVATE KEY-----';
-
-        $pem_data = str_ireplace($beg_ec_text, '', $pem_data);
-        $pem_data = str_ireplace($end_ec_text, '', $pem_data);
+        $pem_data = str_ireplace('-----BEGIN EC PRIVATE KEY-----', '', $pem_data);
+        $pem_data = str_ireplace('-----END EC PRIVATE KEY-----', '', $pem_data);
         $pem_data = str_ireplace("\r", '', trim($pem_data));
         $pem_data = str_ireplace("\n", '', trim($pem_data));
         $pem_data = str_ireplace(' ', '', trim($pem_data));
