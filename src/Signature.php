@@ -80,7 +80,9 @@ final class Signature
                          'y' => $this->Gy
                         );
 
-        return ($message != '' && $private_key != '') ? $this->Generate($message, $private_key) : $this;
+        if ($message != '' && $private_key != '') {
+            $this->Generate($message, $private_key);
+        }
     }
 
     /**
