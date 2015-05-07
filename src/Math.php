@@ -676,6 +676,8 @@ trait Math
 
         try {
 
+            $new = '';
+
             while ($this->math->comp($val, '0') > 0) {
                 $qq  = $this->math->div($val, $base);
                 $rem = $this->math->mod($val, $base);
