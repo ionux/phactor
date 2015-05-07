@@ -335,12 +335,6 @@ trait Math
      */
     public function BaseCheck($base)
     {
-        if ($this->param_checking === true) {
-            if (false === isset($base) || true === empty($base)) {
-                throw new \Exception('Empty base parameter passed to BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
-            }
-        }
-
         switch ($base) {
             case '256':
                 return $this->GenBytes();
@@ -383,10 +377,13 @@ trait Math
             $bin = '';
 
             while ($this->math->comp($num, '0') > 0) {
-                if ($this->math->mod($num, '2') == '1') {
-                    $bin .= '1';
-                } else {
-                    $bin .= '0';
+                switch ($this->math->mod($num, '2')) {
+                    case '1':
+                        $bin .= '1';
+                        break;
+                    default:
+                        $bin .= '0';
+                        break;
                 }
 
                 $num = $this->math->div($num, '2');
@@ -485,6 +482,7 @@ trait Math
         /* This is what the data should be really. */
         if (true === is_string($value)) {
 
+            /* Remove any negative signs. */
             $value = ($value[0] == '-') ? substr(strtolower(trim($value)), 1) : strtolower(trim($value));
 
             /* Determine if we have a hex prefix to begin with. */
@@ -587,7 +585,7 @@ trait Math
         try {
 
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
-                $return = 'Error - uneven number of hex characters passed to encodeBase58().  Value received was "' . var_export($hex, true) . '".';
+                throw new \Exception('Error in encodeBase58(): Uneven number of hex characters passed to function.  Value received was "' . var_export($hex, true) . '".');
             } else {
                 $chars   = $this->b58_chars;
                 $orighex = $hex;
