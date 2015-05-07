@@ -38,22 +38,80 @@ trait Math
      * Elliptic curve parameters for secp256k1
      * http://www.secg.org/collateral/sec2_final.pdf
      */
+
+    /**
+     * @var string
+     */
     public $Inf = 'infinity';
+
+    /**
+     * @var string
+     */
     public $G   = '0479BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8';
+
+    /**
+     * @var string
+     */
     public $p   = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F';
+
+    /**
+     * @var string
+     */
     public $a   = '0x00';
+
+    /**
+     * @var string
+     */
     public $b   = '0x07';
+
+    /**
+     * @var string
+     */
     public $n   = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141';
+
+    /**
+     * @var string
+     */
     public $h   = '0x01';
 
+    /**
+     * @var string
+     */
     public $Gx  = '0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798';
+
+    /**
+     * @var string
+     */
     public $Gy  = '0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8';
 
+    /**
+     * @var array
+     */
     private $bytes     = array();
+
+    /**
+     * @var object
+     */
     private $math      = null;
+
+    /**
+     * @var string
+     */
     private $b58_chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+    /**
+     * @var string
+     */
     private $dec_chars = '0123456789';
+
+    /**
+     * @var string
+     */
     private $hex_chars = '0123456789abcdef';
+
+    /**
+     * @var string
+     */
     private $bin_chars = '01';
 
     /**
