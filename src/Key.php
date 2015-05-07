@@ -140,11 +140,7 @@ final class Key
      */
     public function encodePEM($keypair)
     {
-        if (false === isset($keypair)    ||
-            false === is_array($keypair) ||
-            strlen($keypair[0]) < 64     ||
-            strlen($keypair[1]) < 128)
-        {
+        if (true === empty($keypair) || false === is_array($keypair) || strlen($keypair[0]) < 62 || strlen($keypair[1]) < 126) {
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
         }
 
@@ -230,7 +226,7 @@ final class Key
         $private_key = $ecpemstruct['oct_sec_val'];
         $public_key  = '04' . $ecpemstruct['bit_str_val'];
 
-        if (strlen($private_key) < 64 || strlen($public_key) < 128) {
+        if (strlen($private_key) < 62 || strlen($public_key) < 126) {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($private_key, true) . '" and "' . var_export($public_key, true) . '".');
         }
 
