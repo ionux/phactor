@@ -28,7 +28,7 @@
 namespace Phactor;
 
 /**
- * Generic math trait used by all other Phactor classes.
+ * Generic math trait used by all other Phactor classes and proxy for math objects.
  *
  * @author Rich Morgan <rich@bitpay.com>
  */
@@ -134,15 +134,7 @@ trait Math
      */
     public function Multiply($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Multiply() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->mul($a, $b);
     }
@@ -157,15 +149,7 @@ trait Math
      */
     public function Add($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Add() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->add($a, $b);
     }
@@ -180,15 +164,7 @@ trait Math
      */
     public function Subtract($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Subtract() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->sub($a, $b);
     }
@@ -203,15 +179,7 @@ trait Math
      */
     public function Divide($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Divide() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->div($a, $b);
     }
@@ -226,15 +194,7 @@ trait Math
      */
     public function Modulo($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Modulo() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->mod($a, $b);
     }
@@ -249,15 +209,7 @@ trait Math
      */
     public function Invert($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Invert() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->inv($a, $b);
     }
@@ -272,15 +224,7 @@ trait Math
      */
     public function Compare($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Compare() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->comp($a, $b);
     }
@@ -295,15 +239,7 @@ trait Math
      */
     public function Power($a, $b)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($a) === false || $this->numberCheck($b) === false) {
-                throw new \Exception('Empty or invalid parameters passed to Power() function.  Value received for first parameter was "' . var_export($a, true) . '" and second parameter was "' . var_export($b, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->preOpMethodParamsCheck(array($a, $b));
 
         return $this->math->power($a, $b);
     }
@@ -318,34 +254,12 @@ trait Math
      */
     public function encodeHex($dec, $prefix = true)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($dec) === false) {
-                throw new \Exception('Empty or invalid decimal parameter passed to encodeHex function.  Value received was "' . var_export($dec, true) . '".');
-            }
-        }
+        $this->preOpMethodParamsCheck(array($dec));
 
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $dec = ($this->Test($dec) != 'hex') ? strrev($this->encodeValue($this->absValue($dec), '16')) : $dec;
 
-        $dec = ($dec[0] == '-') ? substr(strtolower(trim($dec)), 1) : strtolower(trim($dec));
-
-        if ($this->Test($dec) == 'hex') {
-            return (substr($dec, 0, 2) != '0x') ? '0x' . $dec : $dec;
-        }
-
-        $digits = $this->hex_chars;
-
-        $hex = '';
-
-        while ($this->math->comp($dec, '0') > 0) {
-            $qq  = $this->math->div($dec, '16');
-            $rem = $this->math->mod($dec, '16');
-            $dec = $qq;
-            $hex = $hex . $digits[$rem];
-        }
-
-        return ($prefix === true) ? '0x' . strrev($hex) : strrev($hex);
+        return ($prefix === true) ? $this->addHexPrefix($dec) : $dec;
+        
     }
 
     /**
@@ -357,30 +271,20 @@ trait Math
      */
     public function decodeHex($hex)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($hex) === false) {
-                throw new \Exception('Argument must be a string of hex digits.  Value received was "' . var_export($hex, true) . '".');
+        $this->preOpMethodParamsCheck(array($hex));
+
+        if ($this->Test($hex) == 'hex') {
+            $hex = $this->stripHexPrefix($this->prepAndClean($hex));
+
+            $hex_len = strlen($hex);
+
+            for ($dec = '0', $i = 0; $i < $hex_len; $i++) {
+                $current = stripos($this->hex_chars, $hex[$i]);
+                $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
             }
         }
 
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
-
-        if ($this->Test($hex) == 'dec') {
-            return $hex;
-        }
-
-        $hex = (substr($hex, 0, 2) == '0x') ? substr(strtolower(trim($hex)), 2) : strtolower(trim($hex));
-
-        $hex_len = strlen($hex);
-
-        for ($dec = '0', $i = 0; $i < $hex_len; $i++) {
-            $current = stripos($this->hex_chars, $hex[$i]);
-            $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
-        }
-
-        return $dec;
+        return (true === empty($dec)) ? $hex : $dec;
     }
 
     /**
@@ -419,19 +323,13 @@ trait Math
      */
     public function D2B($num)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($num) === false) {
-                throw new \Exception('Missing or invalid number parameter passed to the D2B() function.  Value received was "' . var_export($num, true) . '".');
-            }
-        }
+        $this->preOpMethodParamsCheck(array($num));
 
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
-
-        $num = ($this->Test($num) == 'hex') ? $this->decodeHex(strtolower(trim($num))) : strtolower(trim($num));
+        /* Make sure that we're dealing with a decimal number. */
+        $num = $this->decodeHex($num);
 
         try {
+
             $bin = '';
 
             while ($this->math->comp($num, '0') > 0) {
@@ -446,6 +344,7 @@ trait Math
 
                 $num = $this->math->div($num, '2');
             }
+
         } catch (\Exception $e) {
             throw $e;
         }
@@ -462,40 +361,20 @@ trait Math
      */
     public function binConv($hex)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($hex) === false) {
-                throw new \Exception('Missing or invalid number parameter passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
-
-        $hex     = strtolower(trim($hex));
-        $digits  = $this->BaseCheck('256');
+        $this->preOpMethodParamsCheck(array($hex));
 
         switch ($this->Test($hex)) {
             case 'dec':
                 $hex = $this->encodeHex($hex);
                 break;
             case 'hex':
-                $hex = ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
+                $hex = $this->addHexPrefix($this->prepAndClean($hex));
                 break;
             default:
                 throw new \Exception('Unknown data type passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
         }
 
-        $byte = '';
-
-        while ($this->math->comp($hex, '0') > 0) {
-            $dv   = $this->math->div($hex, '256');
-            $rem  = $this->math->mod($hex, '256');
-            $hex  = $dv;
-            $byte = $byte . $digits[$rem];
-        }
-
-        return strrev($byte);
+        return strrev($this->encodeValue($hex, '256'));
     }
 
     /**
@@ -541,10 +420,10 @@ trait Math
         if (true === is_string($value)) {
 
             /* Remove any negative signs. */
-            $value = ($value[0] == '-') ? substr(strtolower(trim($value)), 1) : strtolower(trim($value));
+            $value = $this->absValue($value);
 
             /* Determine if we have a hex prefix to begin with. */
-            $value = (substr($value, 0, 2) == '0x') ? substr($value, 2) : $value;
+            $value = $this->stripHexPrefix($value);
 
             /* Both hex and regular decimal numbers will pass this check. */
             $h_digits = (preg_match('/^[a-f0-9]*$/', $value) == 1) ? true : false;
@@ -606,17 +485,39 @@ trait Math
     {
         $cstrong = false;
 
-        if (false === function_exists('openssl_random_pseudo_bytes')) {
-            throw new \Exception('This class requires the OpenSSL extension for PHP. Please install this extension.');
-        }
-
         $secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
 
         if (false === $secure_random_number || false === $cstrong) {
             throw new \Exception('Could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken.');
         }
 
-        return '0x' . strtolower(bin2hex($secure_random_number));
+        return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
+    }
+
+    /**
+     * Basic range check. Throws exception if
+     * coordinate value is out of range.
+     *
+     * @param  string     $value The coordinate to check.
+     * @return boolean           The result of the check.
+     * @throws \Exception
+     */
+    public function RangeCheck($value)
+    {
+        $this->preOpMethodParamsCheck(array($value));
+
+        try {
+ 
+            /* Check to see if $value is in the range [1, n-1] */
+            if ($this->math->comp($value, '0x01') <= 0 && $this->math->comp($value, $this->n) > 0) {
+                throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        return true;
     }
 
     /**
@@ -628,17 +529,7 @@ trait Math
      */
     private function encodeBase58($hex)
     {
-        if ($this->param_checking === true) {
-            if ($this->numberCheck($hex) === false) {
-                throw new \Exception('Missing or invalid number parameter passed to the encodeBase58() function.  Value received was "' . var_export($hex, true) . '".');
-            }
-        }
-
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
-
-        $hex = strtolower(trim($hex));
+        $this->preOpMethodParamsCheck(array($hex));
 
         try {
 
@@ -647,17 +538,8 @@ trait Math
             } else {
                 $chars   = $this->b58_chars;
                 $orighex = $hex;
-                $hex     = ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
-                $return  = '';
-
-                while ($this->math->comp($hex, '0') > 0) {
-                    $dv     = $this->math->div($hex, '58');
-                    $rem    = $this->math->mod($hex, '58');
-                    $hex    = $dv;
-                    $return = $return . $chars[$rem];
-                }
-
-                $return = strrev($return);
+                $hex     = $this->addHexPrefix($this->prepAndClean($hex));
+                $return  = strrev($this->encodeValue($hex, '58'));
 
                 for ($i = 0; $i < strlen($orighex) && substr($orighex, $i, 2) == '00'; $i += 2) {
                     $return = '1' . $return;
@@ -707,34 +589,116 @@ trait Math
             }
         }
 
+        if ($this->openSSL === false) {
+            if (false === function_exists('openssl_random_pseudo_bytes')) {
+                throw new \Exception('This class requires the OpenSSL extension for PHP. Please install this extension.');
+            } else {
+                $this->openSSL = true;
+            }
+        }
+
         $this->bytes = (true === empty($this->bytes)) ? $this->GenBytes() : $this->bytes;
-        $this->Gx = ($this->Gx == '') ? '0x' . substr(strtolower($this->G), 2, 64) : $this->Gx;
-        $this->Gy = ($this->Gx == '') ? '0x' . substr(strtolower($this->G), 66, 64) : $this->Gy;
+
+        $this->Gx = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 2, 64))  : $this->Gx;
+        $this->Gy = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 66, 64)) : $this->Gy;
+    }
+
+
+    /**
+     * Handles the pre-work validation
+     * checking for method parameters.
+     *
+     * @param  array   $params  The array of parameters to check.
+     * @return boolean          Will only be true, otherwise throws \Exception
+     * @throws \Exception
+     */
+    private function preOpMethodParamsCheck(array $params)
+    {
+        if ($this->math == null) {
+            $this->MathCheck();
+        }
+
+        foreach ($params as $key => $value) {
+            if ($this->numberCheck($a) === false) {
+                $caller = debug_backtrace();
+                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller)-1]['function'] . ' function. Argument list received: ' . var_export($caller[count($caller)-1]['args'], true));
+            }
+        }
     }
 
     /**
-     * Basic range check. Throws exception if
-     * coordinate value is out of range.
+     * Checks if a hex value has the '0x' prefix
+     * and removes it, if present. Otherwise it
+     * just returns the original value unchanged.
      *
-     * @param  string     $value The coordinate to check.
-     * @return boolean           The result of the check.
-     * @throws \Exception
+     * @param  string $hex The value to check.
+     * @return string      The value minus '0x'.
      */
-    public function RangeCheck($value)
+    private function stripHexPrefix($hex)
     {
-        if ($this->numberCheck($value) === false) {
-            throw new \Exception('Empty value parameter passed to RangeCheck() function.  Value received was "' . var_export($value, true) . '".');
-        }
+        return ($hex[0] . $hex[1] == '0x') ? substr($hex, 2) : $hex;
+    }
+
+    /**
+     * Checks if a hex value is missing the '0x'
+     * prefix and adds it, if needed. Otherwise it
+     * just returns the original value unchanged.
+     *
+     * @param  string $hex The value to check.
+     * @return string      The value plus '0x'.
+     */
+    private function addHexPrefix($hex)
+    {
+        return ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
+    }
+
+    /**
+     * Trims() and strtolowers() the value.
+     *
+     * @param  string $hex The value to clean.
+     * @return string      The clean value.
+     */
+    private function prepAndClean($value)
+    {
+        return strtolower(trim($value));
+    }
+
+    /**
+     * The generic value encoding method.
+     *
+     * @param string $value A number to convert.
+     * @param string $base  The base to convert it into.
+     * @return string       The same number but in a different base.
+     */
+    private function encodeValue($val, $base)
+    {
+        $digits = $this->baseCheck($base);
 
         try {
-            /* Check to see if $value is in the range [1, n-1] */
-            if ($this->math->comp($value, '0x01') <= 0 && $this->math->comp($value, $this->n) > 0) {
-                throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+
+            while ($this->math->comp($val, '0') > 0) {
+                $qq  = $this->math->div($val, $base);
+                $rem = $this->math->mod($val, $base);
+                $val = $qq;
+                $new = $new . $digits[$rem];
             }
+
+            return $new;
+
         } catch (\Exception $e) {
             throw $e;
         }
+    }
 
-        return true;
+    /**
+     * Returns the absolute value |$val| of the number.
+     *
+     * @param  string $value The value to be abs'd.
+     * @return string        The absolute value of the number.
+     */
+    public function absValue($value)
+    {
+        /* Remove any negative signs. */
+        return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
     }
 }
