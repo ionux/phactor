@@ -619,7 +619,7 @@ trait Math
         }
 
         foreach ($params as $key => $value) {
-            if ($this->numberCheck($a) === false) {
+            if ($this->numberCheck($value) === false) {
                 $caller = debug_backtrace();
                 throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller)-1]['function'] . ' function. Argument list received: ' . var_export($caller[count($caller)-1]['args'], true));
             }
