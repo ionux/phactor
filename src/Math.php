@@ -636,7 +636,7 @@ trait Math
      */
     private function stripHexPrefix($hex)
     {
-        return ($hex[0] . $hex[1] == '0x') ? substr($hex, 2) : $hex;
+        return (substr($hex, 0, 2) == '0x') ? substr($hex, 2) : $hex;
     }
 
     /**
@@ -649,7 +649,7 @@ trait Math
      */
     private function addHexPrefix($hex)
     {
-        return ($hex[0] . $hex[1] != '0x') ? '0x' . $hex : $hex;
+        return (substr($hex, 0, 2) != '0x') ? '0x' . $hex : $hex;
     }
 
     /**
