@@ -278,18 +278,20 @@ trait Math
     {
         $this->preOpMethodParamsCheck(array($hex));
 
+        $dec = '0';
+
         if ($this->Test($hex) == 'hex') {
             $hex = $this->stripHexPrefix($this->prepAndClean($hex));
 
             $hex_len = strlen($hex);
 
-            for ($dec = '0', $i = 0; $i < $hex_len; $i++) {
+            for ($i = 0; $i < $hex_len; $i++) {
                 $current = stripos($this->hex_chars, $hex[$i]);
                 $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
             }
         }
 
-        return (true === empty($dec)) ? $hex : $dec;
+        return ($dec == '0') ? $hex : $dec;
     }
 
     /**
