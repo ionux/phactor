@@ -37,10 +37,24 @@ final class Sin
 {
     use Math;
 
+    /**
+     * @var string
+     */
     public $encoded;
 
+    /**
+     * @var string
+     */
     private $SINtype;
+
+    /**
+     * @var array
+     */
     private $rawHashes;
+
+    /**
+     * @var string
+     */
     private $SINversion;
 
     /**
@@ -69,7 +83,9 @@ final class Sin
         $this->SINtype    = '02';
         $this->SINversion = '0F';
 
-        return (false === empty($pubkey)) ? $this->Generate($pubkey) : $this;
+        if (false === empty($pubkey)) {
+            $this->Generate($pubkey);
+        }
     }
 
     /**
@@ -101,7 +117,7 @@ final class Sin
      */
     public function Generate($pubkey)
     {
-        if (false === isset($pubkey) || true === empty($pubkey)) {
+        if (true === empty($pubkey)) {
             throw new \Exception('Missing or invalid public key parameter for Sin::Generate.');
         }
 
