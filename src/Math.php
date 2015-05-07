@@ -659,8 +659,8 @@ trait Math
     /**
      * Trims() and strtolowers() the value.
      *
-     * @param  string $hex The value to clean.
-     * @return string      The clean value.
+     * @param  string $value The value to clean.
+     * @return string        The clean value.
      */
     private function prepAndClean($value)
     {
@@ -670,9 +670,9 @@ trait Math
     /**
      * The generic value encoding method.
      *
-     * @param string $value A number to convert.
-     * @param string $base  The base to convert it into.
-     * @return string       The same number but in a different base.
+     * @param string $val  A number to convert.
+     * @param string $base The base to convert it into.
+     * @return string      The same number but in a different base.
      */
     private function encodeValue($val, $base)
     {
