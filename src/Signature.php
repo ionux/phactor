@@ -37,11 +37,29 @@ final class Signature
 {
     use Point;
 
+    /**
+     * @var string
+     */
     public $encoded_signature;
 
+    /**
+     * @var string
+     */
     private $r_coordinate;
+
+    /**
+     * @var string
+     */
     private $s_coordinate;
+
+    /**
+     * @var string
+     */
     private $raw_signature;
+
+    /**
+     * @var array
+     */
     private $P;
 
     /**
@@ -87,7 +105,7 @@ final class Signature
      */
     public function Generate($message, $private_key)
     {
-        if ($this->numberCheck($private_key) === false || false === isset($message) || true === empty($message)) {
+        if ($this->numberCheck($private_key) === false || true === empty($message)) {
             throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
         }
 
@@ -152,13 +170,7 @@ final class Signature
      */
     public function Verify($sig, $msg, $pubkey)
     {
-        if (false === isset($sig)     ||
-            true  === empty($sig)     ||
-            false === isset($msg)     ||
-            true  === empty($msg)     ||
-            false === isset($pubkey)  ||
-            true  === empty($pubkey))
-        {
+        if (true === empty($sig) || true === empty($msg) || true === empty($pubkey)) {
             throw new \Exception('The signature, public key and message parameters are required to verify a signature.  Value received for first parameter was "' . var_export($sig, true) . '", second parameter was "' . var_export($msg, true) . '" and third parameter was "' . var_export($pubkey, true) . '".');
         }
 
@@ -280,7 +292,7 @@ final class Signature
      */
     private function parseSig($signature)
     {
-        if (false === isset($signature) || true === empty($signature)) {
+        if (true === empty($signature)) {
             throw new \Exception('You must provide a valid hex parameter.  Value received was "' . var_export($signature, true) . '".');
         }
 
