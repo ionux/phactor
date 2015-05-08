@@ -197,19 +197,14 @@ final class Signature
 
         $pubkey = (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
 
-        if (strlen($pubkey) < 126) {
-            throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
-        }
-
         /* Parse the x,y coordinates */
         $Q = array(
-                   'x' => '0x' . substr($pubkey, 0, 64),
-                   'y' => '0x' . substr($pubkey, 64)
+                   'x' => $this->addHexPrefix(substr($pubkey, 0, 64)),
+                   'y' => $this->addHexPrefix(substr($pubkey, 64))
                   );
 
-        if (strlen($Q['x']) < 62 || strlen($Q['y']) < 62) {
-            throw new \Exception('Unknown public key format - could not parse the x,y coordinates.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
-        }
+        $this->RangeCheck($Q['x']);
+        $this->RangeCheck($Q['y']);
 
         try {
             /* Calculate w = s^-1 (mod n) */
