@@ -107,7 +107,7 @@ final class Signature
      */
     public function Generate($message, $private_key)
     {
-        if ($this->numberCheck($private_key) === false || true === empty($message)) {
+        if ($this->numberCheck($private_key) === false) {
             throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
         }
 
@@ -121,8 +121,8 @@ final class Signature
 
         $private_key = $this->encodeHex($private_key);
 
-        if (strlen($private_key) < 64) {
-            throw new \Exception('Invalid public key format!  Must be a 32-byte (64 character) hex number.  Value checked was "' . var_export($private_key, true) . '".');
+        if (strlen($private_key) < 62) {
+            throw new \Exception('Invalid public key format!  Must be <= 32-byte hex number.  Value checked was "' . var_export($private_key, true) . '".');
         }
 
         try {
@@ -134,7 +134,7 @@ final class Signature
 
                 /* Calculate a new curve point from R=k*G (x1,y1) */
                 $R      = $this->DoubleAndAdd($k, $this->P);
-                $R['x'] = '0x' . str_pad($this->encodeHex($R['x'], false), 64, "0", STR_PAD_LEFT);
+                $R['x'] = $this->addHexPrefix(str_pad($this->encodeHex($R['x'], false), 64, "0", STR_PAD_LEFT));
 
                 /* r = x1 mod n */
                 $r = $this->Modulo($R['x'], $this->n);
@@ -149,8 +149,8 @@ final class Signature
         }
 
         $signature = array(
-                           'r' => '0x' . str_pad($this->encodeHex($r, false), 64, "0", STR_PAD_LEFT),
-                           's' => '0x' . str_pad($this->encodeHex($s, false), 64, "0", STR_PAD_LEFT)
+                           'r' => $this->addHexPrefix(str_pad($this->encodeHex($r, false), 64, "0", STR_PAD_LEFT)),
+                           's' => $this->addHexPrefix(str_pad($this->encodeHex($s, false), 64, "0", STR_PAD_LEFT))
                           );
 
         $this->r_coordinate = $signature['r'];
@@ -184,8 +184,8 @@ final class Signature
 
         $coords = $this->parseSig($sig);
 
-        $r = $this->CoordinateCheck(trim(strtolower($coords['r'])));
-        $s = $this->CoordinateCheck(trim(strtolower($coords['s'])));
+        $r = $this->CoordinateCheck($this->prepAndClean($coords['r']));
+        $s = $this->CoordinateCheck($this->prepAndClean($coords['s']));
 
         $r_dec = $this->decodeHex($r);
         $s_dec = $this->decodeHex($s);
@@ -195,7 +195,7 @@ final class Signature
 
         $n_dec = $this->decodeHex($this->n);
 
-        $pubkey = (substr($pubkey, 0, 2) == '04') ? trim(strtolower(substr($pubkey, 2))) : trim(strtolower($pubkey));
+        $pubkey = (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
 
         if (strlen($pubkey) < 126) {
             throw new \Exception('Unknown public key format - provided value was too short.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
@@ -207,7 +207,7 @@ final class Signature
                    'y' => '0x' . substr($pubkey, 64)
                   );
 
-        if (strlen($Q['x']) < 64 || strlen($Q['y']) < 64) {
+        if (strlen($Q['x']) < 62 || strlen($Q['y']) < 62) {
             throw new \Exception('Unknown public key format - could not parse the x,y coordinates.  The uncompressed public key is expected.  Value checked was "' . var_export($pubkey, true) . '".');
         }
 
@@ -319,68 +319,50 @@ final class Signature
         $ecdsa_struct['original'] = $signature;
         $ecdsa_struct['totallen'] = strlen($signature);
 
-        if ($ecdsa_struct['totallen'] != '140' && $ecdsa_struct['totallen'] != '142' && $ecdsa_struct['totallen'] != '144') {
-            throw new \Exception('Invalid ECDSA signature provided!  Length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->ecdsaSigTotalLenCheck($ecdsa_struct['totallen']);
 
         $ecdsa_struct['sigstart'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['sigstart'] != '30') {
-            throw new \Exception('Invalid ECDSA signature provided!  Unknown signature format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->derRecordStartCheck($ecdsa_struct['sigstart']);
 
         $signature = substr($signature, 2);
         $ecdsa_struct['siglen'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['siglen'] != '44' && $ecdsa_struct['siglen'] != '45' && $ecdsa_struct['siglen'] != '46') {
-            throw new \Exception('Invalid ECDSA signature provided!  Total signature length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->ecdsaDerRecordTotalLenCheck($ecdsa_struct['siglen']);
 
         $signature = substr($signature, 2);
         $ecdsa_struct['rtype'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['rtype'] != '02') {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate data type is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->derDataTypeCheck($ecdsa_struct['rtype']);
 
         $signature = substr($signature, 2);
         $ecdsa_struct['rlen'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['rlen'] != '20' && $ecdsa_struct['rlen'] != '21') {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        } else {
-            $ecdsa_struct['roffset'] = ($ecdsa_struct['rlen'] == '21') ? 2 : 0;
-        }
+        $this->derDataLenCheck($ecdsa_struct['rlen']);
+
+        $ecdsa_struct['roffset'] = ($ecdsa_struct['rlen'] == '21') ? 2 : 0;
 
         $signature = substr($signature, 2);
         $ecdsa_struct['r'] = substr($signature, $ecdsa_struct['roffset'], 64);
 
-        if (ctype_xdigit($ecdsa_struct['r']) === false) {
-            throw new \Exception('Invalid ECDSA signature provided!  The r-coordinate is not in hex format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->RangeCheck($ecdsa_struct['r']);
 
         $signature = substr($signature, $ecdsa_struct['roffset'] + 64);
         $ecdsa_struct['stype'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['stype'] != '02') {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate data type is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->derDataTypeCheck($ecdsa_struct['stype']);
 
         $signature = substr($signature, 2);
         $ecdsa_struct['slen'] = substr($signature, 0, 2);
 
-        if ($ecdsa_struct['slen'] != '20' && $ecdsa_struct['slen'] != '21') {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate length is invalid.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        } else {
-            $ecdsa_struct['soffset'] = ($ecdsa_struct['slen'] == '21') ? 2 : 0;
-        }
+        $this->derDataLenCheck($ecdsa_struct['slen']);
+
+        $ecdsa_struct['soffset'] = ($ecdsa_struct['slen'] == '21') ? 2 : 0;
 
         $signature = substr($signature, 2);
         $ecdsa_struct['s'] = substr($signature, $ecdsa_struct['soffset'], 64);
 
-        if (ctype_xdigit($ecdsa_struct['s']) === false) {
-            throw new \Exception('Invalid ECDSA signature provided!  The s-coordinate is not in hex format.  Value checked was "' . var_export($ecdsa_struct['original'], true) . '".');
-        }
+        $this->RangeCheck($ecdsa_struct['r']);
 
         return array(
                      'r' => $ecdsa_struct['r'],
@@ -403,12 +385,77 @@ final class Signature
 
         $hex = $this->encodeHex($hex);
 
-        if (strlen($hex) < 64) {
+        if (strlen($hex) < 62) {
             throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($tempval, true) . '".');
         }
 
         $this->RangeCheck($hex);
 
         return $hex;
+    }
+
+    /**
+     * Ensures the total ECDSA signature length is acceptable.
+     *
+     * @param  string     $value The signature to check.
+     * @throws \Exception
+     */
+    private function ecdsaSigTotalLenCheck($value)
+    {
+        if ($value != '140' && $value != '142' && $value != '144') {
+            throw new \Exception('Invalid ECDSA signature provided!  Length is out of range for a correct signature.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * A DER encoded signature should start with 0x30.
+     *
+     * @param  string     $value The signature to check.
+     * @throws \Exception
+     */
+    private function derRecordStartCheck($value)
+    {
+        if ($value != '30') {
+            throw new \Exception('Invalid ECDSA signature provided!  Unknown signature format.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * Ensures the DER total record length is acceptable.
+     *
+     * @param  string     $value The record to check.
+     * @throws \Exception
+     */
+    private function derRecordTotalLenCheck($value)
+    {
+        if ($value != '44' && $value != '45' && $value != '46') {
+            throw new \Exception('Invalid ECDSA signature provided!  DER record length is invalid.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * Ensures the DER variable data type is acceptable.
+     *
+     * @param  string     $value The variable to check.
+     * @throws \Exception
+     */
+    private function derDataTypeCheck($value)
+    {
+        if ($value != '02') {
+            throw new \Exception('Invalid ECDSA signature provided!  DER record length is invalid.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * Ensures the DER variable data length is acceptable.
+     *
+     * @param  string     $value The variable to check.
+     * @throws \Exception
+     */
+    private function derDataLenCheck($value)
+    {
+        if ($value != '20' && $value != '21') {
+            throw new \Exception('Invalid ECDSA signature provided!  The coordinate length is invalid.  Value checked was "' . var_export($value, true) . '".');
+        }
     }
 }
