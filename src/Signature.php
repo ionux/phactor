@@ -328,7 +328,7 @@ final class Signature
         $signature = substr($signature, 2);
         $ecdsa_struct['siglen'] = substr($signature, 0, 2);
 
-        $this->ecdsaDerRecordTotalLenCheck($ecdsa_struct['siglen']);
+        $this->derRecordTotalLenCheck($ecdsa_struct['siglen']);
 
         $signature = substr($signature, 2);
         $ecdsa_struct['rtype'] = substr($signature, 0, 2);
