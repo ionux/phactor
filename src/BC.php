@@ -51,7 +51,7 @@ final class BC
      */
     public function add($a, $b)
     {
-        return (string)bcadd($this->normalize($a), $this->normalize($b));
+        return bcadd($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -63,7 +63,7 @@ final class BC
      */
     public function mul($a, $b)
     {
-        return (string)bcmul($this->normalize($a), $this->normalize($b));
+        return bcmul($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -75,7 +75,7 @@ final class BC
      */
     public function div($a, $b)
     {
-        return (string)bcdiv($this->normalize($a), $this->normalize($b));
+        return bcdiv($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -87,7 +87,7 @@ final class BC
      */
     public function sub($a, $b)
     {
-        return (string)bcsub($this->normalize($a), $this->normalize($b));
+        return bcsub($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -99,7 +99,7 @@ final class BC
      */
     public function mod($a, $b)
     {
-        return (string)bcmod($this->normalize($a), $this->normalize($b));
+        return bcmod($this->normalize($a), $this->normalize($b));
     }
     
     /**
@@ -111,7 +111,7 @@ final class BC
      */
     public function comp($a, $b)
     {
-        return (string)bccomp($this->normalize($a), $this->normalize($b));
+        return bccomp($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -123,7 +123,7 @@ final class BC
      */
     public function power($a, $b)
     {
-        return (string)bcpow($this->normalize($a), $this->normalize($b));
+        return bcpow($this->normalize($a), $this->normalize($b));
     }
 
     /**
@@ -153,6 +153,7 @@ final class BC
         $num = $number;
 
         try {
+
             do {
                 $z = bcmod($num, $mod);
                 $c = bcdiv($num, $mod);
@@ -170,7 +171,7 @@ final class BC
             throw $e;
         }
 
-        return (string)(bccomp($a, '0') < 0) ? bcadd($a, $modulus) : $a;
+        return (bccomp($a, '0') < 0) ? bcadd($a, $modulus) : $a;
     }
 
     /**
@@ -203,9 +204,6 @@ final class BC
                         $small = $b;
                         $diff  = bcmod($a, $b);
                         break;
-                    default:
-                        // Nothing
-                        break;
                 }
 
                 $a = $small;
@@ -227,6 +225,6 @@ final class BC
      */
     private function normalize($a)
     {
-        return (string)(substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+        return (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
     }
 }
