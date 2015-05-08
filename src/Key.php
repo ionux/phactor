@@ -112,12 +112,11 @@ final class Key
 
         $point = $this->GenerateNewPoint();
 
-        $point['Rx_hex'] = (substr($point['Rx_hex'], 0, 2) == '0x') ? substr($point['Rx_hex'], 2) : $point['Rx_hex'];
-        $point['Ry_hex'] = (substr($point['Ry_hex'], 0, 2) == '0x') ? substr($point['Ry_hex'], 2) : $point['Ry_hex'];
+        $point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
+        $point['Ry_hex']        = $this->stripHexPrefix($point['Ry_hex']);
+        $point['random_number'] = $this->stripHexPrefix($point['random_number']);
 
-        $point['random_number'] = (substr($point['random_number'], 0, 2) == '0x') ? substr($point['random_number'], 2) : $point['random_number'];
-
-        $comp_prefix = ($this->Modulo('0x' . $point['Ry_hex'], '0x02') == '1') ? '03' : '02';
+        $comp_prefix = ($this->Modulo($this->addHexPrefix($point['Ry_hex']), '0x02') == '1') ? '03' : '02';
 
         $this->keyInfo = array(
                                'private_key_hex'       => $point['random_number'],
@@ -144,8 +143,6 @@ final class Key
             throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
         }
 
-        $digits = $this->GenBytes();
-
         $ecpemstruct = array(
                              'sequence_beg' => '30',
                              'total_len'    => '74',
@@ -169,21 +166,9 @@ final class Key
 
         $dec = trim(implode($ecpemstruct));
 
-        if (strlen($dec) < 220) {
-            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the supplied data.  Value checked was "' . var_export($dec, true) . '".');
-        }
+        $this->pemDataLenCheck($dec);
 
-        $dec  = $this->decodeHex('0x' . $dec);
-        $byte = '';
-
-        while ($this->Compare($dec, '0') > 0) {
-            $dv   = $this->Divide($dec, '256');
-            $rem  = $this->Modulo($dec, '256');
-            $dec  = $dv;
-            $byte = $byte . $digits[$rem];
-        }
-
-        return '-----BEGIN EC PRIVATE KEY-----' . "\r\n" . chunk_split(base64_encode(strrev($byte)), 64) . '-----END EC PRIVATE KEY-----';
+        return '-----BEGIN EC PRIVATE KEY-----' . "\r\n" . chunk_split(base64_encode($this->binConv($dec)), 64) . '-----END EC PRIVATE KEY-----';
     }
 
     /**
@@ -195,17 +180,11 @@ final class Key
      */
     public function decodePEM($pem_data)
     {
-        $pem_data = str_ireplace('-----BEGIN EC PRIVATE KEY-----', '', $pem_data);
-        $pem_data = str_ireplace('-----END EC PRIVATE KEY-----', '', $pem_data);
-        $pem_data = str_ireplace("\r", '', trim($pem_data));
-        $pem_data = str_ireplace("\n", '', trim($pem_data));
-        $pem_data = str_ireplace(' ', '', trim($pem_data));
+        $this->pemDataClean($pem_data);
 
         $decoded = bin2hex(base64_decode($pem_data));
 
-        if (strlen($decoded) < 220) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 230.  Value received was "' . var_export($pem_data, true) . '" which decoded into "' . var_export($decoded, true) . '".');
-        }
+        $this->pemDataLenCheck($decoded);
 
         $ecpemstruct = array(
                              'oct_sec_val'  => substr($decoded, 14, 64),
@@ -213,20 +192,72 @@ final class Key
                              'bit_str_val'  => substr($decoded, 106),
                             );
 
-        if ($ecpemstruct['obj_id_val'] != '2b8104000a') {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.  Value checked was "' . var_export($ecpemstruct['obj_id_val'], true) . '".');
-        }
+        $this->pemOidCheck($ecpemstruct['obj_id_val']);
 
         $private_key = $ecpemstruct['oct_sec_val'];
         $public_key  = '04' . $ecpemstruct['bit_str_val'];
 
-        if (strlen($private_key) < 62 || strlen($public_key) < 126) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($private_key, true) . '" and "' . var_export($public_key, true) . '".');
-        }
+        $this->pemKeyLenCheck(array(private_key, public_key));
 
         return array(
                      'private_key' => $private_key,
                      'public_key'  => $public_key
                     );
+    }
+
+    /**
+     * Ensures the decoded PEM data length is acceptable.
+     *
+     * @param  string     $value The value to check.
+     * @throws \Exception
+     */
+    private function pemDataLenCheck($value)
+    {
+        if (strlen($value) < 220) {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 220.  Value received was "' . var_export($value, true) '".');
+        }
+    }
+
+    /**
+     * Ensures the decoded PEM key lengths are acceptable.
+     *
+     * @param  array     $values The key values to check.
+     * @throws \Exception
+     */
+    private function pemKeyLenCheck(array $values)
+    {
+        if (strlen($values[0]) < 62 || strlen($values[1]) < 126) {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($values[0], true) . '" and "' . var_export($values[1], true) . '".');
+        }
+    }
+
+    /**
+     * Ensures the decoded PEM data is for an EC Key.
+     *
+     * @param  string     $value The value to check.
+     * @throws \Exception
+     */
+    private function pemOidCheck($value)
+    {
+        if ($value != '2b8104000a') {
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * Cleans the PEM data of unwanted data.
+     *
+     * @param  string  $value The value to clean.
+     * @return string  $value The cleaned value.
+     */
+    private function pemDataClean($value)
+    {
+        $value = str_ireplace('-----BEGIN EC PRIVATE KEY-----', '', $value);
+        $value = str_ireplace('-----END EC PRIVATE KEY-----', '', $value);
+        $value = str_ireplace("\r", '', trim($value));
+        $value = str_ireplace("\n", '', trim($value));
+        $value = str_ireplace(' ', '', trim($value));
+
+        return $value;
     }
 }
