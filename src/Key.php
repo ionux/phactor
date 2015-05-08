@@ -214,7 +214,7 @@ final class Key
     private function pemDataLenCheck($value)
     {
         if (strlen($value) < 220) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 220.  Value received was "' . var_export($value, true) '".');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 220.  Value received was "' . var_export($value, true) . '".');
         }
     }
 
