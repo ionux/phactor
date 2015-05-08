@@ -139,9 +139,7 @@ final class Key
      */
     public function encodePEM($keypair)
     {
-        if (true === empty($keypair) || false === is_array($keypair) || strlen($keypair[0]) < 62 || strlen($keypair[1]) < 126) {
-            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
-        }
+        $this->pemInitialDataCheck($keypair);
 
         $ecpemstruct = array(
                              'sequence_beg' => '30',
@@ -196,12 +194,25 @@ final class Key
         $private_key = $ecpemstruct['oct_sec_val'];
         $public_key  = '04' . $ecpemstruct['bit_str_val'];
 
-        $this->pemKeyLenCheck(array(private_key, public_key));
+        $this->pemKeyLenCheck(array($private_key, $public_key));
 
         return array(
                      'private_key' => $private_key,
                      'public_key'  => $public_key
                     );
+    }
+
+    /**
+     * Ensures the data we want to PEM encode is acceptable.
+     *
+     * @param  array     $keypair The values to check.
+     * @throws \Exception
+     */
+    private function pemInitialDataCheck($keypair)
+    {
+        if (true === empty($keypair) || false === is_array($keypair) || strlen($keypair[0]) < 62 || strlen($keypair[1]) < 126) {
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
+        }
     }
 
     /**
