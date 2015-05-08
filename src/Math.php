@@ -514,7 +514,9 @@ trait Math
         $this->preOpMethodParamsCheck(array($value));
 
         try {
- 
+
+            $value = $this->encodeHex($value);
+
             /* Check to see if $value is in the range [1, n-1] */
             if ($this->math->comp($value, '0x01') <= 0 && $this->math->comp($value, $this->n) > 0) {
                 throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
