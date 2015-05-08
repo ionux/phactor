@@ -180,9 +180,8 @@ final class Key
      */
     public function decodePEM($pem_data)
     {
-        $this->pemDataClean($pem_data);
-
-        $decoded = bin2hex(base64_decode($pem_data));
+        $pem_data = $this->pemDataClean($pem_data);
+        $decoded  = bin2hex(base64_decode($pem_data));
 
         $this->pemDataLenCheck($decoded);
 
