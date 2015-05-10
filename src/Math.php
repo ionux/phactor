@@ -562,6 +562,45 @@ trait Math
     }
 
     /**
+     * Converts a BASE-58 number used for Bitcoin-related tasks to hex.
+     *
+     * @param  string     $base58
+     * @return string     $return
+     * @throws \Exception
+     */
+    public function decodeBase58($base58)
+    {
+        $this->preOpMethodParamsCheck(array($base58));
+
+        try {
+            $origbase58 = $base58;
+            $return     = '0';
+            $b58_len    = strlen($base58);
+
+            for ($i = 0; $i < $b58_len; $i++) {
+                $current = strpos($this->b58_chars, $base58[$i]);
+                $return  = $this->math->mul($return, '58');
+                $return  = $this->math->add($return, $current);
+            }
+
+            $return = $this->encodeHex($return);
+
+            for ($i = 0; $i < strlen($origbase58) && $origbase58[$i] == '1'; $i++) {
+                $return = '00' . $return;
+            }
+
+            if (strlen($return) %2 != 0) {
+                $return = '0' . $return;
+            }
+
+            return $return;
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
      * Generates an array of byte values.
      *
      * @return array $tempvals An array of bytes.
