@@ -108,8 +108,6 @@ final class Key
      */
     public function GenerateKeypair()
     {
-        $comp_prefix = '';
-
         $point = $this->GenerateNewPoint();
 
         $point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
