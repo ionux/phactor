@@ -49,12 +49,12 @@ final class Key
     public function __construct(array $params = null)
     {
         $this->keyInfo = array(
-                               'private_key_hex'       => (isset($params['private_key_hex']))       ? $params['private_key_hex']       : '',
-                               'private_key_dec'       => (isset($params['private_key_dec']))       ? $params['private_key_dec']       : '',
-                               'public_key'            => (isset($params['public_key']))            ? $params['public_key']            : '',
-                               'public_key_compressed' => (isset($params['public_key_compressed'])) ? $params['public_key_compressed'] : '',
-                               'public_key_x'          => (isset($params['public_key_x']))          ? $params['public_key_x']          : '',
-                               'public_key_y'          => (isset($params['public_key_y']))          ? $params['public_key_y']          : '',
+                               'private_key_hex'       => $this->keyValueCheck($params['private_key_hex']),
+                               'private_key_dec'       => $this->keyValueCheck($params['private_key_dec']),
+                               'public_key'            => $this->keyValueCheck($params['public_key']),
+                               'public_key_compressed' => $this->keyValueCheck($params['public_key_compressed']),
+                               'public_key_x'          => $this->keyValueCheck($params['public_key_x']),
+                               'public_key_y'          => $this->keyValueCheck($params['public_key_y']),
                                'generation_time'       => '',
                               );
     }
@@ -267,5 +267,16 @@ final class Key
         $value = str_ireplace(' ', '', trim($value));
 
         return $value;
+    }
+
+    /**
+     * Returns the value, if exists.
+     *
+     * @param  string  $value The value to check.
+     * @return string  $value The value, if set.
+     */
+    private function keyValueCheck($value)
+    {
+        return (true === isset($value)) ? $value : '';
     }
 }
