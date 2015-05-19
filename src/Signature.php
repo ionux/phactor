@@ -80,7 +80,7 @@ final class Signature
                          'y' => $this->Gy
                         );
 
-        $this->generateFromConstructor($message = '', $private_key = '');
+        $this->generateFromConstructor($message, $private_key);
     }
 
     /**
