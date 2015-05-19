@@ -105,10 +105,6 @@ final class Signature
      */
     public function Generate($message, $private_key)
     {
-        if ($this->numberCheck($private_key) === false) {
-            throw new \Exception('The private key and message parameters are required to generate a signature.  Value received for first parameter was "' . var_export($message, true) . '" and second parameter was "' . var_export($private_key, true) . '".');
-        }
-
         $e         = '';
         $k         = '';
         $r         = '';
@@ -119,9 +115,7 @@ final class Signature
 
         $private_key = $this->encodeHex($private_key);
 
-        if (strlen($private_key) < 62) {
-            throw new \Exception('Invalid public key format!  Must be <= 32-byte hex number.  Value checked was "' . var_export($private_key, true) . '".');
-        }
+        $this->hexLenCheck($private_key);
 
         try {
 
@@ -235,10 +229,6 @@ final class Signature
      */
     public function Encode($r, $s)
     {
-        if ($this->numberCheck($r) === false || $this->numberCheck($s) === false) {
-            throw new \Exception('The signature coordinate parameters are required.  Value received for first parameter was "' . var_export($r, true) . '" and second parameter was "' . var_export($s, true) . '".');
-        }
-
         $r = $this->binConv($this->CoordinateCheck($r));
         $s = $this->binConv($this->CoordinateCheck($s));
 
@@ -278,10 +268,6 @@ final class Signature
      */
     private function parseSig($signature)
     {
-        if (true === empty($signature)) {
-            throw new \Exception('You must provide a valid hex parameter.  Value received was "' . var_export($signature, true) . '".');
-        }
-
         $signature = trim($signature);
 
         /* This is the main structure we'll use for storing our parsed signature. */
@@ -363,16 +349,9 @@ final class Signature
      */
     private function CoordinateCheck($hex)
     {
-        if ($this->numberCheck($hex) === false) {
-            throw new \Exception('You must provide a valid coordinate parameter in hex format to check.  Value received was "' . var_export($hex, true) . '".');
-        }
-
         $hex = $this->encodeHex($hex);
 
-        if (strlen($hex) < 62) {
-            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($tempval, true) . '".');
-        }
-
+        $this->hexLenCheck($hex);
         $this->RangeCheck($hex);
 
         return $hex;
@@ -507,6 +486,19 @@ final class Signature
     {
         if ($message != '' && $private_key != '') {
             $this->Generate($message, $private_key);
+        }
+    }
+
+    /**
+     * Checks if a specific hex value is < 62 characters long.
+     *
+     * @param  string     $hex  The value to check.
+     * @throws \Exception
+     */
+    private function hexLenCheck($hex)
+    {
+        if (strlen($hex) < 62) {
+            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
         }
     }
 }
