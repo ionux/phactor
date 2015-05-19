@@ -134,7 +134,7 @@ final class Signature
                 /* s = k^-1 * (e+d*r) mod n */
                 $s = $this->Modulo($this->Multiply($this->Invert($k, $this->n), $this->Add($e, $this->Multiply($private_key, $r))), $this->n);
 
-            } while ($this->Compare($r, '0x00') <= 0 || $this->Compare($s, '0x00') <= 0);
+            } while ($this->zeroCompare($r, $s));
 
         } catch (\Exception $e) {
             throw $e;
@@ -500,5 +500,17 @@ final class Signature
         if (strlen($hex) < 62) {
             throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
         }
+    }
+
+    /**
+     * Checks if two parameters are less than or equal to zero.
+     *
+     * @param  string $a  The first parameter to check.
+     * @param  string $a  The first parameter to check.
+     * @return boolean    Result of the check.
+     */
+    private function zeroCompare($a, $b)
+    {
+        return ($this->Compare($a, '0x00') <= 0 || $this->Compare($b, '0x00') <= 0);
     }
 }
