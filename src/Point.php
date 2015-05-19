@@ -50,11 +50,11 @@ trait Point
      */
     public function pointAdd($P, $Q)
     {
-        if (false === isset($P) || true === empty($P)) {
+        if (false === isset($P)) {
             throw new \Exception('You must provide a valid first point parameter to add.');
         }
 
-        if (false === isset($Q) || true === empty($Q)) {
+        if (false === isset($Q)) {
             throw new \Exception('You must provide a valid second point parameter to add.');
         }
 
@@ -83,11 +83,12 @@ trait Point
 
             $R['x'] = $this->Modulo($this->Subtract($this->Subtract($this->Multiply($ss, $ss), $P['x']), $Q['x']), $this->p);
             $R['y'] = $this->Modulo($this->Add($this->Subtract('0', $P['y']), $this->Multiply($ss, $this->Subtract($P['x'], $R['x']))), $this->p);
+
+            return $R;
+
         } catch (\Exception $e) {
             throw $e;
         }
-
-        return $R;
     }
 
     /**
@@ -102,7 +103,7 @@ trait Point
      */
     public function pointDouble($P)
     {
-        if (false === isset($P) || true === empty($P)) {
+        if (false === isset($P)) {
             throw new \Exception('You must provide a valid point parameter to double.');
         }
 
@@ -134,11 +135,12 @@ trait Point
 
             $R['x'] = $R['x'];
             $R['y'] = $this->Modulo($yadd, $this->p);
+
+            return $R;
+
         } catch (\Exception $e) {
             throw $e;
         }
-
-        return $R;
     }
 
     /**
@@ -151,7 +153,7 @@ trait Point
      */
     public function PointTest($P)
     {
-        if (false === isset($P) || true === empty($P) || $this->Inf == $P || false === is_array($P)) {
+        if (false === isset($P) || $this->Inf == $P || false === is_array($P)) {
             throw new \Exception('You must provide a valid point to test.');
         }
 
@@ -181,11 +183,12 @@ trait Point
              */
             $left  = $this->Modulo($y2, $this->p);
             $right = $this->Modulo($this->Add($this->Add($x3, $ax), $this->b), $this->p);
+
+            return $left == $right;
+
         } catch (\Exception $e) {
             throw $e;
         }
-
-        return $left == $right;
     }
 
     /**
@@ -199,11 +202,11 @@ trait Point
      */
     public function doubleAndAdd($x, $P)
     {
-        if (false === isset($P) || true === empty($P) || false === is_array($P)) {
+        if (false === isset($P) || false === is_array($P)) {
             throw new \Exception('You must provide a valid point to scale.');
         }
 
-        if (false === isset($x) || true === empty($x)) {
+        if (false === isset($x)) {
             throw new \Exception('Missing or invalid scalar value in doubleAndAdd() function.');
         }
 
@@ -234,11 +237,11 @@ trait Point
      */
     public function mLadder($x, $P)
     {
-        if (false === isset($P) || true === empty($P) || false === is_array($P)) {
+        if (false === isset($P) || false === is_array($P)) {
             throw new \Exception('You must provide a valid point to scale.');
         }
 
-        if (false === isset($x) || true === empty($x)) {
+        if (false === isset($x)) {
             throw new \Exception('Missing or invalid scalar value in mLadder() function.');
         }
 
@@ -281,7 +284,7 @@ trait Point
 
         do {
             $random_number = $this->SecureRandomNumber();
-        } while ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0);
+        } while ($this->randCompare($random_number));
 
         $R = ($ladder === true) ? $this->mLadder($random_number, $P) : $this->doubleAndAdd($random_number, $P);
 
@@ -298,6 +301,17 @@ trait Point
                      'Rx_hex'        => $Rx_hex,
                      'Ry_hex'        => $Ry_hex
                     );
+    }
 
+    /**
+     * Checks if a number is within a certain range:
+     *   0x01 < number <= n
+     *
+     * @param  string  $random_number  The number to check.
+     * @return boolean                 The result of the comparison.
+     */
+    private function randCompare($random_number)
+    {
+        return ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0)
     }
 }
