@@ -448,10 +448,10 @@ final class Signature
     /**
      * Checks if the uncompressed public key has the 0x04 prefix.
      *
-     * @param  string     $value The key to check.
-     * @return string            The public key without the prefix.
+     * @param  string $pubkey The key to check.
+     * @return string         The public key without the prefix.
      */
-    private function parseUncompressedPublicKey($value)
+    private function parseUncompressedPublicKey($pubkey)
     {
         return (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
     }
