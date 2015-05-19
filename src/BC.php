@@ -117,8 +117,8 @@ final class BC
     /**
      * Raises $a to the power of $b.
      *
-     * @param  string $a
-     * @param  string $b
+     * @param  string $a  The first number.
+     * @param  string $b  The second number.
      * @return string
      */
     public function power($a, $b)
@@ -155,13 +155,12 @@ final class BC
         try {
 
             do {
-                $z = bcmod($num, $mod);
-                $c = bcdiv($num, $mod);
+                list($z, $c) = $this->modDiv($num, $mod);
 
                 $num = $mod;
                 $mod = $z;
 
-                $z = bcsub($a, bcmul($b, $c));
+                $z = $this->subMul($a, $b, $c);
 
                 $a = $b;
                 $b = $z;
@@ -185,31 +184,13 @@ final class BC
      */
     private function coprime($a, $b)
     {
-        $small = 0;
-        $diff  = 0;
-
         $a = $this->normalize($a);
         $b = $this->normalize($b);
 
         try {
-
-            while (bccomp($a, '0') > 0 && bccomp($b, '0') > 0) {
-                switch (bccomp($a, $b)) {
-                    case 0:
-                    case -1:
-                        $small = $a;
-                        $diff  = bcmod($b, $a);
-                        break;
-                    case 1:
-                        $small = $b;
-                        $diff  = bcmod($a, $b);
-                        break;
-                }
-
-                $a = $small;
-                $b = $diff;
+            while ($this->coCompare($a, $b)) {
+                list($a, $b) = $this->coSwitch($a, $b);
             }
-
         } catch (\Exception $e) {
             throw $e;
         }
@@ -226,5 +207,65 @@ final class BC
     private function normalize($a)
     {
         return (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+    }
+
+    /**
+     * Compares two numbers and returns an array
+     * consisting of the smaller number & the
+     * result of the larger number % smaller.
+     *
+     * @param  string $a  First param to check.
+     * @param  string $b  Second param to check.
+     * @return array      Array of smaller, larger % smaller.
+     */
+    private function coSwitch($a, $b)
+    {
+        switch (bccomp($a, $b)) {
+            case 0:
+                // Fall through.
+            case -1:
+                return array($a, bcmod($b, $a));
+            case 1:
+                return array($b, bcmod($a, $b));
+        }
+    }
+
+    /**
+     * Checks if both values are greater than zero.
+     *
+     * @param  string $a  First param to check.
+     * @param  string $b  Second param to check.
+     * @return bool       Whether the params are both > 0.
+     */
+    private function coCompare($a, $b)
+    {
+        return (bccomp($a, '0') > 0 && bccomp($b, '0') > 0);
+    }
+
+    /**
+     * Calculates a number % modulo, number / moduly
+     * and returns an array of the results.
+     *
+     * @param  string $num  Number parameter.
+     * @param  string $mod  Modulo parameter.
+     * @return array        Array of num % mod, num / mod.
+     */
+    private function modDiv($num, $mod)
+    {
+        return array(bcmod($num, $mod), bcdiv($num, $mod));
+    }
+
+    /**
+     * Multiplies two numbers and subtracts the
+     * results from a third number.
+     *
+     * @param  string $a  Number to subtract from.
+     * @param  string $b  First number to multiply.
+     * @param  string $c  Second number to multiply.
+     * @return string     Result of a - (b * c).
+     */
+    private function subMul($a, $b, $c)
+    {
+        return bcsub($a, bcmul($b, $c));
     }
 }
