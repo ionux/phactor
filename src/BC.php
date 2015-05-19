@@ -166,11 +166,11 @@ final class BC
                 $b = $z;
             } while (bccomp($mod, '0') > 0);
 
+            return $this->addMod($a, $modulus);
+
         } catch (\Exception $e) {
             throw $e;
         }
-
-        return (bccomp($a, '0') < 0) ? bcadd($a, $modulus) : $a;
     }
 
     /**
@@ -267,5 +267,18 @@ final class BC
     private function subMul($a, $b, $c)
     {
         return bcsub($a, bcmul($b, $c));
+    }
+
+    /**
+     * Checks if a number is negative and adds the modulus
+     * to it, if true.
+     *
+     * @param  string $a    Number to check.
+     * @param  string $mod  Modulus parameter.
+     * @return string       Either a or (a + mod).
+     */
+    private function addMod($a, $mod)
+    {
+        return (bccomp($a, '0') < 0) ? bcadd($a, $mod) : $a;
     }
 }
