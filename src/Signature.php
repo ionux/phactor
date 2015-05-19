@@ -193,18 +193,13 @@ final class Signature
         /* Convert the hash of the hex message to decimal */
         $e = $this->decodeHex(hash('sha256', $msg));
 
-        $n_dec = $this->decodeHex($this->n);
-
-        $pubkey = (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
+        $n_dec  = $this->decodeHex($this->n);
+        $pubkey = $this->parseUncompressedPublicKey($pubkey);
 
         /* Parse the x,y coordinates */
-        $Q = array(
-                   'x' => $this->addHexPrefix(substr($pubkey, 0, 64)),
-                   'y' => $this->addHexPrefix(substr($pubkey, 64))
-                  );
+        $Q = $this->parseCoordinatePairFromPublicKey($pubkey);
 
-        $this->RangeCheck($Q['x']);
-        $this->RangeCheck($Q['y']);
+        $this->coordsRangeCheck($Q['x'], $Q['y']);
 
         try {
             /* Calculate w = s^-1 (mod n) */
@@ -223,11 +218,7 @@ final class Signature
              * A signature is valid if r is congruent to x1 (mod n)
              * or in other words, if r - x1 is an integer multiple of n.
              */
-            if ($this->Compare($r, $this->encodeHex($Z['x'])) == 0) {
-                return true;
-            } else {
-                throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($this->encodeHex($Z['x']), true) . '".');
-            }
+            return $this->congruencyCheck($r, $Z['x']);
 
         } catch (\Exception $e) {
             throw $e;
@@ -451,6 +442,60 @@ final class Signature
     {
         if ($value != '20' && $value != '21') {
             throw new \Exception('Invalid ECDSA signature provided!  The coordinate length is invalid.  Value checked was "' . var_export($value, true) . '".');
+        }
+    }
+
+    /**
+     * Checks if the uncompressed public key has the 0x04 prefix.
+     *
+     * @param  string     $value The key to check.
+     * @return string            The public key without the prefix.
+     */
+    private function parseUncompressedPublicKey($value)
+    {
+        return (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
+    }
+
+    /**
+     * Checks the range of a pair of coordinates.
+     *
+     * @param  string     $x The key to check.
+     * @param  string     $y The key to check.
+     */
+    private function coordsRangeCheck($x, $y)
+    {
+        $this->RangeCheck($x);
+        $this->RangeCheck($y);
+    }
+
+    /**
+     * Parses the x & y coordinates from an uncompressed public key.
+     *
+     * @param  string     $pubkey The key to parse.
+     * @return array              The public key (x,y) coordinates.
+     */
+    private function parseCoordinatePairFromPublicKey($pubkey)
+    {
+        return array(
+                    'x' => $this->addHexPrefix(substr($pubkey, 0, 64)),
+                    'y' => $this->addHexPrefix(substr($pubkey, 64))
+                    );
+    }
+
+    /**
+     * Congruency check for two values.
+     *
+     * @param  string $r  The first coordinate to check.
+     * @param  string $x  The second coordinate to check.
+     * @return boolean    Returns true if values are congruent.
+     * @throws \Exception
+     */
+    private function congruencyCheck($r, $x)
+    {
+        if ($this->Compare($r, $this->encodeHex($x)) == 0) {
+            return true;
+        } else {
+            throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($this->encodeHex($x), true) . '".');
         }
     }
 }
