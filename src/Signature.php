@@ -80,9 +80,7 @@ final class Signature
                          'y' => $this->Gy
                         );
 
-        if ($message != '' && $private_key != '') {
-            $this->Generate($message, $private_key);
-        }
+        $this->generateFromConstructor($message = '', $private_key = '');
     }
 
     /**
@@ -496,6 +494,19 @@ final class Signature
             return true;
         } else {
             throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($this->encodeHex($x), true) . '".');
+        }
+    }
+
+    /**
+     * Called to generate a signature if values are passed to the constructor.
+     *
+     * @param  string $message     The message to sign.
+     * @param  string $private_key The signer's private key.
+     */
+    private function generateFromConstructor($message, $private_key)
+    {
+        if ($message != '' && $private_key != '') {
+            $this->Generate($message, $private_key);
         }
     }
 }
