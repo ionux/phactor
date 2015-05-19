@@ -312,6 +312,6 @@ trait Point
      */
     private function randCompare($random_number)
     {
-        return ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0)
+        return ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0);
     }
 }
