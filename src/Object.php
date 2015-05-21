@@ -95,7 +95,7 @@ trait Object
      */
     private function objTest($value)
     {
-        return (!nullTest($value) && is_object($value));
+        return (($this->nullTest($value) === false) && is_object($value));
     }
 
     /**
@@ -106,7 +106,7 @@ trait Object
      */
     private function arrTest($value)
     {
-        return (!nullTest($value) && is_array($value));
+        return (($this->nullTest($value) === false) && is_array($value));
     }
 
     /**
@@ -117,7 +117,7 @@ trait Object
      */
     private function boolTest($value)
     {
-        return (!nullTest($value) && is_bool($value));
+        return (($this->nullTest($value) === false) && is_bool($value));
     }
 
     /**
@@ -128,7 +128,7 @@ trait Object
      */
     private function resTest($value)
     {
-        return (!nullTest($value) && is_resource($value));
+        return (($this->nullTest($value) === false) && is_resource($value));
     }
 
     /**
@@ -139,6 +139,6 @@ trait Object
      */
     private function strTest($value)
     {
-        return (!nullTest($value) && is_string($value));
+        return (($this->nullTest($value) === false) && is_string($value));
     }
 }
