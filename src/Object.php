@@ -77,68 +77,68 @@ trait Object
     }
 
     /**
-     * Checks if a value is null or not set.
+     * Checks if a value is null, nothing or empty array.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function nullTest($value)
     {
-        return (isset($value) || is_null($value));
+        return (is_null($value) || $value === "" || $value === array());
     }
 
     /**
-     * Checks if a value is an object
+     * Checks if a value is an object.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function objTest($value)
     {
-        return (nullTest($value) && is_object($value));
+        return (!nullTest($value) && is_object($value));
     }
 
     /**
-     * Checks if a value is an array
+     * Checks if a value is an array.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function arrTest($value)
     {
-        return (nullTest($value) && is_array($value));
+        return (!nullTest($value) && is_array($value));
     }
 
     /**
-     * Checks if a value is an boolean
+     * Checks if a value is an boolean.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function boolTest($value)
     {
-        return (nullTest($value) && is_bool($value));
+        return (!nullTest($value) && is_bool($value));
     }
 
     /**
-     * Checks if a value is a resource
+     * Checks if a value is a resource.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function resTest($value)
     {
-        return (nullTest($value) && is_resource($value));
+        return (!nullTest($value) && is_resource($value));
     }
 
     /**
-     * Checks if a value is a string
+     * Checks if a value is a string.
      *
      * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function strTest($value)
     {
-        return (nullTest($value) && is_string($value));
+        return (!nullTest($value) && is_string($value));
     }
 }
