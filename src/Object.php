@@ -28,7 +28,7 @@
 namespace Phactor;
 
 /**
- * The very base, primary Object class for the Phactor library.
+ * The very base, primary Object trait for the Phactor library.
  *
  * @author Rich Morgan <rich@bitpay.com>
  */
@@ -68,7 +68,7 @@ trait Object
     /**
      * Trims() and strtolowers() the value.
      *
-     * @param  string $value The value to clean.
+     * @param  mixed $value  The value to clean.
      * @return string        The clean value.
      */
     private function prepAndClean($value)
@@ -79,55 +79,66 @@ trait Object
     /**
      * Checks if a value is null or not set.
      *
-     * @param  string $value The value to be checked.
+     * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function nullTest($value)
     {
-        return (false === isset($value) || true === is_null($value));
+        return (isset($value) || is_null($value));
     }
 
     /**
      * Checks if a value is an object
      *
-     * @param  string $value The value to be checked.
+     * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function objTest($value)
     {
-        return is_object($value);
+        return (nullTest($value) && is_object($value));
     }
 
     /**
      * Checks if a value is an array
      *
-     * @param  string $value The value to be checked.
+     * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function arrTest($value)
     {
-        return is_array($value);
+        return (nullTest($value) && is_array($value));
+    }
+
+    /**
+     * Checks if a value is an boolean
+     *
+     * @param  mixed $value  The value to be checked.
+     * @return boolean       Either true or false.
+     */
+    private function boolTest($value)
+    {
+        return (nullTest($value) && is_bool($value));
     }
 
     /**
      * Checks if a value is a resource
      *
-     * @param  string $value The value to be checked.
+     * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function resTest($value)
     {
-        return is_resource($value);
+        return (nullTest($value) && is_resource($value));
     }
 
     /**
      * Checks if a value is a string
      *
-     * @param  string $value The value to be checked.
+     * @param  mixed $value  The value to be checked.
      * @return boolean       Either true or false.
      */
     private function strTest($value)
     {
-        return is_string($value);
+        return (nullTest($value) && is_string($value));
     }
 }
