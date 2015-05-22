@@ -171,7 +171,13 @@ trait Point
             $left  = $this->Modulo($y2, $this->p);
             $right = $this->Modulo($this->Add($this->Add($x3, $ax), $this->b), $this->p);
 
-            return $left == $right;
+            $test_point = array('x' => $right, 'y' => $left, 'y2' => $y2, 'x3' => $x3, 'ax' => $ax);
+
+            if ($left == $right) {
+                return $left == $right;
+            } else {
+                throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
+            }
 
         } catch (\Exception $e) {
             throw $e;
