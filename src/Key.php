@@ -270,6 +270,31 @@ final class Key
     }
 
     /**
+     * Checks if the uncompressed public key has the 0x04 prefix.
+     *
+     * @param  string $pubkey The key to check.
+     * @return string         The public key without the prefix.
+     */
+    private function parseUncompressedPublicKey($pubkey)
+    {
+        return (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
+    }
+
+    /**
+     * Parses the x & y coordinates from an uncompressed public key.
+     *
+     * @param  string     $pubkey The key to parse.
+     * @return array              The public key (x,y) coordinates.
+     */
+    private function parseCoordinatePairFromPublicKey($pubkey)
+    {
+        return array(
+                    'x' => $this->addHexPrefix(substr($pubkey, 0, 64)),
+                    'y' => $this->addHexPrefix(substr($pubkey, 64))
+                    );
+    }
+
+    /**
      * Returns the value, if exists.
      *
      * @param  string  $value The value to check.
@@ -277,6 +302,6 @@ final class Key
      */
     private function keyValueCheck($value)
     {
-        return (true === isset($value)) ? $value : '';
+        return (isset($value)) ? $value : '';
     }
 }
