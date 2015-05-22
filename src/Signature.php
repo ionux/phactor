@@ -210,7 +210,7 @@ final class Signature
              * A signature is valid if r is congruent to x1 (mod n)
              * or in other words, if r - x1 is an integer multiple of n.
              */
-            return $this->congruencyCheck($r, $Z['x']);
+            return $this->congruencyCheck($r, $this->encodeHex($Z['x']));
 
         } catch (\Exception $e) {
             throw $e;
@@ -241,21 +241,6 @@ final class Signature
                chr(0x02) . chr(strlen($retval['bin_s'])) . $retval['bin_s'];
 
         return bin2hex(chr(0x30) . chr(strlen($seq)) . $seq);
-    }
-
-    /**
-     * Determines if the msb is set.
-     *
-     * @param  string $value The binary data to check.
-     * @return string
-     */
-    private function msbCheck($value)
-    {
-        if ($this->Compare('0x' . bin2hex($value), '0x80') >= 0) {
-            return chr(0x00);
-        }
-
-        return;
     }
 
     /**
@@ -340,22 +325,7 @@ final class Signature
                     );
     }
 
-    /**
-     * Basic coordinate check: verifies 
-     *
-     * @param  string $hex The coordinate to check.
-     * @return string $hex The checked coordinate.
-     * @throws \Exception
-     */
-    private function CoordinateCheck($hex)
-    {
-        $hex = $this->encodeHex($hex);
-
-        $this->hexLenCheck($hex);
-        $this->RangeCheck($hex);
-
-        return $hex;
-    }
+    
 
     /**
      * Ensures the total ECDSA signature length is acceptable.
@@ -423,60 +393,6 @@ final class Signature
     }
 
     /**
-     * Checks if the uncompressed public key has the 0x04 prefix.
-     *
-     * @param  string $pubkey The key to check.
-     * @return string         The public key without the prefix.
-     */
-    private function parseUncompressedPublicKey($pubkey)
-    {
-        return (substr($pubkey, 0, 2) == '04') ? $this->prepAndClean(substr($pubkey, 2)) : $this->prepAndClean($pubkey);
-    }
-
-    /**
-     * Checks the range of a pair of coordinates.
-     *
-     * @param  string     $x The key to check.
-     * @param  string     $y The key to check.
-     */
-    private function coordsRangeCheck($x, $y)
-    {
-        $this->RangeCheck($x);
-        $this->RangeCheck($y);
-    }
-
-    /**
-     * Parses the x & y coordinates from an uncompressed public key.
-     *
-     * @param  string     $pubkey The key to parse.
-     * @return array              The public key (x,y) coordinates.
-     */
-    private function parseCoordinatePairFromPublicKey($pubkey)
-    {
-        return array(
-                    'x' => $this->addHexPrefix(substr($pubkey, 0, 64)),
-                    'y' => $this->addHexPrefix(substr($pubkey, 64))
-                    );
-    }
-
-    /**
-     * Congruency check for two values.
-     *
-     * @param  string $r  The first coordinate to check.
-     * @param  string $x  The second coordinate to check.
-     * @return boolean    Returns true if values are congruent.
-     * @throws \Exception
-     */
-    private function congruencyCheck($r, $x)
-    {
-        if ($this->Compare($r, $this->encodeHex($x)) == 0) {
-            return true;
-        } else {
-            throw new \Exception('The signature is invalid!  Value used for $r was "' . var_export($r, true) . '" and the calculated $x parameter was "' . var_export($this->encodeHex($x), true) . '".');
-        }
-    }
-
-    /**
      * Called to generate a signature if values are passed to the constructor.
      *
      * @param  string $message     The message to sign.
@@ -487,30 +403,5 @@ final class Signature
         if ($message != '' && $private_key != '') {
             $this->Generate($message, $private_key);
         }
-    }
-
-    /**
-     * Checks if a specific hex value is < 62 characters long.
-     *
-     * @param  string     $hex  The value to check.
-     * @throws \Exception
-     */
-    private function hexLenCheck($hex)
-    {
-        if (strlen($hex) < 62) {
-            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
-        }
-    }
-
-    /**
-     * Checks if two parameters are less than or equal to zero.
-     *
-     * @param  string $a  The first parameter to check.
-     * @param  string $a  The first parameter to check.
-     * @return boolean    Result of the check.
-     */
-    private function zeroCompare($a, $b)
-    {
-        return ($this->Compare($a, '0x00') <= 0 || $this->Compare($b, '0x00') <= 0);
     }
 }
