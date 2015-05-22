@@ -35,7 +35,7 @@ namespace Phactor;
  */
 trait Point
 {
-    use Math;
+    use Math, Secp256k1;
 
     /**
      * EC Point addition method P + Q = R where:
@@ -48,25 +48,17 @@ trait Point
      * @return array        $R The result of the point addition.
      * @throws \Exception
      */
-    public function pointAdd($P, $Q)
+    public function pointAddW($P, $Q)
     {
-        if (false === isset($P)) {
-            throw new \Exception('You must provide a valid first point parameter to add.');
+        if ($this->pointType($P) == 'nul' || $this->pointType($Q) == 'nul') {
+            throw new \Exception('You must provide valid point parameters to add.');
         }
 
-        if (false === isset($Q)) {
-            throw new \Exception('You must provide a valid second point parameter to add.');
-        }
-
-        if ($P == $Q) {
-            return $this->pointDouble($P);
-        }
-
-        if ($P == $this->Inf || false === is_array($P)) {
+        if ($P == $this->Inf || false === $this->arrTest($P)) {
             return $Q;
         }
 
-        if ($Q == $this->Inf || false === is_array($Q)) {
+        if ($Q == $this->Inf || false === $this->arrTest($P)) {
             return $P;
         }
 
@@ -101,14 +93,13 @@ trait Point
      * @return array|string  $R The multiplied point.
      * @throws \Exception
      */
-    public function pointDouble($P)
+    public function pointDoubleW($P)
     {
-        if (false === isset($P)) {
-            throw new \Exception('You must provide a valid point parameter to double.');
-        }
-
-        if ($P == $this->Inf || false === is_array($P)) {
-            return $this->Inf;
+        switch ($this->pointType($P)) {
+            case 'inf':
+                return $this->Inf;
+            case 'nul':
+                throw new \Exception('You must provide a valid point parameter to double.');
         }
 
         $ss = '0';
@@ -145,20 +136,20 @@ trait Point
 
     /**
      * Performs a test of an EC point by substituting the new
-     * values into the equation for the standard form of the curve.
+     * values into the equation for the Weierstrass form of the curve.
      *
-     * @param  array|string $P   The generated point to test.
+     * @param  array $P          The generated point to test.
      * @return bool              Whether or not the point is valid.
      * @throws \Exception
      */
-    public function PointTest($P)
+    public function pointTestW($P)
     {
-        if (false === isset($P) || $this->Inf == $P || false === is_array($P)) {
-            throw new \Exception('You must provide a valid point to test.');
+        if ($this->pointType($P) != 'arr') {
+            return false;
         }
 
         /*
-         * Algebraic form of the elliptic curve:
+         * Weierstrass form of the elliptic curve:
          * y^2 (mod p) = x^3 + ax + b (mod p)
          */
         $y2    = '';
@@ -200,14 +191,10 @@ trait Point
      * @return array|string $S Either 'infinity' or the new coordinates.
      * @throws \Exception
      */
-    public function doubleAndAdd($x, $P)
+    public function doubleAndAdd($P, $x = '1')
     {
-        if (false === isset($P) || false === is_array($P)) {
-            throw new \Exception('You must provide a valid point to scale.');
-        }
-
-        if (false === isset($x)) {
-            throw new \Exception('Missing or invalid scalar value in doubleAndAdd() function.');
+        if ($this->pointType($P) != 'arr') {
+            return $P;
         }
 
         $tmp = $this->D2B($x);
@@ -235,14 +222,10 @@ trait Point
      * @return array|string $S Either 'infinity' or the new coordinates.
      * @throws \Exception
      */
-    public function mLadder($x, $P)
+    public function mLadder($P, $x = '1')
     {
-        if (false === isset($P) || false === is_array($P)) {
-            throw new \Exception('You must provide a valid point to scale.');
-        }
-
-        if (false === isset($x)) {
-            throw new \Exception('Missing or invalid scalar value in mLadder() function.');
+        if ($this->pointType($P) != 'arr') {
+            return $P;
         }
 
         $tmp = $this->D2B($x);
@@ -303,15 +286,79 @@ trait Point
                     );
     }
 
+    private function pointType($params)
+    {
+        if (true === $this->arrTest($value)) {
+            return 'arr';
+        }
+
+        if ($this->Inf == $value) {
+            return 'inf';
+        }
+
+        return 'nul';
+    }
+
+    /**
+     * Checks the range of a pair of coordinates.
+     *
+     * @param  string     $x The key to check.
+     * @param  string     $y The key to check.
+     */
+    private function coordsRangeCheck($x, $y)
+    {
+        $this->RangeCheck($x);
+        $this->RangeCheck($y);
+    }
+
+    /**
+     * Basic coordinate check: verifies 
+     *
+     * @param  string $hex The coordinate to check.
+     * @return string $hex The checked coordinate.
+     * @throws \Exception
+     */
+    private function CoordinateCheck($hex)
+    {
+        $hex = $this->encodeHex($hex);
+
+        $this->hexLenCheck($hex);
+        $this->RangeCheck($hex);
+
+        return $hex;
+    }
+
+    /**
+     * Basic range check. Throws exception if
+     * coordinate value is out of range.
+     *
+     * @param  string     $value The coordinate to check.
+     * @return boolean           The result of the check.
+     * @throws \Exception
+     */
+    public function RangeCheck($value)
+    {
+        $this->preOpMethodParamsCheck(array($value));
+
+        $value = $this->encodeHex($value);
+
+        /* Check to see if $value is in the range [1, n-1] */
+        if ($this->randCompare($value)) {
+           throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+        }
+
+        return true;
+    }
+
     /**
      * Checks if a number is within a certain range:
-     *   0x01 < number <= n
+     *   0x01 < number < n
      *
      * @param  string  $random_number  The number to check.
      * @return boolean                 The result of the comparison.
      */
-    private function randCompare($random_number)
+    private function randCompare($value)
     {
-        return ($this->Compare($random_number, '0x01') <= 0 || $this->Compare($random_number, $this->n) >= 0);
+        return ($this->Compare($value, '0x01') <= 0 || $this->Compare($value, $this->n) >= 0);
     }
 }
