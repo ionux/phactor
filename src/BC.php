@@ -209,6 +209,7 @@ final class BC
 
     	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
 
+        /** For now...
     	switch($this->Test($a)) {
     		case 'hex':
     			$a = $this->convertToDec($a);
@@ -219,6 +220,7 @@ final class BC
     		case 'unk':
     			throw new \Exception('Unknown number type in BC::normalize().  Cannot process!');
     	}
+        **/
 
         return $a;
     }
