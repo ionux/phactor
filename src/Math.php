@@ -34,7 +34,7 @@ namespace Phactor;
  */
 trait Math
 {
-    use Number, Secp256k1;
+    use Number;
 
     /**
      * @var object
