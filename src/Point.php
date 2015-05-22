@@ -286,7 +286,13 @@ trait Point
                     );
     }
 
-    private function pointType($params)
+    /**
+     * Checks the basic type of the point value.
+     *
+     * @param  mixed $value
+     * @return string
+     */
+    private function pointType($value)
     {
         if (true === $this->arrTest($value)) {
             return 'arr';
