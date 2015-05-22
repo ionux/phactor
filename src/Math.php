@@ -425,7 +425,7 @@ trait Math
      */
     private function congruencyCheck($r, $x)
     {
-        return ($this->math->compare($r, $x) == 0)
+        return ($this->math->compare($r, $x) == 0);
     }
 
     /**
