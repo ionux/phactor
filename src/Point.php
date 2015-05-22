@@ -68,7 +68,7 @@ trait Point
 
         try {
             $mm = $this->Subtract($P['y'], $Q['y']);
-            $nn = $this->Subtract($P['x'], $Q['x']);
+        	$nn = bcsub($P['x'], $Q['x']);
             $oo = $this->Invert($nn, $this->p);
             $st = $this->Multiply($mm, $oo);
             $ss = $this->Modulo($st, $this->p);
@@ -144,10 +144,6 @@ trait Point
      */
     public function pointTestW($P)
     {
-        if ($this->pointType($P) != 'arr') {
-            return false;
-        }
-
         /*
          * Weierstrass form of the elliptic curve:
          * y^2 (mod p) = x^3 + ax + b (mod p)
@@ -253,8 +249,8 @@ trait Point
     public function GenerateNewPoint($ladder = true)
     {
         $P = array(
-                   'x' => strtolower(trim($this->Gx)),
-                   'y' => strtolower(trim($this->Gy))
+                   'x' => $this->Gx,
+                   'y' => $this->Gy
                   );
 
         do {
@@ -290,12 +286,12 @@ trait Point
     {
     	$this->preOpMethodParamsCheck(array($value));
 
-    	$value = $this->encodeHex($value);
+    	//$value = $this->encodeHex($value);
 
     	/* Check to see if $value is in the range [1, n-1] */
-    	if ($this->randCompare($value)) {
-    		throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
-    	}
+    	//if ($this->randCompare($value)) {
+    	//	throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+    	//}
 
     	return true;
     }
@@ -327,8 +323,8 @@ trait Point
      */
     private function coordsRangeCheck($x, $y)
     {
-        $this->RangeCheck($x);
-        $this->RangeCheck($y);
+        //$this->RangeCheck($x);
+        //$this->RangeCheck($y);
     }
 
     /**
@@ -340,10 +336,10 @@ trait Point
      */
     private function CoordinateCheck($hex)
     {
-        $hex = $this->encodeHex($hex);
+        //$hex = $this->encodeHex($hex);
 
-        $this->hexLenCheck($hex);
-        $this->RangeCheck($hex);
+        //$this->hexLenCheck($hex);
+        //$this->RangeCheck($hex);
 
         return $hex;
     }
@@ -357,6 +353,6 @@ trait Point
      */
     private function randCompare($value)
     {
-        return ($this->Compare($value, '0x01') <= 0 || $this->Compare($value, $this->n) >= 0);
+        return ($this->Compare($value, '1') <= 0 || $this->Compare($value, $this->n) >= 0);
     }
 }
