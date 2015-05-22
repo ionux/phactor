@@ -50,11 +50,16 @@ trait Object
     private $bytes = array();
 
     /**
+     * @var boolean
+     */
+    private $openSSL = false;
+
+    /**
      * Generates an array of byte values.
      *
      * @return array $tempvals An array of bytes.
      */
-    private function GenBytes()
+    private function genBytes()
     {
         $tempvals = array();
 
@@ -140,5 +145,21 @@ trait Object
     private function strTest($value)
     {
         return (($this->nullTest($value) === false) && is_string($value));
+    }
+
+    /**
+     * Checks if the OpenSSL extension is loaded.
+     *
+     * @throws \Exception
+     */
+    private function openSSLCheck()
+    {
+        if ($this->openSSL === false) {
+            if (extension_loaded('openssl')) {
+                $this->openSSL = true;
+            } else {
+                throw new \Exception('Phactor requires the OpenSSL extension for PHP. Please install this extension to use the Phactor math library.');
+            }
+        }
     }
 }
