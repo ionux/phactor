@@ -351,10 +351,10 @@ trait Math
     private function MathCheck()
     {
         if ($this->math == null) {
-            if (function_exists('gmp_add')) {
-                $this->math = new GMP();
-            } else if (function_exists('bcadd')) {
+            if (function_exists('bcadd')) {
                 $this->math = new BC();
+            } else if (function_exists('gmp_add')) {
+                $this->math = new GMP();
             } else {
                 throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
             }
