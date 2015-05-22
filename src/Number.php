@@ -34,6 +34,8 @@ namespace Phactor;
  */
 trait Number
 {
+    use Object;
+
     /**
      * @var string
      */
@@ -60,11 +62,6 @@ trait Number
     private $bin_chars = '01';
 
     /**
-     * @var array
-     */
-    private $bytes = array();
-
-    /**
      * Returns the appropriate base digit string/array for the
      * requested base parameter.
      *
@@ -76,7 +73,7 @@ trait Number
     {
         switch ($base) {
             case '256':
-                return $this->GenBytes();
+                return $this->genBytes();
             case '16':
                 return $this->hex_chars;
             case '58':
@@ -86,7 +83,7 @@ trait Number
             case '10':
                 return $this->dec_chars;
             default:
-                throw new \Exception('Unknown base parameter passed to BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
+                throw new \Exception('Unknown base parameter passed to Number::BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
         }
     }
 
@@ -99,65 +96,31 @@ trait Number
      */
     public function Test($value)
     {
-        /* Let's get the non-numeric data types out of the way first... */
-        if (false === isset($value) || true === is_null($value)) {
-            return 'null';
-        }
+        /* The order of checks in this array is specific. */
+        $checks = array('nullTest', 'zeroTest', 'objTest', 'arrTest', 'resTest', 'intTest', 'floTest');
 
-        /* Special case. */
-        if ($value == '0') {
-            return 'zer';
-        }
-
-        if (true === is_object($value)) {
-            return 'obj';
-        }
-
-        if (true === is_array($value)) {
-            return 'arr';
-        }
-
-        if (true === is_resource($value)) {
-            return 'res';
-        }
-
-        if (true === is_int($value)) {
-            return 'int';
-        }
-
-        if (true === is_float($value)) {
-            return 'flo';
+        foreach ($checks as $key => $checkType) {
+            if ($this->$checkType($value) === true) {
+                return substr($checkType, 0, 3);
+            }
         }
 
         /* This is what the data should be really. */
-        if (true === is_string($value)) {
+        if ($this->strTest($value) === true) {
 
-            /* Remove any negative signs. */
-            $value = $this->absValue($value);
+            /* Remove any negative signs & strip any prefix. */
+            $value = $this->stripHexPrefix($this->absValue($value));
 
-            /* Determine if we have a hex prefix to begin with. */
-            $value = $this->stripHexPrefix($value);
-
-            /* Both hex and regular decimal numbers will pass this check. */
-            $h_digits = (preg_match('/^[a-f0-9]*$/', $value) == 1) ? true : false;
-
-            /* But, if this test is true, it's definitely a pure decimal number. */
-            $d_digits = (preg_match('/^[0-9]*$/', $value) == 1) ? true : false;
-
-            /* Finally, if this test is true, it's definitely a pure binary number string. */
-            $b_digits = (preg_match('/^[0-1]*$/', $value) == 1) ? true : false;
-
-            /* The first two cases are straightforward... */
-            if ($b_digits === true) {
+            if ($this->bdTest($value) === true) {
                 return 'bin';
             }
 
-            if ($d_digits === true) {
+            if ($this->ddTest($value) === true) {
                 return 'dec';
             }
 
-            /* Now we're probably dealing with a hex number. */
-            if ($h_digits === true) {
+            /* Now we're probably dealing with a proper hex number. */
+            if ($this->hdTest($value) === true) {
                 return 'hex';
             }
         }
@@ -188,22 +151,6 @@ trait Number
     }
 
     /**
-     * Generates an array of byte values.
-     *
-     * @return array $tempvals An array of bytes.
-     */
-    private function GenBytes()
-    {
-        $tempvals = array();
-
-        for ($x = 0; $x < 256; $x++) {
-            $tempvals[$x] = chr($x);
-        }
-
-        return $tempvals;
-    }
-
-    /**
      * Checks if a hex value has the '0x' prefix
      * and removes it, if present. Otherwise it
      * just returns the original value unchanged.
@@ -230,17 +177,6 @@ trait Number
     }
 
     /**
-     * Trims() and strtolowers() the value.
-     *
-     * @param  string $value The value to clean.
-     * @return string        The clean value.
-     */
-    private function prepAndClean($value)
-    {
-        return strtolower(trim($value));
-    }
-
-    /**
      * Returns the absolute value |$val| of the number.
      *
      * @param  string $value The value to be abs'd.
@@ -252,4 +188,108 @@ trait Number
         return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
     }
 
+    /**
+     * Checks if a number is zero.
+     *
+     * @param  mixed   $value  The value to be checked.
+     * @return boolean         Either true or false.
+     */
+    private function zeroTest($value)
+    {
+        /* Special case. */
+        return (($this->nullTest($value) === false) && ($this->math->comp($value, '0') === 0));
+    }
+
+    /**
+     * Checks if a number is a float
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function floTest($value)
+    {
+        return (($this->nullTest($value) === false) && is_float($value));
+    }
+
+    /**
+     * Checks if a number is an integer
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function intTest($value)
+    {
+        return (($this->nullTest($value) === false) && is_int($value));
+    }
+
+    /**
+     * Checks if a number contains only hex digits.
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function hdTest($value)
+    {
+        /* Both hex and regular decimal numbers will pass this check. */
+        return (preg_match('/^[a-f0-9]*$/', $value) === 1);
+    }
+
+    /**
+     * Checks if a number contains only decimal digits.
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function ddTest($value)
+    {
+        /* But, if this test is true, it's definitely a pure decimal number. */
+        return (preg_match('/^[0-9]*$/', $value) === 1);
+    }
+
+    /**
+     * Checks if a number contains only binary digits.
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function bdTest($value)
+    {
+        /* Finally, if this test is true, it's definitely a pure binary number string. */
+        return (preg_match('/^[0-1]*$/', $value) === 1);
+    }
+
+    /**
+     * Checks if a specific hex value is < 62 characters long.
+     *
+     * @param  string     $hex  The value to check.
+     * @throws \Exception
+     */
+    private function hexLenCheck($hex)
+    {
+        if (strlen($hex) < 62) {
+            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
+        }
+    }
+
+    /**
+     * Generates a secure random number using the OpenSSL extension.
+     *
+     * @param  int        $length Number of bytes to return.
+     * @return string             Random data in hex form.
+     * @throws \Exception
+     */
+    public function SecureRandomNumber($length = 32)
+    {
+        $this->openSSLCheck();
+
+        $cstrong = false;
+
+        $secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
+
+        if (false === $secure_random_number || false === $cstrong) {
+            throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
+        }
+
+        return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
+    }
 }
