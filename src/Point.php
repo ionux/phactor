@@ -202,8 +202,8 @@ trait Point
         $S   = $this->Inf;
 
         while ($n >= 0) {
-            $S = $this->pointDouble($S);
-            $S = ($tmp[$n] == '1') ? $this->pointAdd($S, $P) : $S;
+            $S = $this->pointDoubleW($S);
+            $S = ($tmp[$n] == '1') ? $this->pointAddW($S, $P) : $S;
 
             $n--;
         }
@@ -236,12 +236,12 @@ trait Point
         while ($n >= 0) {
             switch ($tmp[$n]) {
                 case '0':
-                    $S1 = $this->pointAdd($S0, $S1);
-                    $S0 = $this->pointDouble($S0);
+                    $S1 = $this->pointAddW($S0, $S1);
+                    $S0 = $this->pointDoubleW($S0);
                     break;
                 default:
-                    $S0 = $this->pointAdd($S0, $S1);
-                    $S1 = $this->pointDouble($S1);
+                    $S0 = $this->pointAddW($S0, $S1);
+                    $S1 = $this->pointDoubleW($S1);
                     break;
             }
 
