@@ -260,6 +260,7 @@ trait Math
     {
         $this->preOpMethodParamsCheck(array($hex));
 
+        /**
         switch ($this->Test($hex)) {
             case 'dec':
                 $hex = $this->encodeHex($hex);
@@ -270,6 +271,7 @@ trait Math
             default:
                 throw new \Exception('Unknown data type passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
         }
+        **/
 
         return strrev($this->encodeValue($hex, '256'));
     }
