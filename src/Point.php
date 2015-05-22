@@ -193,10 +193,6 @@ trait Point
      */
     public function doubleAndAdd($P, $x = '1')
     {
-        if ($this->pointType($P) != 'arr') {
-            return $P;
-        }
-
         $tmp = $this->D2B($x);
         $n   = strlen($tmp) - 1;
         $S   = $this->Inf;
@@ -224,10 +220,6 @@ trait Point
      */
     public function mLadder($P, $x = '1')
     {
-        if ($this->pointType($P) != 'arr') {
-            return $P;
-        }
-
         $tmp = $this->D2B($x);
         $n   = strlen($tmp) - 1;
         $S0  = $this->Inf;
