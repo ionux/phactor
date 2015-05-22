@@ -223,7 +223,7 @@ trait Number
     private function zeroTest($value)
     {
         /* Special case. */
-        return (($this->nullTest($value) === false) && ($this->math->comp($value, '0') === 0));
+        return (($this->nullTest($value) === false) && ($this->arrTest($value) === false) && ($this->math->comp($value, '0') === 0));
     }
 
     /**
