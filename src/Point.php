@@ -287,6 +287,28 @@ trait Point
     }
 
     /**
+     * Basic range check. Throws exception if
+     * coordinate value is out of range.
+     *
+     * @param  string     $value The coordinate to check.
+     * @return boolean           The result of the check.
+     * @throws \Exception
+     */
+    public function RangeCheck($value)
+    {
+    	$this->preOpMethodParamsCheck(array($value));
+
+    	$value = $this->encodeHex($value);
+
+    	/* Check to see if $value is in the range [1, n-1] */
+    	if ($this->randCompare($value)) {
+    		throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+    	}
+
+    	return true;
+    }
+
+    /**
      * Checks the basic type of the point value.
      *
      * @param  mixed $value
@@ -318,7 +340,7 @@ trait Point
     }
 
     /**
-     * Basic coordinate check: verifies 
+     * Basic coordinate check: verifies
      *
      * @param  string $hex The coordinate to check.
      * @return string $hex The checked coordinate.
@@ -332,28 +354,6 @@ trait Point
         $this->RangeCheck($hex);
 
         return $hex;
-    }
-
-    /**
-     * Basic range check. Throws exception if
-     * coordinate value is out of range.
-     *
-     * @param  string     $value The coordinate to check.
-     * @return boolean           The result of the check.
-     * @throws \Exception
-     */
-    public function RangeCheck($value)
-    {
-        $this->preOpMethodParamsCheck(array($value));
-
-        $value = $this->encodeHex($value);
-
-        /* Check to see if $value is in the range [1, n-1] */
-        if ($this->randCompare($value)) {
-           throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
-        }
-
-        return true;
     }
 
     /**
