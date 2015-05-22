@@ -110,15 +110,15 @@ final class Key
     {
         $point = $this->GenerateNewPoint();
 
-        $point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
-        $point['Ry_hex']        = $this->stripHexPrefix($point['Ry_hex']);
-        $point['random_number'] = $this->stripHexPrefix($point['random_number']);
+        //$point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
+        //$point['Ry_hex']        = $this->stripHexPrefix($point['Ry_hex']);
+        //$point['random_number'] = $this->stripHexPrefix($point['random_number']);
 
-        $comp_prefix = ($this->Modulo($this->addHexPrefix($point['Ry_hex']), '0x02') == '1') ? '03' : '02';
+        $comp_prefix = ($this->Modulo($point['Ry'], '2') == '1') ? '03' : '02';
 
         $this->keyInfo = array(
-                               'private_key_hex'       => $point['random_number'],
-                               'private_key_dec'       => $this->decodeHex($point['random_number']),
+                               'private_key_hex'       => $this->encodeHex($point['random_number']),
+                               'private_key_dec'       => $point['random_number'],
                                'public_key'            => '04' . $point['Rx_hex'] . $point['Ry_hex'],
                                'public_key_compressed' => $comp_prefix . $point['Rx_hex'],
                                'public_key_x'          => $point['Rx_hex'],
