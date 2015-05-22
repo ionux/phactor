@@ -361,9 +361,6 @@ trait Math
         }
 
         $this->bytes = (empty($this->bytes)) ? $this->GenBytes() : $this->bytes;
-
-        $this->Gx = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 2, 64))  : $this->Gx;
-        $this->Gy = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 66, 64)) : $this->Gy;
     }
 
     /**
@@ -436,7 +433,7 @@ trait Math
      */
     private function msbCheck($value)
     {
-        if ($this->math->comp('0x' . bin2hex($value), '0x80') >= 0) {
+        if ($this->math->comp(hexdec(bin2hex($value)), '128') >= 0) {
             return chr(0x00);
         }
     }
