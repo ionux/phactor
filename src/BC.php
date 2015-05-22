@@ -44,7 +44,7 @@ final class BC
 
     /**
      * Adds two arbitrary precision numbers.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -56,7 +56,7 @@ final class BC
 
     /**
      * Multiplies two arbitrary precision numbers.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -68,7 +68,7 @@ final class BC
 
     /**
      * Divides two arbitrary precision numbers.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -80,7 +80,7 @@ final class BC
 
     /**
      * Subtracts two arbitrary precision numbers.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -92,7 +92,7 @@ final class BC
 
     /**
      * Calculates the modulo 'b' of 'a'.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -101,10 +101,10 @@ final class BC
     {
         return bcmod($this->normalize($a), $this->normalize($b));
     }
-    
+
     /**
      * Compares two arbitrary precision numbers.
-     * 
+     *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
@@ -207,7 +207,45 @@ final class BC
     private function normalize($a)
     {
 
-        return (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+    	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+
+    	switch($this->Test($a)) {
+    		case 'hex':
+    			$a = $this->convertToDec($a);
+    			break;
+    		//case 'bin':
+    			// convert to hex, dec
+    			//break;
+    		case 'unk':
+    			throw new \Exception('Unknown number type in BC::normalize().  Cannot process!');
+    	}
+
+        return $a;
+    }
+
+    private function convertToDec($hex) {
+        if (strlen($hex) < 5) {
+            return hexdec($hex);
+        } else {
+            $remain = substr($hex, 0, -1);
+            $last   = substr($hex, -1);
+            return bcadd(bcmul(16, $this->convertToDec($remain)), hexdec($last));
+    	}
+    }
+
+    private function convertToHex($dec) {
+        if (strlen($dec) < 5) {
+            return dechex($dec);
+        }
+
+        $last = bcmod($dec, 16);
+        $remain = bcdiv(bcsub($dec, $last), 16);
+
+        if ($remain == 0) {
+            return dechex($last);
+        } else {
+            return $this->convertToHex($remain).dechex($last);
+        }
     }
 
     /**
