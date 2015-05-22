@@ -169,19 +169,23 @@ trait Number
      * @return string             Random data in hex form.
      * @throws \Exception
      */
-    public function SecureRandomNumber($length = 32)
+    public function SecureRandomNumber($length = 32, $type = 'decimal')
     {
-    	$this->openSSLCheck();
+        $this->openSSLCheck();
 
-    	$cstrong = false;
+        $cstrong = false;
+        $secure_random_number = '';
 
-    	$secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
+        while (strlen($secure_random_number) < 78) {
+            $secure_random_number = $secure_random_number . hexdec(bin2hex(openssl_random_pseudo_bytes(4, $cstrong)));
+        }
 
-    	if (false === $secure_random_number || false === $cstrong) {
-    		throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
-    	}
+        if (false === $secure_random_number || false === $cstrong) {
+            throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
+        }
 
-    	return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
+        return $secure_random_number;
+        //return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
     }
 
     /**
