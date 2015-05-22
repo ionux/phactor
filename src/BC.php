@@ -207,7 +207,9 @@ final class BC
     private function normalize($a)
     {
 
-    	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+        if (is_string($a)) {
+        	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+        }
 
         /** For now...
     	switch($this->Test($a)) {
