@@ -150,14 +150,14 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($add_result, $double_result);
     }
 
-    public function testPointTest()
+    public function testPointTestW()
     {
-        // Check out pointTest() function returns true for a good point.
+        // Check out pointTestW() function returns true for a good point.
 
         $mock = $this->getMockForTrait('\Phactor\Point');
         $Q = array('x' => strtolower(trim($mock->Gx)), 'y' => strtolower(trim($mock->Gy)));
 
-        $result = $mock->pointTest($Q);
+        $result = $mock->pointTestW($Q);
 
         $this->assertNotNull($result);
         $this->assertEquals(true, $result);
