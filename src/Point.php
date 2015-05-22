@@ -271,7 +271,7 @@ trait Point
 
         $R = ($ladder === true) ? $this->mLadder($random_number, $P) : $this->doubleAndAdd($random_number, $P);
 
-        if ($this->PointTest($R)) {
+        if ($this->pointTestW($R)) {
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
             $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
         } else {
