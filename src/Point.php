@@ -257,7 +257,7 @@ trait Point
             $random_number = $this->SecureRandomNumber();
         } while ($this->randCompare($random_number));
 
-        $R = ($ladder === true) ? $this->mLadder($random_number, $P) : $this->doubleAndAdd($random_number, $P);
+        $R = ($ladder === true) ? $this->mLadder($P, $random_number) : $this->doubleAndAdd($P, $random_number);
 
         if ($this->pointTestW($R)) {
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
