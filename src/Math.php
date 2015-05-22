@@ -281,7 +281,7 @@ trait Math
      * @return string     $return
      * @throws \Exception
      */
-    private function encodeBase58($hex)
+    public function encodeBase58($hex)
     {
         $this->preOpMethodParamsCheck(array($hex));
 
