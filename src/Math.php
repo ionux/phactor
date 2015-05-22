@@ -176,7 +176,7 @@ trait Math
         $dec = ($this->Test($dec) != 'hex') ? strrev($this->encodeValue($this->absValue($dec), '16')) : $dec;
 
         return ($prefix === true) ? $this->addHexPrefix($dec) : $dec;
-        
+
     }
 
     /**
@@ -450,6 +450,6 @@ trait Math
      */
     private function zeroCompare($a, $b)
     {
-        return ($this->math->comp($a, '0x00') <= 0 || $this->math->comp($b, '0x00') <= 0);
+        return ($this->math->comp($a, '0') <= 0 || $this->math->comp($b, '0') <= 0);
     }
 }
