@@ -42,58 +42,107 @@ trait Secp256k1
      */
 
     /**
-     * The base point G in uncompressed form.
+     * The base point G in uncompressed form in hex:
      *
      * @var string
      */
     public $G = '0479BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8';
 
     /**
-     * 2^256 − 2^32 − 2^9 − 2^8 − 2^7 − 2^6 − 2^4 − 1
+     * 2^256 − 2^32 − 2^9 − 2^8 − 2^7 − 2^6 − 2^4 − 1 in hex:
      *
      * @var string
      */
-    public $p = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F';
+    public $p_hex = '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f';
 
     /**
-     * The curve E: y^2 = x^3 + ax + b over Fp, where a:
+     * 2^256 − 2^32 − 2^9 − 2^8 − 2^7 − 2^6 − 2^4 − 1 in decimal:
      *
      * @var string
      */
-    public $a = '0x00';
+    public $p = '115792089237316195423570985008687907853269984665640564039457584007908834671663';
 
     /**
-     * The curve E: y^2 = x^3 + ax + b over Fp, where b:
+     * The curve E: y^2 = x^3 + ax + b over Fp, where a in hex:
      *
      * @var string
      */
-    public $b = '0x07';
+    public $a_hex = '0x00';
 
     /**
-     * The order n of G
+     * The curve E: y^2 = x^3 + ax + b over Fp, where a in decimal:
      *
      * @var string
      */
-    public $n = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141';
+    public $a = '0';
 
     /**
-     * The cofactor
+     * The curve E: y^2 = x^3 + ax + b over Fp, where b in hex:
      *
      * @var string
      */
-    public $h = '0x01';
+    public $b_hex = '0x07';
 
     /**
-     * X-coordinate of G
+     * The curve E: y^2 = x^3 + ax + b over Fp, where b in decimal:
      *
      * @var string
      */
-    public $Gx = '0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798';
+    public $b = '7';
 
     /**
-     * Y-coordinate of G
+     * The order n of G in hex:
      *
      * @var string
      */
-    public $Gy = '0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8';
+    public $n_hex = '0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141';
+
+    /**
+     * The order n of G in decimal:
+     *
+     * @var string
+     */
+    public $n = '115792089237316195423570985008687907852837564279074904382605163141518161494337';
+
+    /**
+     * The cofactor in hex:
+     *
+     * @var string
+     */
+    public $h_hex = '0x01';
+
+    /**
+     * The cofactor in decimal:
+     *
+     * @var string
+     */
+    public $h = '1';
+
+    /**
+     * X-coordinate of G in hex:
+     *
+     * @var string
+     */
+    public $Gx_hex = '0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798';
+
+    /**
+     * X-coordinate of G in decimal:
+     *
+     * @var string
+     */
+    public $Gx = '55066263022277343669578718895168534326250603453777594175500187360389116729240';
+
+    /**
+     * Y-coordinate of G in hex:
+     *
+     * @var string
+     */
+    public $Gy_hex = '0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8';
+
+    /**
+     * Y-coordinate of G in decimal:
+     *
+     * @var string
+     */
+    public $Gy = '32670510020758816978083085130507043184471273380659243275938904335757337482424';
 }
