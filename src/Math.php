@@ -42,21 +42,6 @@ trait Math
     private $math = null;
 
     /**
-     * @var boolean
-     */
-    private $openSSL = false;
-
-    /**
-     * Set this to false if you want to disable the
-     * various parameter checks to improve performance.
-     * It could definitely break things if you don't
-     * ensure the values are legitimate yourself, though!
-     *
-     * @var boolean
-     */
-    private $param_checking = true;
-
-    /**
      * Multiplies two arbitrary precision numbers.
      *
      * @param  string $a  The first number to multiply.
@@ -212,16 +197,18 @@ trait Math
 
             $hex_len = strlen($hex);
 
-            for ($i = 0; $i < $hex_len; $i++) {
-                $current = stripos($this->hex_chars, $hex[$i]);
-                $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
+            if ($hex_len < 5) {
+                $dec = hexdec($hex);
+            } else {
+                for ($i = 0; $i < $hex_len; $i++) {
+                    $current = stripos($this->hex_chars, $hex[$i]);
+                    $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
+                }
             }
         }
 
         return ($dec == '0') ? $hex : $dec;
     }
-
-    
 
     /**
      * This method returns a binary string representation of
@@ -285,48 +272,6 @@ trait Math
         }
 
         return strrev($this->encodeValue($hex, '256'));
-    }
-
-    /**
-     * Generates a secure random number using the OpenSSL extension.
-     *
-     * @param  int        $length Number of bytes to return.
-     * @return string             Random data in hex form.
-     * @throws \Exception
-     */
-    public function SecureRandomNumber($length = 32)
-    {
-        $cstrong = false;
-
-        $secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
-
-        if (false === $secure_random_number || false === $cstrong) {
-            throw new \Exception('Could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken.');
-        }
-
-        return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
-    }
-
-    /**
-     * Basic range check. Throws exception if
-     * coordinate value is out of range.
-     *
-     * @param  string     $value The coordinate to check.
-     * @return boolean           The result of the check.
-     * @throws \Exception
-     */
-    public function RangeCheck($value)
-    {
-        $this->preOpMethodParamsCheck(array($value));
-
-        $value = $this->encodeHex($value);
-
-        /* Check to see if $value is in the range [1, n-1] */
-        if ($this->math->comp($value, '0x01') <= 0 && $this->math->comp($value, $this->n) > 0) {
-           throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
-        }
-
-        return true;
     }
 
     /**
@@ -400,6 +345,7 @@ trait Math
      * Internal function to make sure we can find
      * an acceptable math extension to use here.
      *
+     * @return null
      * @throws \Exception
      */
     private function MathCheck()
@@ -407,24 +353,14 @@ trait Math
         if ($this->math == null) {
             if (function_exists('gmp_add')) {
                 $this->math = new GMP();
-                return;
             } else if (function_exists('bcadd')) {
                 $this->math = new BC();
-                return;
             } else {
                 throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
             }
         }
 
-        if ($this->openSSL === false) {
-            if (false === function_exists('openssl_random_pseudo_bytes')) {
-                throw new \Exception('This class requires the OpenSSL extension for PHP. Please install this extension.');
-            } else {
-                $this->openSSL = true;
-            }
-        }
-
-        $this->bytes = (true === empty($this->bytes)) ? $this->GenBytes() : $this->bytes;
+        $this->bytes = (empty($this->bytes)) ? $this->GenBytes() : $this->bytes;
 
         $this->Gx = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 2, 64))  : $this->Gx;
         $this->Gy = ($this->Gx == '') ? $this->addHexPrefix(substr($this->prepAndClean($this->G), 66, 64)) : $this->Gy;
@@ -440,14 +376,12 @@ trait Math
      */
     private function preOpMethodParamsCheck(array $params)
     {
-        if ($this->math == null) {
-            $this->MathCheck();
-        }
+        $this->MathCheck();
 
         foreach ($params as $key => $value) {
             if ($this->numberCheck($value) === false) {
                 $caller = debug_backtrace();
-                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller)-1]['function'] . ' function. Argument list received: ' . var_export($caller[count($caller)-1]['args'], true));
+                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller) - 1]['function'] . ' function. Argument list received: ' . var_export($caller[count($caller) - 1]['args'], true));
             }
         }
     }
@@ -455,9 +389,10 @@ trait Math
     /**
      * The generic value encoding method.
      *
-     * @param string $val  A number to convert.
-     * @param string $base The base to convert it into.
-     * @return string      The same number but in a different base.
+     * @param  string $val  A number to convert.
+     * @param  string $base The base to convert it into.
+     * @return string       The same number but in a different base.
+     * @throws \Exception
      */
     private function encodeValue($val, $base)
     {
@@ -479,5 +414,42 @@ trait Math
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * Congruency check for two values.
+     *
+     * @param  string $r  The first coordinate to check.
+     * @param  string $x  The second coordinate to check.
+     * @return boolean    Returns true if values are congruent.
+     */
+    private function congruencyCheck($r, $x)
+    {
+        return ($this->math->compare($r, $x) == 0)
+    }
+
+    /**
+     * Determines if the msb is set.
+     *
+     * @param  string $value The binary data to check.
+     * @return string
+     */
+    private function msbCheck($value)
+    {
+        if ($this->math->comp('0x' . bin2hex($value), '0x80') >= 0) {
+            return chr(0x00);
+        }
+    }
+
+    /**
+     * Checks if two parameters are less than or equal to zero.
+     *
+     * @param  string $a  The first parameter to check.
+     * @param  string $a  The first parameter to check.
+     * @return boolean    Result of the check.
+     */
+    private function zeroCompare($a, $b)
+    {
+        return ($this->math->comp($a, '0x00') <= 0 || $this->math->comp($b, '0x00') <= 0);
     }
 }
