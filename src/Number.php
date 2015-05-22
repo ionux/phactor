@@ -151,6 +151,40 @@ trait Number
     }
 
     /**
+     * Returns the absolute value |$val| of the number.
+     *
+     * @param  string $value The value to be abs'd.
+     * @return string        The absolute value of the number.
+     */
+    public function absValue($value)
+    {
+    	/* Remove any negative signs. */
+    	return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
+    }
+
+    /**
+     * Generates a secure random number using the OpenSSL extension.
+     *
+     * @param  int        $length Number of bytes to return.
+     * @return string             Random data in hex form.
+     * @throws \Exception
+     */
+    public function SecureRandomNumber($length = 32)
+    {
+    	$this->openSSLCheck();
+
+    	$cstrong = false;
+
+    	$secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
+
+    	if (false === $secure_random_number || false === $cstrong) {
+    		throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
+    	}
+
+    	return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
+    }
+
+    /**
      * Checks if a hex value has the '0x' prefix
      * and removes it, if present. Otherwise it
      * just returns the original value unchanged.
@@ -160,7 +194,7 @@ trait Number
      */
     private function stripHexPrefix($hex)
     {
-        return (substr($hex, 0, 2) == '0x') ? substr($hex, 2) : $hex;
+    	return (substr($hex, 0, 2) == '0x') ? substr($hex, 2) : $hex;
     }
 
     /**
@@ -174,18 +208,6 @@ trait Number
     private function addHexPrefix($hex)
     {
         return (substr($hex, 0, 2) != '0x') ? '0x' . $hex : $hex;
-    }
-
-    /**
-     * Returns the absolute value |$val| of the number.
-     *
-     * @param  string $value The value to be abs'd.
-     * @return string        The absolute value of the number.
-     */
-    public function absValue($value)
-    {
-        /* Remove any negative signs. */
-        return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
     }
 
     /**
@@ -269,27 +291,5 @@ trait Number
         if (strlen($hex) < 62) {
             throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
         }
-    }
-
-    /**
-     * Generates a secure random number using the OpenSSL extension.
-     *
-     * @param  int        $length Number of bytes to return.
-     * @return string             Random data in hex form.
-     * @throws \Exception
-     */
-    public function SecureRandomNumber($length = 32)
-    {
-        $this->openSSLCheck();
-
-        $cstrong = false;
-
-        $secure_random_number = openssl_random_pseudo_bytes($length, $cstrong);
-
-        if (false === $secure_random_number || false === $cstrong) {
-            throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
-        }
-
-        return $this->addHexPrefix($this->prepAndClean(bin2hex($secure_random_number)));
     }
 }
