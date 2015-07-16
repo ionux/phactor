@@ -17,6 +17,11 @@ use \Phactor\Signature;
 use \Phactor\Sin;
 use \Phactor\GMP;
 use \Phactor\BC;
+use \Phactor\ASN1;
+use \Phactor\Math;
+use \Phactor\Number;
+use \Phactor\Object;
+use \Phactor\Secp256k1;
 
 class SignatureTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +43,7 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
-        $sigfo = $sig->generate('my message to sign...', $info['private_key_hex']);
+        $sigfo = $sig->Generate('my message to sign...', $info['private_key_hex']);
 
         $this->assertNotNull($sigfo);
     }
@@ -63,9 +68,8 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
-        $sig   = new \Phactor\Signature;
-        $sigfo = $sig->generate('my message to sign...', '0x' . $info['private_key_hex']);
-
+        $sig    = new \Phactor\Signature;
+        $sigfo  = $sig->Generate('my message to sign...', $info['private_key_hex']);
         $result = $sig->Verify($sigfo, 'my message to sign...', $info['public_key']);
 
         $this->assertTrue($result);
@@ -79,7 +83,7 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $info = $key->GenerateKeypair();
 
         $sig   = new \Phactor\Signature;
-        $sigfo = $sig->generate('my message to sign...', '0x' . $info['private_key_hex']);
+        $sigfo = $sig->Generate('my message to sign...', $info['private_key_hex']);
 
         $this->assertGreaterThan(139, strlen($sigfo));
     }
@@ -92,7 +96,7 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $r_coord = '3870f3c946c177b03745571aa71fa487639d0008289d5f43e04b3a71aa7db454';
         $s_coord = 'fb53e6212026736118e311a11862683dedfcde2ef3d44b090eae23048e3e2b8a';
 
-        $sig = new \Phactor\Signature;
+        $sig    = new \Phactor\Signature;
         $result = $sig->Encode($r_coord, $s_coord);
 
         $this->assertEquals($expected, $result);
