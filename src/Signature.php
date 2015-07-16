@@ -63,6 +63,11 @@ final class Signature
     private $P;
 
     /**
+     * @var \Phactor\Key
+     */
+    private $keyUtil;
+
+    /**
      * Public constructor method.
      *
      * @param  string $message     The message to sign (optional).
@@ -79,6 +84,8 @@ final class Signature
                          'x' => $this->Gx,
                          'y' => $this->Gy
                         );
+
+        $this->keyUtil = new \Phactor\Key;
 
         $this->generateFromConstructor($message, $private_key);
     }
@@ -175,6 +182,8 @@ final class Signature
         $u2        = '';
         $Z         = array();
 
+        $key_util = new \Phactor\Key();
+
         $coords = $this->parseSig($sig);
 
         $r = $this->CoordinateCheck($this->prepAndClean($coords['r']));
@@ -187,10 +196,10 @@ final class Signature
         $e = $this->decodeHex(hash('sha256', $msg));
 
         $n_dec  = $this->decodeHex($this->n);
-        $pubkey = $this->parseUncompressedPublicKey($pubkey);
+        $pubkey = $this->keyUtil->parseUncompressedPublicKey($pubkey);
 
         /* Parse the x,y coordinates */
-        $Q = $this->parseCoordinatePairFromPublicKey($pubkey);
+        $Q = $this->keyUtil->parseCoordinatePairFromPublicKey($pubkey);
 
         $this->coordsRangeCheck($Q['x'], $Q['y']);
 
