@@ -121,19 +121,20 @@ final class Signature
 
             do {
                 /* Get the message hash and a new random number */
-                $e = $this->decodeHex(hash('sha256', $message));
+                $e = $this->decodeHex('0x' . hash('sha256', $message));
                 $k = $this->SecureRandomNumber();
 
                 /* Calculate a new curve point from R=k*G (x1,y1) */
-                $R      = $this->DoubleAndAdd($k, $this->P);
+                $R      = $this->DoubleAndAdd($this->P, $k);
                 $R['x'] = $this->addHexPrefix(str_pad($this->encodeHex($R['x'], false), 64, "0", STR_PAD_LEFT));
 
                 /* r = x1 mod n */
-                $r = $this->Modulo($R['x'], $this->n);
+                $r = $this->Modulo($this->decodeHex($R['x']), $this->n);
 
                 /* s = k^-1 * (e+d*r) mod n */
-                $s = $this->Modulo($this->Multiply($this->Invert($k, $this->n), $this->Add($e, $this->Multiply($private_key, $r))), $this->n);
-
+                $dr  = $this->Multiply($this->decodeHex($private_key), $r);
+                $edr = $this->Add($e, $dr);
+                $s   = $this->Modulo($this->Multiply($this->Invert($k, $this->n), $edr), $this->n);
             } while ($this->zeroCompare($r, $s));
 
         } catch (\Exception $e) {
@@ -325,8 +326,6 @@ final class Signature
                     );
     }
 
-    
-
     /**
      * Ensures the total ECDSA signature length is acceptable.
      *
@@ -400,8 +399,6 @@ final class Signature
      */
     private function generateFromConstructor($message, $private_key)
     {
-        if ($message != '' && $private_key != '') {
-            $this->Generate($message, $private_key);
-        }
+        $this->Generate($message, $private_key);
     }
 }
