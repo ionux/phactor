@@ -182,8 +182,6 @@ final class Signature
         $u2        = '';
         $Z         = array();
 
-        $key_util = new \Phactor\Key();
-
         $coords = $this->parseSig($sig);
 
         $r = $this->CoordinateCheck($this->prepAndClean($coords['r']));
