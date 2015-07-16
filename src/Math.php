@@ -289,7 +289,7 @@ trait Math
 
         try {
 
-            if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
+            if (strlen($hex) % 2 != 0) {
                 throw new \Exception('Error in encodeBase58(): Uneven number of hex characters passed to function.  Value received was "' . var_export($hex, true) . '".');
             } else {
                 $orighex = $hex;
