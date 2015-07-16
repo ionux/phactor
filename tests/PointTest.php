@@ -17,6 +17,11 @@ use \Phactor\Signature;
 use \Phactor\Sin;
 use \Phactor\GMP;
 use \Phactor\BC;
+use \Phactor\ASN1;
+use \Phactor\Math;
+use \Phactor\Number;
+use \Phactor\Object;
+use \Phactor\Secp256k1;
 
 class PointTest extends \PHPUnit_Framework_TestCase
 {
