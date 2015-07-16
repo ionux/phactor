@@ -55,7 +55,7 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
-        $sig   = new \Phactor\Signature('my message to sign...', '0x' . $info['private_key_hex']);
+        $sig   = new \Phactor\Signature('my message to sign...', $info['private_key_hex']);
         $sigfo = $sig->encoded_signature;
 
         $this->assertNotNull($sigfo);
