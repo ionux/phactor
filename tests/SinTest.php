@@ -17,6 +17,11 @@ use \Phactor\Signature;
 use \Phactor\Sin;
 use \Phactor\GMP;
 use \Phactor\BC;
+use \Phactor\ASN1;
+use \Phactor\Math;
+use \Phactor\Number;
+use \Phactor\Object;
+use \Phactor\Secp256k1;
 
 class SinTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,13 +44,14 @@ class SinTest extends \PHPUnit_Framework_TestCase
 
         $sin   = new \Phactor\Sin;
         $sinfo = $sin->Generate($info['public_key_compressed']);
-        $sinfo_len = strlen($sinfo);
-        $sample_sin = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
+        
+        $sinfo_len      = strlen($sinfo);
+        $sample_sin     = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
         $sample_sin_len = strlen($sample_sin);
 
         $this->assertNotNull($sinfo);
-        $this->assertGreaterThan($sample_sin-1, $sinfo_len);
-        $this->assertEquals(substr($sinfo,0,1), 'T');
+        $this->assertGreaterThan($sample_sin - 1, $sinfo_len);
+        $this->assertEquals(substr($sinfo,0, 1), 'T');
     }
 
     public function testSinOnObjectCreation()
@@ -57,13 +63,13 @@ class SinTest extends \PHPUnit_Framework_TestCase
 
         $sin   = new \Phactor\Sin($info['public_key_compressed']);
 
-        $sinfo_len = strlen($sin);
-        $sample_sin = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
+        $sinfo_len      = strlen($sin);
+        $sample_sin     = 'Tf61EPoJDSjbp6tGoyjbTKq7XLABPVcyUwY';
         $sample_sin_len = strlen($sample_sin);
 
         $this->assertNotNull($sin);
-        $this->assertGreaterThan($sample_sin-1, $sinfo_len);
-        $this->assertEquals(substr($sin,0,1), 'T');
+        $this->assertGreaterThan($sample_sin - 1, $sinfo_len);
+        $this->assertEquals(substr($sin, 0, 1), 'T');
     }
 
     public function testSinGetRawHashes()
@@ -73,8 +79,8 @@ class SinTest extends \PHPUnit_Framework_TestCase
         $key  = new \Phactor\Key;
         $info = $key->GenerateKeypair();
 
-        $sin   = new \Phactor\Sin;
-        $sinfo = $sin->Generate($info['public_key_compressed']);
+        $sin    = new \Phactor\Sin;
+        $sinfo  = $sin->Generate($info['public_key_compressed']);
         $hashes = $sin->getRawHashes();
 
         $this->assertNotNull($hashes);
