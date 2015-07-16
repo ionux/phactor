@@ -8,12 +8,13 @@ php:
 
 before_script:
   - wget http://getcomposer.org/composer.phar
-  - php composer.phar install --dev --no-interaction
- 
+  - php composer.phar self-update
+  - php composer.phar install --no-interaction
+
 script:
   - mkdir -p build/logs
   - phpunit tests
-  
+
 matrix:
   fast_finish: true
   allow_failures:
