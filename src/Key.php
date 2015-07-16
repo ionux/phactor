@@ -110,11 +110,11 @@ final class Key
     {
         $point = $this->GenerateNewPoint();
 
-        //$point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
-        //$point['Ry_hex']        = $this->stripHexPrefix($point['Ry_hex']);
-        //$point['random_number'] = $this->stripHexPrefix($point['random_number']);
+        $point['Rx_hex']        = $this->stripHexPrefix($point['Rx_hex']);
+        $point['Ry_hex']        = $this->stripHexPrefix($point['Ry_hex']);
+        $point['random_number'] = $this->stripHexPrefix($point['random_number']);
 
-        $comp_prefix = ($this->Modulo($point['Ry'], '2') == '1') ? '03' : '02';
+        $comp_prefix = ($this->Modulo($point['R']['y'], '2') == '1') ? '03' : '02';
 
         $this->keyInfo = array(
                                'private_key_hex'       => $this->encodeHex($point['random_number']),
