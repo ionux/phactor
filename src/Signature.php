@@ -212,7 +212,7 @@ final class Signature
             $u2 = $this->Modulo($this->Multiply($r_dec, $w), $n_dec);
 
             /* Get new point Z(x1,y1) = (u1 * G) + (u2 * Q) */
-            $Z  = $this->pointAddW($this->DoubleAndAdd($u1, $this->P), $this->DoubleAndAdd($u2, $Q));
+            $Z  = $this->pointAddW($this->DoubleAndAdd($this->P, $u1), $this->DoubleAndAdd($Q, $u2));
 
             /*
              * A signature is valid if r is congruent to x1 (mod n)
