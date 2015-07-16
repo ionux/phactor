@@ -29,7 +29,7 @@ namespace Phactor;
 
 /**
  * This trait implements the elliptic curve math functions required to generate
- * a public/private EC keypair based on the secp256k1 curve parameters.
+ * new EC points based on the secp256k1 curve parameters.
  *
  * @author Rich Morgan <rich@bitpay.com>
  */
@@ -51,7 +51,7 @@ trait Point
     public function pointAddW($P, $Q)
     {
         if ($this->pointType($P) == 'nul' || $this->pointType($Q) == 'nul') {
-            throw new \Exception('You must provide valid point parameters to add.');
+            throw new \Exception('[ERROR] In Point::pointAddW: You must provide valid point parameters to add.');
         }
 
         if ($P == $this->Inf || false === $this->arrTest($P)) {
@@ -62,13 +62,17 @@ trait Point
             return $P;
         }
 
+        if ($P == $Q) {
+            return $this->pointDouble($P);
+        }
+
         $ss = '0';
 
         $R = array('x' => '0', 'y' => '0');
 
         try {
             $mm = $this->Subtract($P['y'], $Q['y']);
-        	$nn = bcsub($P['x'], $Q['x']);
+            $nn = $this->Subtract($P['x'], $Q['x']);
             $oo = $this->Invert($nn, $this->p);
             $st = $this->Multiply($mm, $oo);
             $ss = $this->Modulo($st, $this->p);
@@ -176,7 +180,7 @@ trait Point
             if ($left == $right) {
                 return $left == $right;
             } else {
-                throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
+                throw new \Exception('[ERROR] In Point::pointTestW: Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
             }
 
         } catch (\Exception $e) {
@@ -269,7 +273,7 @@ trait Point
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
             $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
         } else {
-            throw new \Exception('Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
+            throw new \Exception('[ERROR] In Point::GenerateNewPoint: Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
         }
 
         return array(
