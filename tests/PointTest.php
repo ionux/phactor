@@ -138,7 +138,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
         $P = $mock->Inf;
 
-        $P = array(
+        $Q = array(
                    'x' => strtolower(trim($mock->Gx)),
                    'y' => strtolower(trim($mock->Gy))
                    );
