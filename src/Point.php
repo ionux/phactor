@@ -63,7 +63,7 @@ trait Point
         }
 
         if ($P == $Q) {
-            return $this->pointDouble($P);
+            return $this->pointDoubleW($P);
         }
 
         $ss = '0';
