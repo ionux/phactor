@@ -352,11 +352,11 @@ trait Math
      */
     private function MathCheck()
     {
-        if ($this->math == null) {
-            if (function_exists('bcadd')) {
-                $this->math = new BC();
-            } else if (function_exists('gmp_add')) {
+        if ($this->math == null || is_object($this->math) === false) {
+            if (function_exists('gmp_add')) {
                 $this->math = new GMP();
+            } else if (function_exists('bcadd')) {
+                $this->math = new BC();
             } else {
                 throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
             }
@@ -395,6 +395,8 @@ trait Math
      */
     private function encodeValue($val, $base)
     {
+        $this->preOpMethodParamsCheck(array($val, $base));
+
         $digits = $this->baseCheck($base);
 
         try {
