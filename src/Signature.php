@@ -399,6 +399,8 @@ final class Signature
      */
     private function generateFromConstructor($message, $private_key)
     {
-        $this->Generate($message, $private_key);
+        if (empty($message) === false && empty($private_key) === false) {
+            $this->Generate($message, $private_key);
+        }
     }
 }
