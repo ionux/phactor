@@ -199,6 +199,8 @@ final class Signature
         /* Parse the x,y coordinates */
         $Q = $this->keyUtil->parseCoordinatePairFromPublicKey($pubkey);
 
+        list($Q['x'], $Q['y']) = array($this->decodeHex($Q['x']), $this->decodeHex($Q['y']));
+
         $this->coordsRangeCheck($Q['x'], $Q['y']);
 
         try {
@@ -218,7 +220,9 @@ final class Signature
              * A signature is valid if r is congruent to x1 (mod n)
              * or in other words, if r - x1 is an integer multiple of n.
              */
-            return $this->congruencyCheck($r, $this->encodeHex($Z['x']));
+            $congruent = $this->congruencyCheck($this->decodeHex($r), $this->decodeHex($Z['x']));
+
+            return $congruent;
 
         } catch (\Exception $e) {
             throw $e;
