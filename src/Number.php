@@ -181,7 +181,7 @@ trait Number
         }
 
         if (false === $secure_random_number || false === $cstrong) {
-            throw new \Exception('[ERROR] The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
+            throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
         }
 
         return $secure_random_number;
@@ -222,7 +222,7 @@ trait Number
     private function zeroTest($value)
     {
         /* Special case. */
-        return (($this->nullTest($value) === false) && ($this->arrTest($value) === false));
+        return (($this->nullTest($value) === false) && ($this->arrTest($value) === false) && ($value == '0' || $value == '0x0' || $value == '0x00'));
     }
 
     /**
