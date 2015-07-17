@@ -311,6 +311,7 @@ trait Point
      *
      * @param  mixed $value
      * @return string
+     * @codeCoverageIgnore
      */
     private function pointType($value)
     {
@@ -330,11 +331,13 @@ trait Point
      *
      * @param  string     $x The key to check.
      * @param  string     $y The key to check.
+     * @codeCoverageIgnore
      */
     private function coordsRangeCheck($x, $y)
     {
         //$this->RangeCheck($x);
         //$this->RangeCheck($y);
+        return true;
     }
 
     /**
@@ -342,7 +345,7 @@ trait Point
      *
      * @param  string $hex The coordinate to check.
      * @return string $hex The checked coordinate.
-     * @throws \Exception
+     * @codeCoverageIgnore
      */
     private function CoordinateCheck($hex)
     {
@@ -360,6 +363,7 @@ trait Point
      *
      * @param  string  $random_number  The number to check.
      * @return boolean                 The result of the comparison.
+     * @codeCoverageIgnore
      */
     private function randCompare($value)
     {
