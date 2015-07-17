@@ -77,8 +77,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Check that the same points are created when calling the mladder and double-and-add methods using the same params.
 
         $P = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
         $random = '12345678';
@@ -96,8 +96,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $P = array('x' => '1234', 'y' => '5678');
 
         $Q = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
         $result = $this->mock->pointAddW($P, $Q);
@@ -112,8 +112,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Verify we can double an EC point.
 
         $Q = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
         $result = $this->mock->pointDoubleW($Q);
@@ -131,7 +131,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $result = $this->mock->pointDoubleW($Q);
 
         $this->assertNotNull($result);
-        $this->assertEquals($result, $mock->Inf);
+        $this->assertEquals($result, $this->mock->Inf);
     }
 
     public function testInfPointReturnsQ()
