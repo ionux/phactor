@@ -273,7 +273,7 @@ trait Point
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
             $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
         } else {
-            throw new \Exception('[ERROR] In Point::GenerateNewPoint: Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
+            throw new \Exception('Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
         }
 
         return array(
