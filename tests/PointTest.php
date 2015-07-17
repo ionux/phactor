@@ -23,6 +23,17 @@ use \Phactor\Number;
 use \Phactor\Object;
 use \Phactor\Secp256k1;
 
+/**
+ * Currently the Point trait has these public methods:
+ *
+ * public function pointAddW($P, $Q)
+ * public function pointDoubleW($P)
+ * public function pointTestW($P)
+ * public function doubleAndAdd($P, $x = '1')
+ * public function mLadder($P, $x = '1')
+ * public function GenerateNewPoint($ladder = true)
+ * public function RangeCheck($value)
+ */
 class PointTest extends \PHPUnit_Framework_TestCase
 {
     protected $a;
@@ -40,7 +51,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Verify the default new point generation using the mladder function returns a valid point.
         // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
+        $mock     = $this->getMockForTrait('\Phactor\Point');
         $newpoint = $mock->GenerateNewPoint();
 
         $this->assertNotNull($newpoint);
@@ -52,7 +63,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Verify the default new point generation using the double-and-add function returns a valid point.
         // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
+        $mock     = $this->getMockForTrait('\Phactor\Point');
         $newpoint = $mock->GenerateNewPoint(false);
 
         $this->assertNotNull($newpoint);
@@ -202,6 +213,18 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
 
         $result = $mock->pointTestW($Q);
+
+        $this->assertNotNull($result);
+        $this->assertEquals(true, $result);
+    }
+
+    public function testRangeCheck()
+    {
+        //Check to ensure function throws exception if coordinate value is out of range.
+
+        $mock = $this->getMockForTrait('\Phactor\Point');
+
+        $result = $mock->RangeCheck($this->a);
 
         $this->assertNotNull($result);
         $this->assertEquals(true, $result);
