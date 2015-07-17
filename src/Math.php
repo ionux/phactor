@@ -190,7 +190,7 @@ trait Math
     {
         $this->preOpMethodParamsCheck(array($hex));
 
-        $dec = '0';
+        $dec = false;
 
         if ($this->Test($hex) == 'hex') {
             $hex = $this->stripHexPrefix($this->prepAndClean($hex));
@@ -205,9 +205,9 @@ trait Math
                     $dec     = $this->math->add($this->math->mul($dec, '16'), $current);
                 }
             }
-        }
+        } 
 
-        return ($dec == '0') ? $hex : $dec;
+        return ($dec === false) ? $hex : $dec;
     }
 
     /**
@@ -260,7 +260,6 @@ trait Math
     {
         $this->preOpMethodParamsCheck(array($hex));
 
-        /**
         switch ($this->Test($hex)) {
             case 'dec':
                 $hex = $this->encodeHex($hex);
@@ -271,7 +270,6 @@ trait Math
             default:
                 throw new \Exception('Unknown data type passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
         }
-        **/
 
         return strrev($this->encodeValue($hex, '256'));
     }
@@ -289,8 +287,8 @@ trait Math
 
         try {
 
-            if (strlen($hex) % 2 != 0) {
-                throw new \Exception('Error in encodeBase58(): Uneven number of hex characters passed to function.  Value received was "' . var_export($hex, true) . '".');
+            if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
+                throw new \Exception('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.  Value received was "' . var_export($hex, true) . '".');
             } else {
                 $orighex = $hex;
                 $hex     = $this->addHexPrefix($this->prepAndClean($hex));
@@ -426,7 +424,7 @@ trait Math
      */
     private function congruencyCheck($r, $x)
     {
-        return ($this->math->compare($r, $x) == 0);
+        return (bool)($this->math->comp($r, $x) == 0);
     }
 
     /**
