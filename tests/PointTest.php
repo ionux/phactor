@@ -38,12 +38,16 @@ class PointTest extends \PHPUnit_Framework_TestCase
 {
     protected $a;
     protected $b;
+    protected $mock;
 
     public function setUp()
     {
         // Two randomly generated numers for our math functions.
         $this->a = '957620976190666461915977492034526193591830013034186215918313385644855166379351262190562120407134214207526691350895955';
         $this->b = '157663433277362577011687738037596860467660792611897958941147717548714000615442450180007858983049321228191510557052';
+
+        // Mock class for the Point trait.
+        $this->mock = $this->getMockForTrait('\Phactor\Point');
     }
 
     public function testGenerateNewPointUsingMladder()
@@ -51,8 +55,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Verify the default new point generation using the mladder function returns a valid point.
         // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
 
-        $mock     = $this->getMockForTrait('\Phactor\Point');
-        $newpoint = $mock->GenerateNewPoint();
+        $newpoint = $this->mock->GenerateNewPoint();
 
         $this->assertNotNull($newpoint);
         $this->assertEquals(count($newpoint), 4);
@@ -63,8 +66,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
         // Verify the default new point generation using the double-and-add function returns a valid point.
         // array('random_number' => $random_number, 'R' => $R, 'Rx_hex' => $Rx_hex, 'Ry_hex' => $Ry_hex);
 
-        $mock     = $this->getMockForTrait('\Phactor\Point');
-        $newpoint = $mock->GenerateNewPoint(false);
+        $newpoint = $this->mock->GenerateNewPoint(false);
 
         $this->assertNotNull($newpoint);
         $this->assertEquals(count($newpoint), 4);
@@ -74,8 +76,6 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Check that the same points are created when calling the mladder and double-and-add methods using the same params.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
         $P = array(
                    'x' => strtolower(trim($mock->Gx)),
                    'y' => strtolower(trim($mock->Gy))
@@ -83,8 +83,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
         $random = '12345678';
 
-        $ladder_point  = $mock->mLadder($P, $random);
-        $dandadd_point = $mock->doubleAndAdd($P, $random);
+        $ladder_point  = $this->mock->mLadder($P, $random);
+        $dandadd_point = $this->mock->doubleAndAdd($P, $random);
 
         $this->assertEquals($ladder_point, $dandadd_point);
     }
@@ -93,8 +93,6 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Verify we can add two different EC points.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
         $P = array('x' => '1234', 'y' => '5678');
 
         $Q = array(
@@ -102,7 +100,7 @@ class PointTest extends \PHPUnit_Framework_TestCase
                    'y' => strtolower(trim($mock->Gy))
                    );
 
-        $result = $mock->pointAddW($P, $Q);
+        $result = $this->mock->pointAddW($P, $Q);
 
         $this->assertNotNull($result);
         $this->assertGreaterThan(63, strlen($result['x']));
@@ -113,14 +111,12 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Verify we can double an EC point.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
         $Q = array(
                    'x' => strtolower(trim($mock->Gx)),
                    'y' => strtolower(trim($mock->Gy))
                    );
 
-        $result = $mock->pointDoubleW($Q);
+        $result = $this->mock->pointDoubleW($Q);
 
         $this->assertNotNull($result);
         $this->assertGreaterThan(63, strlen($result['x']));
@@ -131,11 +127,8 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Verify an infinite point returns infinity when attempting to double.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
-        $Q = $mock->Inf;
-
-        $result = $mock->pointDoubleW($Q);
+        $Q      = $this->mock->Inf;
+        $result = $this->mock->pointDoubleW($Q);
 
         $this->assertNotNull($result);
         $this->assertEquals($result, $mock->Inf);
@@ -145,16 +138,14 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Check that the second 'Q' point is returned with the first 'P' point is infinite.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
-        $P = $mock->Inf;
+        $P = $this->mock->Inf;
 
         $Q = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
-        $result = $mock->pointAddW($P, $Q);
+        $result = $this->mock->pointAddW($P, $Q);
 
         $this->assertEquals($Q, $result);
     }
@@ -163,16 +154,14 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Check that the first 'P' point is returned with the second 'Q' point is infinite.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
-        $Q = $mock->Inf;
+        $Q = $this->mock->Inf;
 
         $P = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
-        $result = $mock->pointAddW($P, $Q);
+        $result = $this->mock->pointAddW($P, $Q);
 
         $this->assertEquals($P, $result);
     }
@@ -181,21 +170,19 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Verify the points are doubled when the same two points are passed to pointAddW().
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
         $Q = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
         $P = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
 
-        $add_result    = $mock->pointAddW($P, $Q);
-        $double_result = $mock->pointDoubleW($P);
+        $add_result    = $this->mock->pointAddW($P, $Q);
+        $double_result = $this->mock->pointDoubleW($P);
 
         $this->assertEquals($add_result, $double_result);
     }
@@ -204,15 +191,12 @@ class PointTest extends \PHPUnit_Framework_TestCase
     {
         // Check out pointTestW() function returns true for a good point.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
         $Q = array(
-                   'x' => strtolower(trim($mock->Gx)),
-                   'y' => strtolower(trim($mock->Gy))
+                   'x' => strtolower(trim($this->mock->Gx)),
+                   'y' => strtolower(trim($this->mock->Gy))
                    );
 
-
-        $result = $mock->pointTestW($Q);
+        $result = $this->mock->pointTestW($Q);
 
         $this->assertNotNull($result);
         $this->assertEquals(true, $result);
@@ -220,11 +204,9 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
     public function testRangeCheck()
     {
-        //Check to ensure function throws exception if coordinate value is out of range.
+        // Check to ensure function throws exception if coordinate value is out of range.
 
-        $mock = $this->getMockForTrait('\Phactor\Point');
-
-        $result = $mock->RangeCheck($this->a);
+        $result = $this->mock->RangeCheck($this->a);
 
         $this->assertNotNull($result);
         $this->assertEquals(true, $result);
