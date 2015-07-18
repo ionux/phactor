@@ -137,7 +137,7 @@ final class BC
      */
     public function inv($number, $modulus)
     {
-        if (false === $this->coprime($number, $modulus)) {
+        if ($this->coprime($number, $modulus) === false) {
             return '0';
         }
 
@@ -146,24 +146,18 @@ final class BC
         $z = '0';
         $c = '0';
 
-        $modulus = $this->normalize($modulus);
-        $number  = $this->normalize($number);
-
-        $mod = $modulus;
-        $num = $number;
+        list($modulus, $number) = array($this->normalize($modulus), $this->normalize($number));
+        list($mod, $num)        = array($modulus, $number);
 
         try {
 
             do {
-                list($z, $c) = $this->modDiv($num, $mod);
-
-                $num = $mod;
-                $mod = $z;
+                list($z, $c)     = $this->modDiv($num, $mod);
+                list($mod, $num) = array($z, $mod);
 
                 $z = $this->subMul($a, $b, $c);
 
-                $a = $b;
-                $b = $z;
+                list($a, $b) = array($b, $z);
             } while (bccomp($mod, '0') > 0);
 
             return $this->addMod($a, $modulus);
@@ -184,13 +178,14 @@ final class BC
      */
     private function coprime($a, $b)
     {
-        $a = $this->normalize($a);
-        $b = $this->normalize($b);
+        list($a, $b) = array($this->normalize($a), $this->normalize($b));
 
         try {
+
             while ($this->coCompare($a, $b)) {
                 list($a, $b) = $this->coSwitch($a, $b);
             }
+
         } catch (\Exception $e) {
             throw $e;
         }
@@ -231,9 +226,9 @@ final class BC
         if (strlen($hex) < 5) {
             return hexdec($hex);
         } else {
-            $remain = substr($hex, 0, -1);
-            $last   = substr($hex, -1);
-            return bcadd(bcmul(16, $this->convertToDec($remain)), hexdec($last));
+            list($remain, $last) = array(substr($hex, 0, -1), substr($hex, -1));
+
+            return bcadd(bcmul('16', $this->convertToDec($remain)), hexdec($last));
     	}
     }
 
@@ -242,14 +237,9 @@ final class BC
             return dechex($dec);
         }
 
-        $last = bcmod($dec, 16);
-        $remain = bcdiv(bcsub($dec, $last), 16);
+        list($remain, $last) = array(bcdiv(bcsub($dec, $last), '16'), bcmod($dec, '16'))
 
-        if ($remain == 0) {
-            return dechex($last);
-        } else {
-            return $this->convertToHex($remain).dechex($last);
-        }
+        return ($remain == 0) ? dechex($last) : $this->convertToHex($remain) . dechex($last);
     }
 
     /**
