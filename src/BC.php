@@ -237,7 +237,7 @@ final class BC
             return dechex($dec);
         }
 
-        list($remain, $last) = array(bcdiv(bcsub($dec, $last), '16'), bcmod($dec, '16'))
+        list($remain, $last) = array(bcdiv(bcsub($dec, $last), '16'), bcmod($dec, '16'));
 
         return ($remain == 0) ? dechex($last) : $this->convertToHex($remain) . dechex($last);
     }
