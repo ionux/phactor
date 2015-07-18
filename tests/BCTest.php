@@ -24,7 +24,7 @@ use \Phactor\Object;
 use \Phactor\Secp256k1;
 
 /**
- * Currently the BC class has these public methods:
+ * Currently the BC class has these 17 public methods:
  *
  * public function add($a, $b)
  * public function mul($a, $b)
@@ -34,6 +34,15 @@ use \Phactor\Secp256k1;
  * public function comp($a, $b)
  * public function power($a, $b)
  * public function inv($number, $modulus)
+ * public function addMod($a, $mod)
+ * public function subMul($a, $b, $c)
+ * public function modDiv($num, $mod)
+ * public function coCompare($a, $b)
+ * public function coSwitch($a, $b)
+ * public function convertDecToHex($dec)
+ * public function convertHexToDec($hex)
+ * public function bcNormalize($a)
+ * public function coprime($a, $b)
  */
 class BCTest extends \PHPUnit_Framework_TestCase
 {
