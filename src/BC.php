@@ -51,7 +51,7 @@ final class BC
      */
     public function add($a, $b)
     {
-        return bcadd($this->normalize($a), $this->normalize($b));
+        return bcadd($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -63,7 +63,7 @@ final class BC
      */
     public function mul($a, $b)
     {
-        return bcmul($this->normalize($a), $this->normalize($b));
+        return bcmul($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -75,7 +75,7 @@ final class BC
      */
     public function div($a, $b)
     {
-        return bcdiv($this->normalize($a), $this->normalize($b));
+        return bcdiv($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -87,7 +87,7 @@ final class BC
      */
     public function sub($a, $b)
     {
-        return bcsub($this->normalize($a), $this->normalize($b));
+        return bcsub($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -99,7 +99,7 @@ final class BC
      */
     public function mod($a, $b)
     {
-        return bcmod($this->normalize($a), $this->normalize($b));
+        return bcmod($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -111,7 +111,7 @@ final class BC
      */
     public function comp($a, $b)
     {
-        return bccomp($this->normalize($a), $this->normalize($b));
+        return bccomp($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -123,7 +123,7 @@ final class BC
      */
     public function power($a, $b)
     {
-        return bcpow($this->normalize($a), $this->normalize($b));
+        return bcpow($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
     /**
@@ -146,7 +146,7 @@ final class BC
         $z = '0';
         $c = '0';
 
-        list($modulus, $number) = array($this->normalize($modulus), $this->normalize($number));
+        list($modulus, $number) = array($this->bcNormalize($modulus), $this->bcNormalize($number));
         list($mod, $num)        = array($modulus, $number);
 
         try {
@@ -176,9 +176,9 @@ final class BC
      * @return bool       Whether the params are cp.
      * @throws \Exception
      */
-    private function coprime($a, $b)
+    public function coprime($a, $b)
     {
-        list($a, $b) = array($this->normalize($a), $this->normalize($b));
+        list($a, $b) = array($this->bcNormalize($a), $this->bcNormalize($b));
 
         try {
 
@@ -196,12 +196,11 @@ final class BC
     /**
      * BC doesn't like the '0x' hex prefix that GMP prefers.
      *
-     * @param  string $a The value to normalize.
+     * @param  string $a The value to bcNormalize.
      * @return string
      */
-    private function normalize($a)
+    public function bcNormalize($a)
     {
-
         if (is_string($a)) {
         	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
         }
@@ -215,31 +214,47 @@ final class BC
     			// convert to hex, dec
     			//break;
     		case 'unk':
-    			throw new \Exception('Unknown number type in BC::normalize().  Cannot process!');
+    			throw new \Exception('Unknown number type in BC::bcNormalize().  Cannot process!');
     	}
         **/
 
         return $a;
     }
 
-    private function convertToDec($hex) {
+    /**
+     * BC utility for directly converting
+     * a hexadecimal number to decimal.
+     *
+     * @param  string $hex Number to convert to dec.
+     * @return array       Dec form of the number.
+     */
+    public function convertHexToDec($hex)
+    {
         if (strlen($hex) < 5) {
             return hexdec($hex);
-        } else {
-            list($remain, $last) = array(substr($hex, 0, -1), substr($hex, -1));
+        }
 
-            return bcadd(bcmul('16', $this->convertToDec($remain)), hexdec($last));
-    	}
+        list($remain, $last) = array(substr($hex, 0, -1), substr($hex, -1));
+
+        return bcadd(bcmul('16', $this->convertHexToDec($remain)), hexdec($last));
     }
 
-    private function convertToHex($dec) {
+    /**
+     * BC utility for directly converting
+     * a decimal number to hexadecimal.
+     *
+     * @param  string $dec Number to convert to hex.
+     * @return array       Hex form of the number.
+     */
+    public function convertDecToHex($dec)
+    {
         if (strlen($dec) < 5) {
             return dechex($dec);
         }
 
         list($remain, $last) = array(bcdiv(bcsub($dec, $last), '16'), bcmod($dec, '16'));
 
-        return ($remain == 0) ? dechex($last) : $this->convertToHex($remain) . dechex($last);
+        return ($remain == 0) ? dechex($last) : $this->convertDecToHex($remain) . dechex($last);
     }
 
     /**
@@ -251,7 +266,7 @@ final class BC
      * @param  string $b  Second param to check.
      * @return array      Array of smaller, larger % smaller.
      */
-    private function coSwitch($a, $b)
+    public function coSwitch($a, $b)
     {
         switch (bccomp($a, $b)) {
             case 0:
@@ -270,7 +285,7 @@ final class BC
      * @param  string $b  Second param to check.
      * @return bool       Whether the params are both > 0.
      */
-    private function coCompare($a, $b)
+    public function coCompare($a, $b)
     {
         return (bccomp($a, '0') > 0 && bccomp($b, '0') > 0);
     }
@@ -283,7 +298,7 @@ final class BC
      * @param  string $mod  Modulo parameter.
      * @return array        Array of num % mod, num / mod.
      */
-    private function modDiv($num, $mod)
+    public function modDiv($num, $mod)
     {
         return array(bcmod($num, $mod), bcdiv($num, $mod));
     }
@@ -297,7 +312,7 @@ final class BC
      * @param  string $c  Second number to multiply.
      * @return string     Result of a - (b * c).
      */
-    private function subMul($a, $b, $c)
+    public function subMul($a, $b, $c)
     {
         return bcsub($a, bcmul($b, $c));
     }
@@ -310,7 +325,7 @@ final class BC
      * @param  string $mod  Modulus parameter.
      * @return string       Either a or (a + mod).
      */
-    private function addMod($a, $mod)
+    public function addMod($a, $mod)
     {
         return (bccomp($a, '0') < 0) ? bcadd($a, $mod) : $a;
     }
