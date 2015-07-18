@@ -105,9 +105,9 @@ final class BC
     /**
      * Compares two arbitrary precision numbers.
      *
-     * @param  string $a  The first number.
-     * @param  string $b  The second number.
-     * @return string
+     * @param  string  $a  The first number.
+     * @param  string  $b  The second number.
+     * @return integer
      */
     public function comp($a, $b)
     {
@@ -202,20 +202,20 @@ final class BC
     public function bcNormalize($a)
     {
         if (is_string($a)) {
-        	$a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
+            $a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
         }
 
         /** For now...
-    	switch($this->Test($a)) {
-    		case 'hex':
-    			$a = $this->convertToDec($a);
-    			break;
-    		//case 'bin':
-    			// convert to hex, dec
-    			//break;
-    		case 'unk':
-    			throw new \Exception('Unknown number type in BC::bcNormalize().  Cannot process!');
-    	}
+        switch($this->Test($a)) {
+            case 'hex':
+                $a = $this->convertToDec($a);
+                break;
+            //case 'bin':
+                // convert to hex, dec
+                //break;
+            case 'unk':
+            throw new \Exception('Unknown number type in BC::bcNormalize().  Cannot process!');
+        }
         **/
 
         return $a;
@@ -244,7 +244,7 @@ final class BC
      * a decimal number to hexadecimal.
      *
      * @param  string $dec Number to convert to hex.
-     * @return array       Hex form of the number.
+     * @return string      Hex form of the number.
      */
     public function convertDecToHex($dec)
     {
