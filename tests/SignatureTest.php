@@ -99,6 +99,11 @@ class SignatureTest extends \PHPUnit_Framework_TestCase
         $sig    = new \Phactor\Signature;
         $result = $sig->Encode($r_coord, $s_coord);
 
+        // Trying to find a seemingly random and subtle bug here...
+        if ($result != $expected) {
+            echo "\n\nThat signature encoding bug occurred! Expected:\n" . $expected . "\nResult:\n" . $result . "\n\n";
+        }
+
         $this->assertEquals($expected, $result);
     }
 }
