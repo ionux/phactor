@@ -29,7 +29,7 @@ namespace Phactor;
 
 /**
  * This class generates Service Identification Numbers (SINs) based on the
- * Identity Protocol v1 spec, see: https://en.bitcoin.it/wiki/Identity_protocol_v1
+ * Identity Protocol v1 spec, @see: https://en.bitcoin.it/wiki/Identity_protocol_v1
  *
  * @author Rich Morgan <rich@bitpay.com>
  */
@@ -43,14 +43,14 @@ final class Sin
     public $encoded;
 
     /**
-     * @var string
-     */
-    private $SINtype;
-
-    /**
      * @var array
      */
     private $rawHashes;
+
+    /**
+     * @var string
+     */
+    private $SINtype;
 
     /**
      * @var string
@@ -62,7 +62,7 @@ final class Sin
      *
      * @param  string $pubkey
      */
-    public function __construct($pubkey = '')
+    public function __construct($pubkey = '', $type = '02', $version = '0F')
     {
         $this->rawHashes = array(
                                  'step1' => null,
@@ -80,16 +80,16 @@ final class Sin
          * time, without network activity, much like bitcoin
          * addresses.
          */
-        $this->SINtype    = '02';
-        $this->SINversion = '0F';
+        $this->SINtype    = $type;
+        $this->SINversion = $version;
 
-        if (false === empty($pubkey)) {
+        if (empty($pubkey) === false) {
             $this->Generate($pubkey);
         }
     }
 
     /**
-     * Returns the generated SIN.
+     * Returns the generated SIN, if exists.
      *
      * @return string The generated SIN.
      */
@@ -117,7 +117,7 @@ final class Sin
      */
     public function Generate($pubkey)
     {
-        if (true === empty($pubkey)) {
+        if (empty($pubkey) === true) {
             throw new \Exception('Missing or invalid public key parameter for Sin::Generate.');
         }
 
@@ -145,7 +145,7 @@ final class Sin
         /* finally base58 encode it */
         $this->encoded = $this->encodeBase58($this->rawHashes['step6']);
 
-        if (true === empty($this->encoded)) {
+        if (empty($this->encoded) === true) {
             throw new \Exception('Failed to generate valid SIN value. Empty or NULL value was obtained.');
         }
 
