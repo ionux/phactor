@@ -123,6 +123,10 @@ trait Number
             if ($this->hdTest($value) === true) {
                 return 'hex';
             }
+
+            if ($this->b58Test($value) === true) {
+                return 'b58';
+            }
         }
 
         /* Otherwise, this is either binary or garbage... */
@@ -139,6 +143,7 @@ trait Number
     {
         /* We are only concerned with these types... */
         switch ($this->Test($value)) {
+            case 'b58':
             case 'hex':
             case 'dec':
             case 'bin':
@@ -181,7 +186,7 @@ trait Number
             $secure_random_number = $secure_random_number . hexdec(bin2hex(openssl_random_pseudo_bytes(4, $cstrong)));
         }
 
-        if (false === $secure_random_number || false === $cstrong) {
+        if ($secure_random_number === false || $cstrong === false) {
             throw new \Exception('The Phactor math library could not generate a cryptographically-strong random number. Your OpenSSL extension might be old or broken. Please contact your web hosting provider with this error message.');
         }
 
@@ -282,6 +287,17 @@ trait Number
     {
         /* Finally, if this test is true, it's definitely a pure binary number string. */
         return (preg_match('/^[0-1]*$/', $value) === 1);
+    }
+
+    /**
+     * Checks if a number contains only base58 digits.
+     *
+     * @param  mixed   $value The value to be checked.
+     * @return boolean        Either true or false.
+     */
+    private function b58Test($value)
+    {
+        return (preg_match('/^[a-km-zA-HJ-NP-Z1-9]*$/', $value) === 1);
     }
 
     /**
