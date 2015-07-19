@@ -163,13 +163,14 @@ trait Number
     }
 
     /**
-     * Generates a secure random number using the OpenSSL extension.
+     * Generates a secure random number using the OpenSSL
+     * openssl_random_pseudo_bytes extension, see:
+     * http://php.net/manual/en/function.openssl-random-pseudo-bytes.php
      *
-     * @param  int        $length Number of bytes to return.
-     * @return string             Random data in hex form.
+     * @return string     $secure_random_number Random data in hex form.
      * @throws \Exception
      */
-    public function SecureRandomNumber($length = 32, $type = 'decimal')
+    public function SecureRandomNumber()
     {
         $this->openSSLCheck();
 
