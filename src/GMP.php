@@ -101,6 +101,20 @@ final class GMP
     }
 
     /**
+     * Raises an arbitrary precision number to another,
+     * reduced by a specified modulus.
+     *
+     * @param  string  $a        The first number.
+     * @param  string  $b        The exponent.
+     * @param  string  $s        The modulus.
+     * @return string            The result of the operation.
+     */
+    public function powmod($a, $b, $c)
+    {
+        return gmp_strval(gmp_powm($a, $b, $c));
+    }
+
+    /**
      * Compares two arbitrary precision numbers.
      *
      * @param  string $a  The first number.
@@ -145,5 +159,16 @@ final class GMP
     public function power($a, $b)
     {
         return gmp_strval(gmp_pow($a, $b));
+    }
+
+    /**
+     * Calculates & returns the integer portion of the square root.
+     *
+     * @param  string $a  The first number.
+     * @return string
+     */
+    public function sqrt($a)
+    {
+        return gmp_strval(gmp_sqrt($a));
     }
 }
