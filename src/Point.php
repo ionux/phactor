@@ -146,12 +146,16 @@ trait Point
      * Performs a test of an EC point by substituting the new
      * values into the equation for the Weierstrass form of the curve.
      *
-     * @param  array $P          The generated point to test.
-     * @return bool              Whether or not the point is valid.
+     * @param  array|string $P  The generated point to test.
+     * @return bool             Whether or not the point is valid.
      * @throws \Exception
      */
     public function pointTestW($P)
     {
+        if (is_array($P) === false) {
+            throw new \Exception('Point test failed! Cannot test a point without coordinates.');
+        }
+
         /*
          * Weierstrass form of the elliptic curve:
          * y^2 (mod p) = x^3 + ax + b (mod p)
@@ -386,8 +390,8 @@ trait Point
      * Checks if a number is within a certain range:
      *   0x01 < number < n
      *
-     * @param  string  $random_number  The number to check.
-     * @return boolean                 The result of the comparison.
+     * @param  string  $value  The number to check.
+     * @return boolean         The result of the comparison.
      * @codeCoverageIgnore
      */
     private function randCompare($value)
