@@ -358,7 +358,7 @@ trait Math
                 $return = '00' . $return;
             }
 
-            return (strlen($return) %2 != 0) ? '0' . $return : $return;
+            return (strlen($return) % 2 != 0) ? '0' . $return : $return;
 
         } catch (\Exception $e) {
             throw $e;
