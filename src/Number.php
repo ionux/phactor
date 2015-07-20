@@ -163,8 +163,8 @@ trait Number
      */
     public function absValue($value)
     {
-    	/* Remove any negative signs. */
-    	return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
+        /* Remove any negative signs. */
+        return ($value[0] == '-') ? substr($this->prepAndClean($value), 1) : $this->prepAndClean($value);
     }
 
     /**
@@ -203,7 +203,7 @@ trait Number
      */
     private function stripHexPrefix($hex)
     {
-    	return (substr($hex, 0, 2) == '0x') ? substr($hex, 2) : $hex;
+        return (substr($hex, 0, 2) == '0x') ? substr($hex, 2) : $hex;
     }
 
     /**
