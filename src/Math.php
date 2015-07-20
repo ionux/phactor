@@ -47,7 +47,6 @@ trait Math
      * @param  string $a  The first number to multiply.
      * @param  string $b  The second number to multiply.
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Multiply($a, $b)
     {
@@ -62,7 +61,6 @@ trait Math
      * @param  string $a  The first number to add.
      * @param  string $b  The second number to add.
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Add($a, $b)
     {
@@ -77,7 +75,6 @@ trait Math
      * @param  string $a  The first number to Subtract.
      * @param  string $b  The second number to Subtract.
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Subtract($a, $b)
     {
@@ -92,7 +89,6 @@ trait Math
      * @param  string $a  The first number to Divide.
      * @param  string $b  The second number to Divide.
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Divide($a, $b)
     {
@@ -102,18 +98,38 @@ trait Math
     }
 
     /**
-     * Performs the modulo 'b' of an arbitrary precision number 'a'.
+     * Performs the modulo 'b' of an arbitrary precision
+     * number 'a'. There's a slight quirk in GMP's
+     * implementation so this returns a mathematically
+     * correct answer if you specify the $correct parameter
+     * and you're using GMP, of course.
      *
-     * @param  string $a  The first number.
-     * @param  string $b  The second number.
-     * @return string     The result of the operation.
-     * @throws \Exception
+     * @param  string  $a        The first number.
+     * @param  string  $b        The second number.
+     * @param  boolean $correct  Flag to calculate mathematically correct modulo.
+     * @return string            The result of the operation.
      */
-    public function Modulo($a, $b)
+    public function Modulo($a, $b, $correct = false)
     {
         $this->preOpMethodParamsCheck(array($a, $b));
 
-        return $this->math->mod($a, $b);
+        return $this->math->mod($a, $b, $correct);
+    }
+
+    /**
+     * Raises an arbitrary precision number to another,
+     * reduced by a specified modulus.
+     *
+     * @param  string  $a        The first number.
+     * @param  string  $b        The exponent.
+     * @param  string  $s        The modulus.
+     * @return string            The result of the operation.
+     */
+    public function PowMod($a, $b, $c)
+    {
+        $this->preOpMethodParamsCheck(array($a, $b));
+
+        return $this->math->powmod($a, $b, $c);
     }
 
     /**
@@ -122,7 +138,6 @@ trait Math
      * @param  string $a  The first number to Divide.
      * @param  string $b  The second number to Divide.
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Invert($a, $b)
     {
@@ -137,7 +152,6 @@ trait Math
      * @param  string $a  The first number to compare.
      * @param  string $b  The second number to compare.
      * @return string     The result of the comparison.
-     * @throws \Exception
      */
     public function Compare($a, $b)
     {
@@ -152,7 +166,6 @@ trait Math
      * @param  string $a  The number to raise to the power.
      * @param  string $b  The integer power
      * @return string     The result of the operation.
-     * @throws \Exception
      */
     public function Power($a, $b)
     {
@@ -162,12 +175,24 @@ trait Math
     }
 
     /**
+     * Calculates & returns the integer portion of the square root.
+     *
+     * @param  string $a  The first number.
+     * @return string
+     */
+    public function SqRoot($a)
+    {
+        $this->preOpMethodParamsCheck(array($a));
+
+        return $this->math->sqrt($a);
+    }
+
+    /**
      * Encodes a decimal value into hexadecimal.
      *
      * @param  string     $dec    The decimal value to convert.
      * @param  boolean    $prefix Whether or not to append the '0x'.
      * @return string     $hex    The result of the conversion.
-     * @throws \Exception
      */
     public function encodeHex($dec, $prefix = true)
     {
@@ -184,7 +209,6 @@ trait Math
      *
      * @param  string     $hex
      * @return string     $dec
-     * @throws \Exception
      */
     public function decodeHex($hex)
     {
@@ -416,7 +440,9 @@ trait Math
     }
 
     /**
-     * Congruency check for two values.
+     * Congruency check for two values. Note: the actual
+     * computation is performed within the calling method.
+     * Used in the signature verification function.
      *
      * @param  string $r  The first coordinate to check.
      * @param  string $x  The second coordinate to check.
@@ -428,10 +454,10 @@ trait Math
     }
 
     /**
-     * Determines if the msb is set.
+     * Determines if the MSB is set and returns a NULL byte if so.
      *
      * @param  string $value The binary data to check.
-     * @return string
+     * @return string        A NULL byte character.
      */
     private function msbCheck($value)
     {
