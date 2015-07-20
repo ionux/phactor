@@ -261,7 +261,7 @@ trait Point
      * Creates a new point on the elliptic curve.
      *
      * @param  boolean   $ladder Whether or not to use the mladder method.
-     * @return array
+     * @return array             The new EC point.
      * @throws \Exception
      */
     public function GenerateNewPoint($ladder = true)
@@ -323,23 +323,23 @@ trait Point
      */
     public function RangeCheck($value)
     {
-    	$this->preOpMethodParamsCheck(array($value));
+        $this->preOpMethodParamsCheck(array($value));
 
-    	//$value = $this->encodeHex($value);
+        //$value = $this->encodeHex($value);
 
-    	/* Check to see if $value is in the range [1, n-1] */
-    	//if ($this->randCompare($value)) {
-    	//	throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
-    	//}
+        /* Check to see if $value is in the range [1, n-1] */
+        //if ($this->randCompare($value)) {
+        //    throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
+        //}
 
-    	return true;
+        return true;
     }
 
     /**
      * Checks the basic type of the point value.
      *
-     * @param  mixed $value
-     * @return string
+     * @param  mixed $value The point to check.
+     * @return string       The result of the check.
      * @codeCoverageIgnore
      */
     private function pointType($value)
