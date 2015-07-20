@@ -194,7 +194,8 @@ final class Signature
         $e = $this->decodeHex(hash('sha256', $msg));
 
         $n_dec  = $this->decodeHex($this->n);
-        $pubkey = $this->keyUtil->parseUncompressedPublicKey($pubkey);
+
+        $pubkey = (substr($pubkey, 0, 2) == '04') ? $this->keyUtil->parseUncompressedPublicKey($pubkey) : $this->keyUtil->parseCompressedPublicKey($pubkey);
 
         /* Parse the x,y coordinates */
         $Q = $this->keyUtil->parseCoordinatePairFromPublicKey($pubkey);
