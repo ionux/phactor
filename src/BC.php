@@ -103,6 +103,20 @@ final class BC
     }
 
     /**
+     * Raises an arbitrary precision number to another,
+     * reduced by a specified modulus.
+     *
+     * @param  string  $a        The first number.
+     * @param  string  $b        The exponent.
+     * @param  string  $s        The modulus.
+     * @return string            The result of the operation.
+     */
+    public function powmod($a, $b, $c)
+    {
+        return bcpowmod($this->bcNormalize($a), $this->bcNormalize($b), $this->bcNormalize($c));
+    }
+
+    /**
      * Compares two arbitrary precision numbers.
      *
      * @param  string  $a  The first number.
@@ -124,6 +138,17 @@ final class BC
     public function power($a, $b)
     {
         return bcpow($this->bcNormalize($a), $this->bcNormalize($b));
+    }
+
+    /**
+     * Calculates & returns the integer portion of the square root.
+     *
+     * @param  string $a  The first number.
+     * @return string
+     */
+    public function sqrt($a)
+    {
+        return bcsqrt($this->bcNormalize($a));
     }
 
     /**
