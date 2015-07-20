@@ -51,7 +51,7 @@ trait Point
     public function pointAddW($P, $Q)
     {
         if ($this->pointType($P) == 'nul' || $this->pointType($Q) == 'nul') {
-            throw new \Exception('[ERROR] In Point::pointAddW: You must provide valid point parameters to add.');
+            throw new \Exception('You must provide valid point parameters to add.');
         }
 
         if ($P == $this->Inf || false === $this->arrTest($P)) {
@@ -60,6 +60,10 @@ trait Point
 
         if ($Q == $this->Inf || false === $this->arrTest($P)) {
             return $P;
+        }
+
+        if (($P['x'] == $Q['x']) && ($P['y'] != $Q['y'])) {
+            return $this->Inf;
         }
 
         if ($P == $Q) {
@@ -180,7 +184,7 @@ trait Point
             if ($left == $right) {
                 return $left == $right;
             } else {
-                throw new \Exception('[ERROR] In Point::pointTestW: Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
+                throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
             }
 
         } catch (\Exception $e) {
@@ -282,6 +286,27 @@ trait Point
                      'Rx_hex'        => $Rx_hex,
                      'Ry_hex'        => $Ry_hex
                     );
+    }
+
+    /**
+     * Recalculates the y-coordinate from a compressed public key.
+     *
+     * @param  string  $x_coord        The x-coordinate.
+     * @param  string  $compressed_bit The hex compression value (03 or 02).
+     * @return string  $y              The calculated y-coordinate.
+     */
+    public function calcYfromX($x_coord, $compressed_bit)
+    {
+        try {
+            $x = $this->decodeHex($this->addHexPrefix($x_coord));
+            $c = $this->Subtract($this->decodeHex($this->addHexPrefix($compressed_bit)), '2');
+            $a = $this->Modulo($this->Add($this->PowMod($x, '3', $this->p), '7'), $this->p);
+            $y = $this->PowMod($a, $this->Divide($this->Add($this->p, '1'), '4'), $this->p);
+
+            return ($this->Modulo($y, '2') != $c) ? $this->decodeHex($this->Modulo($this->Multiply('-1', $y), $this->p)) : $this->decodeHex($y);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
