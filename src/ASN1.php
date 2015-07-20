@@ -136,7 +136,7 @@ trait ASN1
      * @param  array     $values The key values to check.
      * @throws \Exception
      */
-    private function pemKeyLenCheck(array $values)
+    private function pemKeyLenCheck($values)
     {
         if (strlen($values[0]) < 62 || strlen($values[1]) < 126) {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($values[0], true) . '" and "' . var_export($values[1], true) . '".');
@@ -204,7 +204,7 @@ trait ASN1
         $elements    = count($bin_data);
         $temp_number = '00000000';
 
-        for ($x=1; $x<$elements; $x++) {
+        for ($x = 1; $x < $elements; $x++) {
             $and_temp = $bin_data[$x] & '01111111';
 
             $temp_number = bitAdd($temp_number, $and_temp);
@@ -212,7 +212,7 @@ trait ASN1
             if (substr($bin_data[$x], 0, 1) == '0') {
                 // This is a final value without
                 // a value preceeding it.
-                $oid[$x+1]   = decConv($temp_number);
+                $oid[$x + 1] = decConv($temp_number);
                 $temp_number = '';
             } else {
                 $temp_number = shiftLeft($temp_number, 7);
