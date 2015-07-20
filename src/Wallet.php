@@ -64,7 +64,7 @@ final class Wallet
     /**
      * Public constructor method.
      *
-     * @param  string $pubkey
+     * @param  string $private_key
      */
     public function __construct($private_key = null)
     {
@@ -92,8 +92,10 @@ final class Wallet
     /**
      * Retrieves or generates a WIF-encoded private key from hex.
      *
-     * @param  string  $keypair The private key in hex format.
-     * @return string           The WIF-encoded private key.
+     * @param  string  $private_key        The hex-formatted private key.
+     * @param  string  $network            Network type (test or main).
+     * @param  string  $public_key_format  Format of the corresponding public key.
+     * @return string  $WIF_address        The Base58-encoded private key.
      */
     public function getWIF($private_key = null, $network = 'main', $public_key_format = 'compressed')
     {
@@ -107,8 +109,8 @@ final class Wallet
     /**
      * Retrieves or generates a hex encoded private key from WIF.
      *
-     * @param  string  $keypair The WIF-encoded private key.
-     * @return string           The private key in hex format.
+     * @param  string  $WIF_address The WIF-encoded private key.
+     * @return string               The private key in hex format.
      */
     public function getWIFPrivateKey($WIF_address = null)
     {
@@ -281,9 +283,9 @@ final class Wallet
      * If you also need the raw hex data hashed to generate the checksum,
      * set the $needs_hashed parameter to true.
      *
-     * @param  string  $data          The data to checksum.
-     * @param  string  $needs_hashed  Whether or not to hash the data.
-     * @return string  $checksum      The 4-byte checksum in hex format.
+     * @param  string   $data          The data to checksum.
+     * @param  boolean  $needs_hashed  Whether or not to hash the data.
+     * @return string   $checksum      The 4-byte checksum in hex format.
      */
     private function calculateChecksum($data, $needs_hashed = false)
     {
