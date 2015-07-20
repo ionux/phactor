@@ -122,7 +122,7 @@ trait Math
      *
      * @param  string  $a        The first number.
      * @param  string  $b        The exponent.
-     * @param  string  $s        The modulus.
+     * @param  string  $c        The modulus.
      * @return string            The result of the operation.
      */
     public function PowMod($a, $b, $c)
@@ -395,7 +395,7 @@ trait Math
      * @return boolean          Will only be true, otherwise throws \Exception
      * @throws \Exception
      */
-    private function preOpMethodParamsCheck(array $params)
+    private function preOpMethodParamsCheck($params)
     {
         $this->MathCheck();
 
@@ -470,7 +470,7 @@ trait Math
      * Checks if two parameters are less than or equal to zero.
      *
      * @param  string $a  The first parameter to check.
-     * @param  string $a  The first parameter to check.
+     * @param  string $b  The second parameter to check.
      * @return boolean    Result of the check.
      */
     private function zeroCompare($a, $b)
