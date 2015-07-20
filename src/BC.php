@@ -108,7 +108,7 @@ final class BC
      *
      * @param  string  $a        The first number.
      * @param  string  $b        The exponent.
-     * @param  string  $s        The modulus.
+     * @param  string  $c        The modulus.
      * @return string            The result of the operation.
      */
     public function powmod($a, $b, $c)
