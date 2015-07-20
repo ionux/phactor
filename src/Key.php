@@ -140,6 +140,17 @@ final class Key
     }
 
     /**
+     * Parses a compressed public key with the 0x02 or 0x03 prefix.
+     *
+     * @param  string $pubkey The key to check.
+     * @return string         The (x,y) coordinate pair.
+     */
+    public function parseCompressedPublicKey($pubkey)
+    {
+        return (substr($pubkey, 0, 2) == '02' || substr($pubkey, 0, 2) == '03') ? $this->prepAndClean($this->calcYfromX(substr($pubkey, 2), substr($pubkey, 0, 2))) : $this->prepAndClean($pubkey);
+    }
+
+    /**
      * Parses the x & y coordinates from an uncompressed public key.
      *
      * @param  string     $pubkey The key to parse.
