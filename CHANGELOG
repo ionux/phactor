@@ -1,3 +1,168 @@
+1.0.5
+  * Update TODO.md, commit fbf07cb
+  * Added png logo, commit 9307a49
+  * Added new phactor logo & minor formatting update, commit 0b189b4
+  * Removed dead code & extra space in logic check, commit e9c045a
+  * Fixed implicit type conversion in logic checks, commit 510a1df
+  * Removed unneeded value checks, commit 605364a
+  * Refactor to use ternary operator where possible, commit 79541ab
+  * Fixed bug in ternary logic check, commit f30ba89
+  * Refactor to use ternary operator where possible, commit 820c7e5
+  * Refactor to use ternary operator where possible, commit ef569c8
+  * Fix incorrect variable name, commit 69a7f5f
+  * Fix for invalid hex length bug, commit aff69ed
+  * Fixed error message displaying wrong value, commit c6f669e
+  * Refactor to use ternary operator where possible, commit f1848ab
+  * Refactor to use ternary operator where possible, commit d70a1b4
+  * Updated empty value checking, commit 6d2dd73
+  * Updated value checks, commit ac33332
+  * Refactor to use switch construct where possible, commit 0043393
+  * Added global property comments, commit 8ddb5fd
+  * Fixed issue in constructor, commit f145540
+  * Minor refactor for code quality, commit f82c69e
+  * Added global property comments, commit b5ba359
+  * Removed extra spaces, commit a3a7872
+  * Refactor to improve code quality, commit 87eb26b
+  * Added Scrutinizer code quality badge, commit 27863a5
+  * Fixed variable name, commit 4d7fbc5
+  * Fix for missing index bug, commit d686406
+  * Initialized variable being used, commit d6a07f8
+  * Added missing class property, commit ba483e6
+  * Corrected phpdoc info, commit 7575933
+  * Fixed var scope, commit 794a11a
+  * Removed unneeded typecasting, commit 0b5fd5e
+  * Refactor to improve signature() complexity, commit 5c345c1
+  * Fix typo in method name, commit 88f30b9
+  * Fix for GMP error, commit b94c0a4
+  * Refactor to improve verify() complexity, commit f4897a3
+  * Refactor to improve code quality, commit fd2fca0
+  * Fixed missing string concatenator, commit 91df56a
+  * Fix for missing return value, commit b64c0e9
+  * Refactor and variable bug fix, commit de81a60
+  * Added base58 decoding method, commit 1365622
+  * Create english.txt, commit e6fe324
+  * Create spanish.txt, commit 6cc20de
+  * Create japanese.txt, commit 820416f
+  * Create chinese_simplified.txt, commit 71e1fc2
+  * Create chinese_traditional.txt, commit 7bd02ff
+  * Removed unneeded variable assignment, commit 6b2c7cf
+  * Refactored to reduce complexity, commit cb1b118
+  * Refactor to reduce complexity, commit aa3a3d0
+  * Refactor to improve code quality, commit 18b3062
+  * Fixed variable name, commit d1e5c23
+  * Refactor to improve code quality, commit 31d039c
+  * Refactor to improve code quality, commit 903332b
+  * Refactor to improve code quality, commit d35f4ec
+  * Fixed variable assignment, commit e9735db
+  * Refactor to improve code quality, commit 5c97f2d
+  * Fix for missing semicolon, commit df5c50e
+  * Refactor to improve code quality, commit f07602a
+  * Create Secp256k1.php, commit 00ade5d
+  * Create Number.php, commit 661b877
+  * Refactor for new Number and Secp256k1 classes, commit b2a7989
+  * Create Object.php, commit 2b8e821
+  * Added boolean test method, commit 4122ba9
+  * Null test logic fix, commit 81dcf51
+  * Scope resolution fix, commit 25324b4
+  * Refactor to improve code quality, commit abed8f4
+  * Refactor to improve code quality, commit 494e3c6
+  * Refactor to improve code quality, commit da90688
+  * Refactor to improve code quality, commit 14bcdd2
+  * Refactor to improve code quality, commit 1de5994
+  * Refactor to improve code quality, commit d3737d1
+  * Refactor to improve code quality, commit 11d4882
+  * Update README.md, commit a56b03d
+  * Fix for missing semicolon, commit b5935e1
+  * Fix for pointType() method, commit 35862dc
+  * Updated method scope, commit 4d4de03
+  * Refactor to improve code quality, commit bd17a5e
+  * Removed curve trait use, commit 5f893d5
+  * Refactor point test method name, commit 084033e
+  * Refactor point double & point add method names, commit 7eb469a
+  * Refactor point double & point add method names, commit c90714a
+  * Refactor point test method name, commit 481d7b8
+  * Added precomputed decimal equivalents, commit 42bfded
+  * Refactor to improve code quality, commit ce54289
+  * Refactor normalize() method, commit 7c7ab07
+  * Removed unneeded value checks, commit 7f0fdae
+  * Refactor to improve code quality, commit e9bb802
+  * Removed unneeded variable assignment, commit 4cbae8e
+  * Commented out test in normalize() method, commit 707be8f
+  * Temporary refactor to test BC codebranches, commit b576732
+  * Refactor to return random numbers in decimal form, commit 8ed465c
+  * Testing BC codebranch refactor, commit 52a24ea
+  * Update MathTest.php, commit 0ea8cfb
+  * Added check for array type in normalize, commit 1192cb8
+  * Refactor to test BC codebranch, commit 11e4c64
+  * Updated to check for array before comparing to 0, commit 200a8d9
+  * Fix for changed parameter order, commit 1d77ae3
+  * Temporary refactor to test BC codebranches, commit b469988
+  * Update for point test debugging, commit ecf3610
+  * Create ASN1.php, commit 17c558a
+  * Bug fixes, commit ce9cf70
+  * Bug fixes, commit 70fab58
+  * Bug fixes, commit 69f91b3
+  * Bug fixes, commit a8310c3
+  * Bug fixes, commit b030089
+  * Corrected function name, commit d318641
+  * Updating tests with new classes & code changes, commit a08d4c9
+  * Bug fix for base58 encoding value check, commit 2a5a91d
+  * Update signature test method names, commit 9032bf2
+  * Update BCTest.php, commit a68040c
+  * Update GMPTest.php, commit 3652162
+  * Update KeyTest.php, commit e0e16fe
+  * Update MathTest.php, commit 4229e74
+  * Update PointTest.php, commit 5243903
+  * Fixed accidentally removed value checks, commit 05359ea
+  * Update method scope, commit b95f3bf
+  * Fix for missing key utility methods, commit 3847282
+  * Fixed method name, commit 1867d58
+  * Removed unneeded variable assignment, commit d8fb6ac
+  * Update method signatures, commit 3ef3f30
+  * Removed extra hex prefix, commit efe7362
+  * Fixed variable name, commit f696f4e
+  * Fixed function call parameter order, commit 4b553b6
+  * Update .travis.yml, commit befcb45
+  * Bug fixes, commit 3471509
+  * Bug fixes, commit 001f3bf
+  * Bug fixes, commit 99107a1
+  * Bug fixes, commit 389cfde
+  * Added test for RangeCheck method, commit bf3d51a
+  * Code coverage refactor, commit c2d9067
+  * Refactor mock object, commit 8263a33
+  * Fixed variable name, commit 39482d2
+  * Create Binary.php, commit 205ad7c
+  * Refactor to improve code quality, commit 2fa87c1
+  * Refactor to improve code quality, commit e80de44
+  * Fix for missing semicolon, commit 7d1da1a
+  * Refactor to improve code quality, commit 6ac2bf7
+  * Bug fixes, commit 37603cb
+  * Refactor to improve code quality, commit 0b67ee1
+  * Added new public methods to list, commit c6b5c0b
+  * Corrected return type in docs, commit 18ce458
+  * Removed unneeded method parameters, commit f0313ca
+  * Update test to catch a bug, commit 18f7bef
+  * Create Wallet.php, commit b558be8
+  * Updated with Base58 value test, commit 583368d
+  * Minor refactoring, commit 9e1c9fe
+  * Code documentation update, commit 887db11
+  * Moved pem methods from Key class to here, commit 7a6aa23
+  * Moved pem methods to ASN1 class, commit 224275f
+  * Added new powmod method, commit d8e91fe
+  * Added new powmod method, commit 22ea05f
+  * Added new powmod method, commit dfae6e9
+  * Added new calcYfromX method, commit 0ebd047
+  * Added parseCompressedPublicKey method, commit bdffba9
+  * Added support for compressed public keys, commit 7cf00d0
+  * Bug & documentation fixes, commit 24ea1fa
+  * Formatting fixes, commit 22eb342
+  * Code documentation update, commit 7c75a35
+  * Code documentation update, commit 105027f
+  * Code documentation update, commit e563144
+  * Formatting fixes, commit 487e970
+  * Formatting fixes, commit 413dd3b
+  * Code documentation update, commit 09c622b
+
 1.0.4
   * Fixed verify function, commit 275d870
   * Duplicate starting tag removed, commit 0b9de05
