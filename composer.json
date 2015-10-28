@@ -8,8 +8,8 @@
     "authors": [
         {
             "name": "Rich Morgan",
-            "email": "rich@bitpay.com",
-            "role": "Team Lead Developer"
+            "email": "rich@richmorgan.me",
+            "role": "Creator and Lead Developer"
         }
     ],
 
@@ -22,7 +22,7 @@
 
     "support": {
         "issues": "https://github.com/ionux/phactor/issues",
-        "email": "rich@bitpay.com",
+        "email": "rich@richmorgan.me",
         "source": "https://github.com/ionux/phactor"
     },
 
