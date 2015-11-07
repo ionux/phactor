@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@bitpay.com
+ * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -32,7 +32,7 @@ namespace Phactor;
  * parameters over Fp associated with the Koblitz curve secp256k1.
  * @see http://www.secg.org/sec2-v2.pdf
  *
- * @author Rich Morgan <rich@bitpay.com>
+ * @author Rich Morgan <rich@richmorgan.me>
  */
 trait Secp256k1
 {
