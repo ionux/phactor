@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@bitpay.com
+ * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -30,7 +30,7 @@ namespace Phactor;
 /**
  * GMP math class used by the main math class.
  *
- * @author Rich Morgan <rich@bitpay.com>
+ * @author Rich Morgan <rich@richmorgan.me>
  */
 final class GMP
 {
