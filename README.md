@@ -15,7 +15,7 @@ These PHP classes are designed to be used in conjunction with software used for 
 Installation of this project is very easy using composer:
 
 ```php
-php composer.phar require ionux/phactor:1.0.4
+php composer.phar require ionux/phactor:1.0.5
 ```
 
 If you have git installed, you can clone the repository:
