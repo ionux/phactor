@@ -6,7 +6,7 @@
  * a pull request.
  *
  * Thanks,
- * Rich <rich@bitpay.com>
+ * Rich <rich@richmorgan.me>
  */
 
 namespace Tests;
