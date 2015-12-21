@@ -377,10 +377,8 @@ trait Math
         if ($this->math == null || is_object($this->math) === false) {
             if (function_exists('gmp_add')) {
                 $this->math = new GMP();
-            } else if (function_exists('bcadd')) {
-                $this->math = new BC();
             } else {
-                throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
+                throw new \Exception('The GMP extension is missing on this system!  Please install to use the Phactor math library.');
             }
         }
 
