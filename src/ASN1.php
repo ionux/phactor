@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -28,7 +28,7 @@
 namespace Phactor;
 
 /**
- * Abstract Syntax Notation One (ASN.1) encoding class for keys and signatures.
+ * Abstract Syntax Notation One (ASN.1) encoding trait for keys and signatures.
  *
  * @author Rich Morgan <rich@richmorgan.me>
  */
