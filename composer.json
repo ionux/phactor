@@ -1,7 +1,7 @@
 {
     "name": "ionux/phactor",
-    "description": "This project is a high-performance PHP implementation of the elliptic curve math functions required to generate EC keypairs, ECDSA signatures and Service Identification Numbers (SIN) based on the secp256k1 curve parameters.",
-    "keywords": ["ecdsa","ec","dsa","bitcoin","elliptic","curve","cryptography","encryption","digital","signature","algorithm","asymmetric","public","private","keypair","keygen","key","math","SIN","service","identification","number"],
+    "description": "Phactor is a high-performance PHP implementation of the elliptic curve math functions required to generate & verify private/public (asymmetric) EC keypairs and ECDSA signatures based on secp256k1 curve parameters. This library also includes a class to generate Service Identification Numbers (SINs) based on the published Identity Protocol v1 spec.",
+    "keywords": ["phactor","performance","ecdsa","ec","dsa","bitcoin","elliptic","curve","cryptography","crypto","encryption","digital","signature","algorithm","asymmetric","public","private","keypair","keygen","verify","generate","key","keys","math","library","SIN","service","identification","number","secp256k1","bitcoin","identity","protocol","BIP","arbitrary","precision","integer","base58","base","hex","binary","calculator","prime","coprime","gmp","bcmath"],
     "homepage": "https://github.com/ionux/phactor",
     "license": "MIT",
     "minimum-stability": "stable",
@@ -12,42 +12,35 @@
             "role": "Creator and Lead Developer"
         }
     ],
-
     "repositories": [
 		{
 			"type": "git",
 			"url": "https://github.com/ionux/phactor.git"
 		}
 	],
-
     "support": {
         "issues": "https://github.com/ionux/phactor/issues",
         "email": "rich@richmorgan.me",
         "source": "https://github.com/ionux/phactor"
     },
-
     "autoload": {
         "psr-4": {
             "Phactor\\": "src/"
         }
     },
-
     "autoload-dev": {
         "psr-4": {
             "Phactor\\": "src/"
         }
     },
-
     "require": {
         "php": ">=5.4.0",
         "ext-bcmath": "*",
         "ext-openssl": "*"
     },
-
     "require-dev": {
         "phpunit/phpunit": "4.1.3"
     },
-
     "suggest": {
         "ext-gmp": "Highest performing math library and preferred for this library's Elliptic Curve calculations."
     }
