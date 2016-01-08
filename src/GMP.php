@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -45,6 +45,7 @@ final class GMP
     {
         return gmp_strval(gmp_add($a, $b));
     }
+    
     /**
      * Multiplies two arbitrary precision numbers.
      *
@@ -56,6 +57,7 @@ final class GMP
     {
         return gmp_strval(gmp_mul($a, $b));
     }
+    
     /**
      * Divides two arbitrary precision numbers.
      *
@@ -67,6 +69,7 @@ final class GMP
     {
         return gmp_strval(gmp_div($a, $b));
     }
+    
     /**
      * Subtracts two arbitrary precision numbers.
      *
@@ -78,6 +81,7 @@ final class GMP
     {
         return gmp_strval(gmp_sub($a, $b));
     }
+    
     /**
      * Calculates the modulo of two numbers.
      * There's a slight quirk in GMP's implementation
