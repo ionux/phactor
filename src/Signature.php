@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -235,9 +235,9 @@ final class Signature
      * 0x30 + size(all) + 0x02 + size(r) + r + 0x02 + size(s) + s
      * and if the msb is set add 0x00
      *
-     * @param  string $r      The r coordinate in hex.
-     * @param  string $s      The s coordinate in hex.
-     * @return string $retval The DER encoded signature info.
+     * @param  string $r  The r coordinate in hex.
+     * @param  string $s  The s coordinate in hex.
+     * @return string     The DER encoded signature info.
      * @throws \Exception
      */
     public function Encode($r, $s)
@@ -257,12 +257,10 @@ final class Signature
     }
 
     /**
-     * Parses a ECDSA signature to retrieve the
-     * r and s coordinate pair. Used to verify.
+     * Parses a ECDSA signature to retrieve the r and s coordinate pair. Used to verify a point.
      *
      * @param  string $signature The ECDSA signature to parse.
      * @return array             The r and s coordinates.
-     * @throws \Exception
      */
     private function parseSig($signature)
     {
