@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -72,7 +72,7 @@ final class Key
     /**
      * Returns the private key value in hex or decimal.
      *
-     * @param  bool
+     * @param  bool   $hex
      * @return string
      */
     public function getPrivateKey($hex = true)
@@ -83,7 +83,7 @@ final class Key
     /**
      * Returns the compressed or uncompressed public key value.
      *
-     * @param  string
+     * @param  string $format
      * @return string
      */
     public function getPublicKey($format = 'compressed')
@@ -104,7 +104,7 @@ final class Key
     /**
      * This is the main function for generating a new keypair.
      *
-     * @return array  $keyInfo The complete keypair array.
+     * @return array $keyInfo The complete keypair array.
      */
     public function GenerateKeypair()
     {
@@ -153,8 +153,8 @@ final class Key
     /**
      * Parses the x & y coordinates from an uncompressed public key.
      *
-     * @param  string     $pubkey The key to parse.
-     * @return array              The public key (x,y) coordinates.
+     * @param  string $pubkey The key to parse.
+     * @return array          The public key (x,y) coordinates.
      */
     public function parseCoordinatePairFromPublicKey($pubkey)
     {
@@ -167,8 +167,8 @@ final class Key
     /**
      * Returns the value, if exists.
      *
-     * @param  string  $value The value to check.
-     * @return string  $value The value, if set.
+     * @param  string $value The value to check.
+     * @return string $value The value, if set.
      */
     public function keyValueCheck($value)
     {
