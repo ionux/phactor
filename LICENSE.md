@@ -1,4 +1,4 @@
-  Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+  Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
 
   The MIT License (MIT)
 
