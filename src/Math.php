@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -178,7 +178,7 @@ trait Math
      * Calculates & returns the integer portion of the square root.
      *
      * @param  string $a  The first number.
-     * @return string
+     * @return string     The result of the operation.
      */
     public function SqRoot($a)
     {
@@ -190,9 +190,9 @@ trait Math
     /**
      * Encodes a decimal value into hexadecimal.
      *
-     * @param  string     $dec    The decimal value to convert.
-     * @param  boolean    $prefix Whether or not to append the '0x'.
-     * @return string     $hex    The result of the conversion.
+     * @param  string   $dec    The decimal value to convert.
+     * @param  boolean  $prefix Whether or not to append the '0x'.
+     * @return string   $hex    The result of the conversion.
      */
     public function encodeHex($dec, $prefix = true)
     {
@@ -207,8 +207,8 @@ trait Math
     /**
      * Decodes a hexadecimal value into decimal.
      *
-     * @param  string     $hex
-     * @return string     $dec
+     * @param  string  $hex
+     * @return string  $dec
      */
     public function decodeHex($hex)
     {
@@ -366,10 +366,8 @@ trait Math
     }
 
     /**
-     * Internal function to make sure we can find
-     * an acceptable math extension to use here.
+     * Internal function to make sure we can find an acceptable math extension to use here.
      *
-     * @return null
      * @throws \Exception
      */
     private function MathCheck()
@@ -388,8 +386,7 @@ trait Math
     }
 
     /**
-     * Handles the pre-work validation
-     * checking for method parameters.
+     * Handles the pre-work validation checking for method parameters.
      *
      * @param  array   $params  The array of parameters to check.
      * @return boolean          Will only be true, otherwise throws \Exception
