@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -381,10 +381,8 @@ final class Wallet
             throw new \Exception('Invalid WIF encoded private key! Network type was not present in value provided. Checked ' . $private_key . ' and found ' . $private_key_type);
         }
 
-        $private_key = substr($private_key, 2);
-
+        $private_key           = substr($private_key, 2);
         $compressed_public_key = (substr($private_key, strlen($private_key) - 2) == '01') ? '01': '';
-
         $private_key           = ($compressed_public_key == '01') ? substr($private_key, 0, -2) : $private_key;
 
         // Now let's check our private key against the checksum provided.
