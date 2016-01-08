@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -17,7 +17,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -200,10 +200,9 @@ trait Point
      * Pure PHP implementation of the Double-And-Add algorithm, for more info see:
      * http://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
      *
-     * @param  string       $x Scalar value.
      * @param  array        $P Base EC curve point.
+     * @param  string       $x Scalar value.
      * @return array|string $S Either 'infinity' or the new coordinates.
-     * @throws \Exception
      */
     public function doubleAndAdd($P, $x = '1')
     {
@@ -222,15 +221,14 @@ trait Point
     }
 
     /**
-     * Pure PHP implementation of the Montgomery Ladder algorithm which protects
+     * Pure PHP implementation of the Montgomery Ladder algorithm which helps protect
      * us against side-channel attacks.  This performs the same number of operations
      * regardless of the scalar value being used as the multiplier.  It's slower than
      * the traditional double-and-add algorithm because of that fact but safer to use.
      *
-     * @param  string       $x Scalar value.
      * @param  array        $P Base EC curve point.
+     * @param  string       $x Scalar value.
      * @return array|string $S Either 'infinity' or the new coordinates.
-     * @throws \Exception
      */
     public function mLadder($P, $x = '1')
     {
@@ -298,6 +296,7 @@ trait Point
      * @param  string  $x_coord        The x-coordinate.
      * @param  string  $compressed_bit The hex compression value (03 or 02).
      * @return string  $y              The calculated y-coordinate.
+     * @throws \Exception $e
      */
     public function calcYfromX($x_coord, $compressed_bit)
     {
@@ -314,23 +313,14 @@ trait Point
     }
 
     /**
-     * Basic range check. Throws exception if
-     * coordinate value is out of range.
+     * Basic range check. Throws exception if coordinate value is out of range.
      *
      * @param  string     $value The coordinate to check.
      * @return boolean           The result of the check.
-     * @throws \Exception
      */
     public function RangeCheck($value)
     {
         $this->preOpMethodParamsCheck(array($value));
-
-        //$value = $this->encodeHex($value);
-
-        /* Check to see if $value is in the range [1, n-1] */
-        //if ($this->randCompare($value)) {
-        //    throw new \Exception('The coordinate value is out of range. Should be 1 < r < n-1.  Value checked was "' . var_export($value, true) . '".');
-        //}
 
         return true;
     }
@@ -370,7 +360,7 @@ trait Point
     }
 
     /**
-     * Basic coordinate check: verifies
+     * Basic coordinate check: verifies $hex is valid
      *
      * @param  string $hex The coordinate to check.
      * @return string $hex The checked coordinate.
