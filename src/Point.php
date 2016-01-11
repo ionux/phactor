@@ -376,6 +376,7 @@ trait Point
      * @param array|string $pointOne The first point to check.
      * @param array|string $pointTwo The second point to check.
      * @return mixed                 The result value to return or null.
+     * @codeCoverageIgnore
      */
     private function infPointCheck($pointOne, $pointTwo)
     {
