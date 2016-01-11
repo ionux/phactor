@@ -54,16 +54,10 @@ trait Point
             throw new \Exception('You must provide valid point parameters to add.');
         }
 
-        if ($P == $this->Inf || false === $this->arrTest($P)) {
-            return $Q;
-        }
+        $infCheck = $this->infPointCheck($P, $Q);
 
-        if ($Q == $this->Inf || false === $this->arrTest($P)) {
-            return $P;
-        }
-
-        if (($P['x'] == $Q['x']) && ($P['y'] != $Q['y'])) {
-            return $this->Inf;
+        if ($infCheck != null) {
+            return $infCheck;
         }
 
         if ($P == $Q) {
@@ -376,6 +370,30 @@ trait Point
         return $hex;
     }
 
+    /**
+     * Checks if a Point is infinity or equal to another point.
+     *
+     * @param array|string $pointOne The first point to check.
+     * @param array|string $pointTwo The second point to check.
+     * @return mixed                 The result value to return or null.
+     */
+    private function infPointCheck($pointOne, $pointTwo)
+    {
+        if ($pointOne == $this->Inf || false === $this->arrTest($pointOne)) {
+            return $pointTwo;
+        }
+
+        if ($pointTwo == $this->Inf || false === $this->arrTest($pointTwo)) {
+            return $pointOne;
+        }
+
+        if (($pointOne['x'] == $pointTwo['x']) && ($pointOne['y'] != $pointTwo['y'])) {
+            return $this->Inf;
+        }
+        
+        return null;
+    }
+    
     /**
      * Checks if a number is within a certain range:
      *   0x01 < number < n
