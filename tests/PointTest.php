@@ -33,6 +33,7 @@ use \Phactor\Secp256k1;
  * public function mLadder($P, $x = '1')
  * public function GenerateNewPoint($ladder = true)
  * public function RangeCheck($value)
+ * public function calcYfromX($x_coord, $compressed_bit)
  */
 class PointTest extends \PHPUnit_Framework_TestCase
 {
@@ -210,5 +211,19 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotNull($result);
         $this->assertEquals(true, $result);
+    }
+
+    public function testCalcYfromX()
+    {
+        // Checks to ensure we're deriving the correct y-coordinate from an x-coordinate.
+        
+        $x = '0x9970eb90fc5fb04d5c63201e6124b4c77957ea79ebc129f07dca7b30da54230c';
+        $y = '0x6ee4fc6f37788608b16a0cb81968176c1b2042c65515d4d4053a1d390e62433c';
+        $compressed_bit = '0x02';
+        
+        $calc_y = $this->mock->calcYfromX($x, $compressed_bit);
+        
+        $this->assertNotNull($calc_y);
+        $this->assertEquals($y, $calc_y);
     }
 }
