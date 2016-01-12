@@ -186,7 +186,7 @@ final class Wallet
     {
         $data = trim($data);
 
-        // First, check if b58 chars are present
+        /* First, check if b58 chars are present */
         if (!$this->b58Test($data)) {
             return false;
         }
@@ -195,25 +195,33 @@ final class Wallet
         $prefix = substr($data, 0, 1);
         
         switch ($prefix) {
-            // Private key (WIF, uncompressed pubkey) = 5 (Base58), 80 (hex), 51 chars long
-            // ex: 5K17MHXBDYrSjsU6tDyqT3nsPhnunmpxGwiNQ2RQdZCsa8nTMfM
+            /*
+             * Private key (WIF, uncompressed pubkey) = 5 (Base58), 80 (hex), 51 chars long
+             * ex: 5K17MHXBDYrSjsU6tDyqT3nsPhnunmpxGwiNQ2RQdZCsa8nTMfM
+             */
             case '5':
                 return ($length == 51) ? true : false;
 
-            // Private key (WIF, compressed pubkey) = K or L (Base58), 80 (hex), 52 chars long
-            // ex: L2TV2XvC6PbEcDkcy6HrqyKTRD3e12reyNVbSdGjJM9QDDX93TdD
+            /*
+             * Private key (WIF, compressed pubkey) = K or L (Base58), 80 (hex), 52 chars long
+             * ex: L2TV2XvC6PbEcDkcy6HrqyKTRD3e12reyNVbSdGjJM9QDDX93TdD
+             */
             case 'K':
             case 'L':
                 return ($length == 52) ? true : false;
 
-            // Testnet Private key (WIF, uncompressed pubkey) = 9 (Base58), ef (hex), 51 chars long
-            // ex: 92mjw2LiomvahvyPWZskKeLq3N9cwwN9ctaKUemuyHwvMFmGfiJ
+            /*
+             * Testnet Private key (WIF, uncompressed pubkey) = 9 (Base58), ef (hex), 51 chars long
+             * ex: 92mjw2LiomvahvyPWZskKeLq3N9cwwN9ctaKUemuyHwvMFmGfiJ
+             */
             case '9':
                 return ($length == 51) ? true : false;
 
-            // Testnet Private key (WIF, compressed pubkey) = c (Base58), ef (hex), 52 chars long
-            // ex: cSpUVSv3XTHVmfDtMW6zDHpX3SM3fUxM3Qe4Z3jEoToQTxbZhmCT
-            case '5':
+            /*
+             * Testnet Private key (WIF, compressed pubkey) = c (Base58), ef (hex), 52 chars long
+             * ex: cSpUVSv3XTHVmfDtMW6zDHpX3SM3fUxM3Qe4Z3jEoToQTxbZhmCT
+             */
+            case 'c':
                 return ($length == 52) ? true : false;
             
             default:
@@ -239,7 +247,7 @@ final class Wallet
      */
     private function calculateNetworkType($data)
     {
-        $temp = strtolower(substr($data, 0, 2));
+        $temp = strtolower(substr(trim($data), 0, 2));
 
         switch ($temp) {
             case '80':
@@ -264,7 +272,7 @@ final class Wallet
      */
     private function calculatePubkeyFormat($data)
     {
-        $temp = strtolower(substr($data, -2));
+        $temp = strtolower(substr(trim($data), -2));
 
         switch ($temp) {
             case '01':
@@ -370,10 +378,13 @@ final class Wallet
      */
     private function decodeWIF($WIF_encoded_key)
     {
-        // Using the Base58 decoding function and remove the padding.
+        /* Using the Base58 decoding function and remove the padding. */
         $decoded_key = $this->stripHexPrefix($this->decodeBase58(trim($WIF_encoded_key)));
 
-        list($private_key, $checksum_provided) = array(substr($decoded_key, 0, -8), substr($decoded_key, strlen($decoded_key) - 8));
+        list($private_key, $checksum_provided) = array(
+                                                       substr($decoded_key, 0, -8), 
+                                                       substr($decoded_key, strlen($decoded_key) - 8)
+                                                       );
 
         $private_key_type = substr($private_key, 0, 2);
 
@@ -382,10 +393,10 @@ final class Wallet
         }
 
         $private_key           = substr($private_key, 2);
-        $compressed_public_key = (substr($private_key, strlen($private_key) - 2) == '01') ? '01': '';
+        $compressed_public_key = (substr($private_key, strlen($private_key) - 2) == '01') ? '01' : '';
         $private_key           = ($compressed_public_key == '01') ? substr($private_key, 0, -2) : $private_key;
 
-        // Now let's check our private key against the checksum provided.
+        /* Now let's check our private key against the checksum provided. */
         $new_checksum = substr(hash('sha256', hash('sha256', $this->binConv($private_key_type . $private_key . $compressed_public_key), true)), 0, 8);
 
         if ($new_checksum != $checksum_provided) {
