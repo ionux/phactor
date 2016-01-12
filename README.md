@@ -15,7 +15,7 @@ These PHP classes are designed to be used in conjunction with software used for 
 Installation of this project is very easy using composer:
 
 ```php
-php composer.phar require ionux/phactor:1.0.5
+php composer.phar require ionux/phactor:1.0.6
 ```
 
 If you have git installed, you can clone the repository:
@@ -121,7 +121,7 @@ This open source project is released under the [MIT license](http://opensource.o
 ## License
 
 ```
-  Copyright (c) 2015 Rich Morgan, rich@richmorgan.me
+  Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
 
   The MIT License (MIT)
 
