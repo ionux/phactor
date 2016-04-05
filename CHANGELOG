@@ -1,3 +1,62 @@
+1.0.7
+  * Create french.txt, commit b8919ef
+  * Updated copyright year, commit b74b794
+  * Added todo for BIP-39, commit e0e42f9
+  * Added missing export-ignore for phpunit.xml.dist, commit f95c804
+  * Added infinite point check  …, commit e0389ed
+  * Added @codeCoverageIgnore to new private method, commit 8b572ef
+  * Added new test for calcYfromX() method, commit 38f27be
+  * Fixed return value comparison, commit 306c9b9
+  * Updated example version and copyright year, commit 881f2b2
+  * Fixed bug in testnet private key case  …, commit f1e7029
+  * Create Secp192k1.php, commit 518ae0c
+  * Added new section for feedback item list, commit 7faf840
+
+1.0.6
+  * Update TODO.md, commit 6c9828f
+  * Updated email address, commit cace5b6
+  * Updated email address, commit 816ffc3
+  * Updated email address, commit 23fb1c7
+  * Corrected email address, commit dec36e7
+  * Corrected email address, commit 3ccf56c
+  * Corrected email address, commit c3b3720
+  * Corrected email address, commit e28d932
+  * Corrected email address, commit 563b8f9
+  * Corrected email address, commit dd9526b
+  * Corrected email address, commit 22e84f6
+  * Corrected email address, commit 5481637
+  * Corrected email address, commit 387426b
+  * Corrected email address, commit c01c18f
+  * Corrected email address, commit caad7bc
+  * Corrected email address, commit 3cf3445
+  * Added standard test header comments, commit a326f21
+  * Corrected email address, commit c37d98f
+  * Corrected email address, commit 6876523
+  * Corrected email address, commit e8649a4
+  * Corrected email address, commit 9e6b8d6
+  * Corrected email address, commit ba04a89
+  * Corrected email address, commit e530163
+  * Corrected email address, commit 20172c6
+  * Corrected email address, commit 602643b
+  * Updated version number in documentation, commit c25f85e
+  * Updated description and keywords., commit cfc1bab
+  * Removed PHP 5.4 from testing since it's now EOL'd. …, commit 78d0589
+  * Removed PHP 5.4 from testing since it's now EOL'd. …, commit a7589d8
+  * Updated copyright year, commit 406c31d
+  * Added missing copyright notice, commit 90641b0
+  * Updated copyright year, commit 9cde4bf
+  * Removed extra space in license text, commit e816c55
+  * Updated copyright year & minor formatting fix, commit c498e28
+  * Updated copyright year & minor formatting fixes, commit ad35f7c
+  * Updated copyright year & minor formatting fixes, commit 984a79e
+  * Updated copyright year, commit 163707e
+  * Updated copyright year, commit 4db78ab
+  * Updated copyright year & minor formatting fixes, commit 929fd7f
+  * Updated copyright year, commit 6c21201
+  * Updated copyright year & minor formatting fixes, commit e8cb214
+  * Updated copyright year & minor formatting fixes, commit ef66923
+  * Updated copyright year & minor formatting fixes, commit bce0b8f
+
 1.0.5
   * Update TODO.md, commit fbf07cb
   * Added png logo, commit 9307a49
