@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -106,10 +106,10 @@ final class BC
      * Raises an arbitrary precision number to another,
      * reduced by a specified modulus.
      *
-     * @param  string  $a        The first number.
-     * @param  string  $b        The exponent.
-     * @param  string  $c        The modulus.
-     * @return string            The result of the operation.
+     * @param  string  $a  The first number.
+     * @param  string  $b  The exponent.
+     * @param  string  $c  The modulus.
+     * @return string      The result of the operation.
      */
     public function powmod($a, $b, $c)
     {
@@ -316,7 +316,7 @@ final class BC
     }
 
     /**
-     * Calculates a number % modulo, number / moduly
+     * Calculates a number % modulo, number / modulo
      * and returns an array of the results.
      *
      * @param  string $num  Number parameter.
