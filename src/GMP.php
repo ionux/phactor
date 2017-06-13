@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -145,7 +145,7 @@ final class GMP
     /**
      * Returns the string value of a GMP resource.
      *
-     * @param  mixed  $a
+     * @param  mixed  $a  Number to normalize.
      * @return string
      */
     public function normalize($a)
@@ -154,7 +154,7 @@ final class GMP
     }
 
     /**
-     * Raises 'a' into power 'b'.
+     * Raises 'a' to the power 'b'.
      *
      * @param  string $a  The first number.
      * @param  string $b  The second number.
