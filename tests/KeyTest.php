@@ -1,5 +1,4 @@
 <?php
-
 /**
  * These tests are a work in progress. If you have ideas
  * for additional or improved test cases, please submit
@@ -71,12 +70,12 @@ class KeyTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($key);
         $this->assertNotNull($info);
 
-        $this->assertEquals($info['private_key_hex'], $previous_key_info['private_key_hex']);
-        $this->assertEquals($info['private_key_dec'], $previous_key_info['private_key_dec']);
-        $this->assertEquals($info['public_key'], $previous_key_info['public_key']);
+        $this->assertEquals($info['private_key_hex'],       $previous_key_info['private_key_hex']);
+        $this->assertEquals($info['private_key_dec'],       $previous_key_info['private_key_dec']);
+        $this->assertEquals($info['public_key'],            $previous_key_info['public_key']);
         $this->assertEquals($info['public_key_compressed'], $previous_key_info['public_key_compressed']);
-        $this->assertEquals($info['public_key_x'], $previous_key_info['public_key_x']);
-        $this->assertEquals($info['public_key_y'], $previous_key_info['public_key_y']);
+        $this->assertEquals($info['public_key_x'],          $previous_key_info['public_key_x']);
+        $this->assertEquals($info['public_key_y'],          $previous_key_info['public_key_y']);
     }
 
     public function testKeypairEncodingToPEM()
@@ -87,7 +86,7 @@ class KeyTest extends \PHPUnit_Framework_TestCase
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
         $pub_key  = 'c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
-        $key  = new \Phactor\Key;
+        $key      = new \Phactor\Key;
         $pem_data = $key->encodePEM(array($priv_key, $pub_key));
 
         $this->assertNotFalse(stripos($pem_data, 'MHQCAQEEIIL0KMbmnO4ldiZFIq9C67AHP'));
@@ -105,19 +104,19 @@ class KeyTest extends \PHPUnit_Framework_TestCase
         $priv_key = '82f428c6e69cee2576264522af42ebb0073ff32018661eb8a625390aa98b504c';
         $pub_key  = '04c2a15b9ae8bfbf97a4acd6c5229608514b2ebe1f2147c724f17402fceace6ada9fcdf9158a56d83522d960cad035ea2116afc3e5799e7d630e721d7b7323b291';
 
-        $key  = new \Phactor\Key;
+        $key     = new \Phactor\Key;
         $keypair = $key->decodePEM($pem_data);
 
         $this->assertEquals($keypair['private_key'], $priv_key);
-        $this->assertEquals($keypair['public_key'], $pub_key);
+        $this->assertEquals($keypair['public_key'],  $pub_key);
     }
 
     public function testGetKeypairInfo()
     {
         // Test that the getKeypairInfo function returns the same values we got originally.
 
-        $key  = new Key;
-        $info = $key->GenerateKeypair();
+        $key       = new Key;
+        $info      = $key->GenerateKeypair();
         $retrieved = $key->getKeypairInfo();
 
         $this->assertEquals($info['private_key_hex'], $retrieved['private_key_hex']);
@@ -127,21 +126,21 @@ class KeyTest extends \PHPUnit_Framework_TestCase
     {
         // Verify the getPublicKey() function returns the same compressed & uncompressed values.
 
-        $key  = new \Phactor\Key;
-        $info = $key->GenerateKeypair();
-        $compressed = $key->getPublicKey();
+        $key          = new \Phactor\Key;
+        $info         = $key->GenerateKeypair();
+        $compressed   = $key->getPublicKey();
         $uncompressed = $key->getPublicKey('uncompressed');
 
         $this->assertEquals($info['public_key_compressed'], $compressed);
-        $this->assertEquals($info['public_key'], $uncompressed);
+        $this->assertEquals($info['public_key'],            $uncompressed);
     }
 
     public function testGetPrivateKey()
     {
         // Verify the getPrivateKey() function returns the same compressed & uncompressed values.
 
-        $key  = new \Phactor\Key;
-        $info = $key->GenerateKeypair();
+        $key      = new \Phactor\Key;
+        $info     = $key->GenerateKeypair();
         $priv_hex = $key->getPrivateKey();
         $priv_dec = $key->getPrivateKey(false);
 
