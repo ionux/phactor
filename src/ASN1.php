@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -138,7 +138,7 @@ trait ASN1
      */
     private function pemKeyLenCheck($values)
     {
-        if (strlen($values[0]) < 62 || strlen($values[1]) < 126) {
+        if (!is_array($values) || strlen($values[0]) < 62 || strlen($values[1]) < 126) {
             throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($values[0], true) . '" and "' . var_export($values[1], true) . '".');
         }
     }
