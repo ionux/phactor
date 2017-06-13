@@ -1,5 +1,4 @@
 <?php
-
 /**
  * These tests are a work in progress. If you have ideas
  * for additional or improved test cases, please submit
@@ -92,7 +91,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         // Verify the D2B function correctly converts a known decimal value to a binary string.
 
         $expected_bin = '101010001111101000001011001101011101001011011001011011011';
-        $decimal  = '123456789123456789';
+        $decimal      = '123456789123456789';
 
         $mock = $this->getMockForTrait('\Phactor\Math');
 
@@ -107,7 +106,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         // Verify the binConv function correctly converts a known hexadecimal value to a byte string.
 
         $expected_bytes = chr(0x10) . chr(0x13) . chr(0x00) . chr(0xa3) . chr(0x09) . chr(0xf8) . chr(0x15) . chr(0x32);
-        $hexadecimal  = '0x101300a309f81532';
+        $hexadecimal    = '0x101300a309f81532';
 
         $mock = $this->getMockForTrait('\Phactor\Math');
 
