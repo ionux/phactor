@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2016 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -180,7 +180,7 @@ trait Point
             $test_point = array('x' => $right, 'y' => $left, 'y2' => $y2, 'x3' => $x3, 'ax' => $ax);
 
             if ($left == $right) {
-                return $left == $right;
+                return true;
             } else {
                 throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
             }
