@@ -34,7 +34,7 @@ namespace Phactor;
  */
 trait Number
 {
-    use Object;
+    use BaseObject;
 
     /**
      * @var string
