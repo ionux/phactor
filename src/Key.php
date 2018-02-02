@@ -147,7 +147,16 @@ final class Key
      */
     public function parseCompressedPublicKey($pubkey)
     {
-        return (substr($pubkey, 0, 2) == '02' || substr($pubkey, 0, 2) == '03') ? $this->prepAndClean($this->calcYfromX(substr($pubkey, 2), substr($pubkey, 0, 2))) : $this->prepAndClean($pubkey);
+        $prefix = substr($pubkey, 0, 2);
+
+        if ($prefix !== '02' && $prefix !== '03') {
+            return $this->prepAndClean($pubkey);
+        }
+
+        $pointX = substr($pubkey, 2);
+        $pointY = substr($this->calcYfromX($pointX, $prefix), 2);
+
+        return $this->prepAndClean($pointX . $pointY);
     }
 
     /**

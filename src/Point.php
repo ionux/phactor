@@ -299,8 +299,9 @@ trait Point
             $c = $this->Subtract($this->decodeHex($this->addHexPrefix($compressed_bit)), '2');
             $a = $this->Modulo($this->Add($this->PowMod($x, '3', $this->p), '7'), $this->p);
             $y = $this->PowMod($a, $this->Divide($this->Add($this->p, '1'), '4'), $this->p);
+            $y = ($this->Modulo($y, '2') != $c) ? $this->decodeHex($this->Modulo($this->Multiply('-1', $y), $this->p)) : $this->decodeHex($y);
 
-            return ($this->Modulo($y, '2') != $c) ? $this->decodeHex($this->Modulo($this->Multiply('-1', $y), $this->p)) : $this->decodeHex($y);
+            return $this->encodeHex($y);
         } catch (\Exception $e) {
             throw $e;
         }
