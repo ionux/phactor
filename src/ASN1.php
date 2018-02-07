@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2018 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -182,9 +182,6 @@ trait ASN1
      */
     public function decodeOID($data)
     {
-        // Some test data to ensure our OIDs are decoding properly.
-        // array(0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x07,0x07)
-
         $bin_data      = array();
         $index         = 0;
         $binary_string = '';
