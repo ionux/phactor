@@ -19,7 +19,7 @@ use \Phactor\BC;
 use \Phactor\ASN1;
 use \Phactor\Math;
 use \Phactor\Number;
-use \Phactor\Object;
+use \Phactor\BaseObject;
 use \Phactor\Secp256k1;
 
 /**

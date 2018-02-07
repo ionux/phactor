@@ -39,7 +39,7 @@
         "ext-openssl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.3"
+        "phpunit/phpunit": "^5.7.9"
     },
     "suggest": {
         "ext-gmp": "Highest performing math library and preferred for this library's Elliptic Curve calculations."

@@ -32,7 +32,7 @@ namespace Phactor;
  *
  * @author Rich Morgan <rich@richmorgan.me>
  */
-trait Object
+trait BaseObject
 {
     /**
      * Set this to false if you want to disable the
