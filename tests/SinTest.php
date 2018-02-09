@@ -19,7 +19,7 @@ use \Phactor\BC;
 use \Phactor\ASN1;
 use \Phactor\Math;
 use \Phactor\Number;
-use \Phactor\Object;
+use \Phactor\BaseObject;
 use \Phactor\Secp256k1;
 
 class SinTest extends \PHPUnit_Framework_TestCase
@@ -49,7 +49,7 @@ class SinTest extends \PHPUnit_Framework_TestCase
         $sample_sin_len = strlen($sample_sin);
 
         $this->assertNotNull($sinfo);
-        $this->assertGreaterThan($sample_sin - 1, $sinfo_len);
+        $this->assertGreaterThan($sample_sin_len - 1, $sinfo_len);
         $this->assertEquals(substr($sinfo,0, 1), 'T');
     }
 
@@ -67,7 +67,7 @@ class SinTest extends \PHPUnit_Framework_TestCase
         $sample_sin_len = strlen($sample_sin);
 
         $this->assertNotNull($sin);
-        $this->assertGreaterThan($sample_sin - 1, $sinfo_len);
+        $this->assertGreaterThan($sample_sin_len - 1, $sinfo_len);
         $this->assertEquals(substr($sin, 0, 1), 'T');
     }
 

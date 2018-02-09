@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2017 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2018 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -142,10 +142,11 @@ final class Key
     /**
      * Parses a compressed public key with the 0x02 or 0x03 prefix.
      *
-     * @param  string $pubkey The key to check.
-     * @return string         The (x,y) coordinate pair.
+     * @param  string $pubkey     The key to check.
+     * @param  bool   $returnHex  Whether or not to return the value in decimal or hex.
+     * @return string             The (x,y) coordinate pair.
      */
-    public function parseCompressedPublicKey($pubkey)
+    public function parseCompressedPublicKey($pubkey, $returnHex = false)
     {
         $prefix = substr($pubkey, 0, 2);
 
@@ -156,7 +157,9 @@ final class Key
         $pointX = substr($pubkey, 2);
         $pointY = substr($this->calcYfromX($pointX, $prefix), 2);
 
-        return $this->prepAndClean($pointX . $pointY);
+        $parsedValue = $this->prepAndClean($pointX . $pointY);
+
+        return ($returnHex === false) ? $parsedValue : $this->encodeHex($parsedValue);
     }
 
     /**
