@@ -218,12 +218,11 @@ class PointTest extends \PHPUnit_Framework_TestCase
         
         $x = '0x9970eb90fc5fb04d5c63201e6124b4c77957ea79ebc129f07dca7b30da54230c';
         $y = '0x6ee4fc6f37788608b16a0cb81968176c1b2042c65515d4d4053a1d390e62433c';
-        $y_dec = '50158996713404002186761311168531259625706655107568015898414438196527281357628';
         $compressed_bit = '0x02';
         
         $calc_y = $this->mock->calcYfromX($x, $compressed_bit);
         
         $this->assertNotNull($calc_y);
-        $this->assertEquals($y_dec, $calc_y);
+        $this->assertEquals($y, $calc_y);
     }
 }

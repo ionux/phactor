@@ -148,9 +148,18 @@ final class Key
      */
     public function parseCompressedPublicKey($pubkey, $returnHex = false)
     {
-        $parsedVal = (substr($pubkey, 0, 2) == '02' || substr($pubkey, 0, 2) == '03') ? $this->prepAndClean($this->calcYfromX(substr($pubkey, 2), substr($pubkey, 0, 2))) : $this->prepAndClean($pubkey);
-        
-        return ($returnHex === false) ? $parsedVal : $this->encodeHex($parsedVal);            
+        $prefix = substr($pubkey, 0, 2);
+
+        if ($prefix !== '02' && $prefix !== '03') {
+            return $this->prepAndClean($pubkey);
+        }
+
+        $pointX = substr($pubkey, 2);
+        $pointY = substr($this->calcYfromX($pointX, $prefix), 2);
+
+        $parsedValue = $this->prepAndClean($pointX . $pointY);
+
+        return ($returnHex === false) ? $parsedValue : $this->encodeHex($parsedValue);
     }
 
     /**
