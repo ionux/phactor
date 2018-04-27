@@ -1,3 +1,58 @@
+1.0.8
+  * Updated version number for Composer example, commit 413df40
+  * Updated with 1.0.6 and 1.0.7 changes, commit 4a258f0
+  * Added composer.lock export ignore entry, commit fc9b046
+  * Updated copyright year, commit 228401f
+  * Removed support for PHP 5.5 since it's EOL'd, commit 73459d1
+  * Updated copyright year, commit 446b2e8
+  * Removed support for PHP 5.5 since it was EOL'd, commit 5376e35
+  * Removed newline after opening tag, commit ec0279c
+  * Removed newline after opening tag, commit cab2da8
+  * Removed newline after opening tag, commit 81b86f7
+  * Removed newline after opening tag, commit 7d5ecc2
+  * Removed newline after opening tag, commit b749de1
+  * Removed newline after opening tag, commit 5135880
+  * Removed newline after opening tag, commit 0e93dea
+  * Removed newline after opening tag, commit b736f32
+  * Updated copyright year, commit 748e825
+  * Updated copyright year, commit 8070a7d
+  * Updated copyright year, commit 38d65ac
+  * Updated copyright year, commit 8ab0365
+  * Updated copyright year, commit 090c020
+  * Updated copyright year, commit 41df28b
+  * Updated copyright year, commit 49f94e9
+  * Updated copyright year, commit 1321403
+  * Updated copyright year, commit 07ef3b8
+  * Updated copyright year, commit bddd409
+  * Updated copyright year, commit 586cd63
+  * Updated copyright year, commit 2523420
+  * Updated copyright year, commit ac8f175
+  * Added testing support for PHP 7.1, commit a59007d
+  * Fix issues with PHP 7.2, fix tests, commit 095e7e8
+  * Add php 7.2 to travis-ci file, commit c3dda07
+  * Use phpunit from vendor, commit 1904a64
+  * Fix parseCompressedPublicKey method, commit 4e2eb79
+  * Merge pull request #8 from @TiMESPLiNTER /fix/php72-ready, commit b4663e8
+  * Added parameter to return hex when parsing a compressed public key, commit 7135556
+  * Updated copyright year, commit b1dd2da
+  * Updated copyright year, commit c2d299e
+  * Updated copyright year, commit 02ac760
+  * Updated copyright year, commit ab0adf1
+  * Updated copyright year, commit 2764012
+  * Updated copyright year, commit c430d5a
+  * Updated copyright year, commit b3adc3a
+  * Updated copyright year, commit d95bebd
+  * Updated copyright year, commit 3c501e9
+  * Updated copyright year, commit 9c93862
+  * Updated copyright year, commit 330eff4
+  * Updated copyright year, commit 794267f
+  * Updated copyright year, commit abb8752
+  * Updated copyright year, commit c0cebb5
+  * Updated copyright year, commit d91a2cc
+  * Merge branch 'master' into fix/parseCompressedPublicKey, commit 4181a44
+  * Fix test, commit 0a74aa7
+  * Merge pull request #10 from @TiMESPLiNTER /fix/parseCompressedPublicKey, commit d82e9c3
+
 1.0.7
   * Create french.txt, commit b8919ef
   * Updated copyright year, commit b74b794
