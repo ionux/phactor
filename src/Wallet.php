@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2018 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2019 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -366,7 +366,6 @@ final class Wallet
          *  The process is easily reversible, using the Base58 decoding function, and removing the padding.
          */
         return $this->WIF_address;
-
     }
 
     /**
