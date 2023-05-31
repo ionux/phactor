@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2019 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2023 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -81,6 +81,7 @@ trait Point
             return $R;
 
         } catch (\Exception $e) {
+            // TODO: Do something useful with this...
             throw $e;
         }
     }
@@ -102,6 +103,9 @@ trait Point
                 return $this->Inf;
             case 'nul':
                 throw new \Exception('You must provide a valid point parameter to double.');
+            default:
+                // Adding for safety and good form.
+                // TODO: What should this default value check be?
         }
 
         $ss = '0';
@@ -132,6 +136,7 @@ trait Point
             return $R;
 
         } catch (\Exception $e) {
+            // TODO: Do something useful here...
             throw $e;
         }
     }
@@ -181,11 +186,12 @@ trait Point
 
             if ($left == $right) {
                 return true;
-            } else {
-                throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
             }
 
+            throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
+
         } catch (\Exception $e) {
+            // TODO: Do something useful here...
             throw $e;
         }
     }
@@ -303,6 +309,7 @@ trait Point
 
             return $this->encodeHex($y);
         } catch (\Exception $e) {
+            // TODO: Ditto...
             throw $e;
         }
     }
@@ -349,6 +356,7 @@ trait Point
      */
     private function coordsRangeCheck($x, $y)
     {
+        // TODO: Looks like I need to implement this correctly.
         //$this->RangeCheck($x);
         //$this->RangeCheck($y);
         return true;
@@ -363,6 +371,7 @@ trait Point
      */
     private function CoordinateCheck($hex)
     {
+        // TODO: This as well?
         //$hex = $this->encodeHex($hex);
 
         //$this->hexLenCheck($hex);
