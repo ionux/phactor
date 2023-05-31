@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2019 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2023 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -188,6 +188,7 @@ final class BC
             return $this->addMod($a, $modulus);
 
         } catch (\Exception $e) {
+            // TODO: Need to do something useful here instead of re-throwing the exception.
             throw $e;
         }
     }
@@ -212,6 +213,7 @@ final class BC
             }
 
         } catch (\Exception $e) {
+            // TODO: Need to do something useful here instead of re-throwing the exception.
             throw $e;
         }
 
@@ -230,6 +232,7 @@ final class BC
             $a = (substr($a, 0, 2) == '0x') ? substr($a, 2) : $a;
         }
 
+        // TODO: Note to self - please fix.
         /** For now...
         switch($this->Test($a)) {
             case 'hex':
@@ -300,6 +303,10 @@ final class BC
                 return array($a, bcmod($b, $a));
             case 1:
                 return array($b, bcmod($a, $b));
+            default:
+                // Should never, ever be here but good practice
+                // dictates to always have a default clause.
+                // TODO: Throw exception.
         }
     }
 
