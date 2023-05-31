@@ -1,5 +1,6 @@
 Items to improve upon or implement:
 
+* Address the multiple TODO comments where needed
 * Add PHP version checks for versions that use the deprecated OpenSSL extension RAND_pseudo_bytes() function
   * Patched versions are: 5.6.12+, 5.5.28+, 5.4.44+
 * Implement BIP-39 support (mnemonic code generation)
