@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2019 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2023 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -101,9 +101,9 @@ final class Wallet
     {
         if (empty($private_key) === true) {
             return ($this->WIF_address != '') ? $this->WIF_address : '';
-        } else {
-            return $this->encodeWIF($private_key, $network, $public_key_format);
         }
+
+        return $this->encodeWIF($private_key, $network, $public_key_format);
     }
 
     /**
@@ -116,9 +116,9 @@ final class Wallet
     {
         if (empty($WIF_address) === true) {
             return ($this->private_key != '') ? $this->private_key : '';
-        } else {
-            return $this->decodeWIF($WIF_address);
         }
+        
+        return $this->decodeWIF($WIF_address);
     }
 
     /**
@@ -137,9 +137,9 @@ final class Wallet
 
         if (empty($private_key) === true) {
             return ($this->checksum != '') ? $this->checksum : '';
-        } else {
-            return $this->calculateChecksum($private_key, true);
         }
+        
+        return $this->calculateChecksum($private_key, true);
     }
 
     /**
@@ -154,9 +154,9 @@ final class Wallet
 
         if (empty($private_key) === true) {
             return ($this->compressed_pubkey_format != '') ? $this->compressed_pubkey_format : '';
-        } else {
-            return $this->calculatePubKeyFormat($private_key);
         }
+        
+        return $this->calculatePubKeyFormat($private_key);
     }
 
     /**
@@ -171,9 +171,9 @@ final class Wallet
  
         if (empty($private_key) === true) {
             return ($this->network_type != '') ? $this->network_type : '';
-        } else {
-            return $this->calculateNetworkType($private_key);
         }
+        
+        return $this->calculateNetworkType($private_key);
     }
 
     /**
@@ -207,6 +207,7 @@ final class Wallet
              * ex: L2TV2XvC6PbEcDkcy6HrqyKTRD3e12reyNVbSdGjJM9QDDX93TdD
              */
             case 'K':
+                // Fall through.
             case 'L':
                 return ($length == 52) ? true : false;
 
