@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2019 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2023 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
@@ -268,6 +268,7 @@ trait Math
             return $bin;
 
         } catch (\Exception $e) {
+            // TODO: Need to do something useful here instead of re-throwing the exception.
             throw $e;
         }
     }
@@ -312,19 +313,20 @@ trait Math
 
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
                 throw new \Exception('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.  Value received was "' . var_export($hex, true) . '".');
-            } else {
-                $orighex = $hex;
-                $hex     = $this->addHexPrefix($this->prepAndClean($hex));
-                $return  = strrev($this->encodeValue($hex, '58'));
+            }
+            
+            $orighex = $hex;
+            $hex     = $this->addHexPrefix($this->prepAndClean($hex));
+            $return  = strrev($this->encodeValue($hex, '58'));
 
-                for ($i = 0; $i < strlen($orighex) && substr($orighex, $i, 2) == '00'; $i += 2) {
-                    $return = '1' . $return;
-                }
+            for ($i = 0; $i < strlen($orighex) && substr($orighex, $i, 2) == '00'; $i += 2) {
+                $return = '1' . $return;
             }
 
             return $return;
 
         } catch (\Exception $e) {
+            // TODO: Need to do something useful here instead of re-throwing the exception.
             throw $e;
         }
     }
@@ -360,6 +362,7 @@ trait Math
             return (strlen($return) % 2 != 0) ? '0' . $return : $return;
 
         } catch (\Exception $e) {
+            // TODO: Need to do something useful here instead of re-throwing the exception.
             throw $e;
         }
     }
@@ -431,6 +434,7 @@ trait Math
             return $new;
 
         } catch (\Exception $e) {
+            // TODO: Ditto here as well...
             throw $e;
         }
     }
