@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2023 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2024 Rich Morgan, rich@richmorgan.me
  *
  * The MIT License (MIT)
  *
