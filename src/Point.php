@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2024 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2025 Rich Morgan
  *
  * The MIT License (MIT)
  *
@@ -31,7 +31,7 @@ namespace Phactor;
  * This trait implements the elliptic curve math functions required to generate
  * new EC points based on the secp256k1 curve parameters.
  *
- * @author Rich Morgan <rich@richmorgan.me>
+ * @author Rich Morgan
  */
 trait Point
 {
