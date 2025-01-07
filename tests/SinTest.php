@@ -5,7 +5,7 @@
  * a pull request.
  *
  * Thanks,
- * Rich <rich@richmorgan.me>
+ * Rich M.
  */
 
 namespace Tests;
