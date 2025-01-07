@@ -121,7 +121,7 @@ This open source project is released under the [MIT license](http://opensource.o
 ## License
 
 ```
-  Copyright (c) 2015-2024 Rich Morgan, rich@richmorgan.me
+  Copyright (c) 2015-2025 Rich Morgan
 
   The MIT License (MIT)
 
