@@ -3,7 +3,7 @@
  * This file is part of the Phactor PHP project. You can always find the latest
  * version of this class and project at: https://github.com/ionux/phactor
  *
- * Copyright (c) 2015-2024 Rich Morgan, rich@richmorgan.me
+ * Copyright (c) 2015-2025 Rich Morgan
  *
  * The MIT License (MIT)
  *
@@ -30,7 +30,7 @@ namespace Phactor;
 /**
  * This is the class encapsulating Bitcoin wallet properties and methods.
  *
- * @author Rich Morgan <rich@richmorgan.me>
+ * @author Rich Morgan
  */
 final class Wallet
 {
