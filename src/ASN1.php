@@ -30,7 +30,7 @@ namespace Phactor;
 /**
  * Abstract Syntax Notation One (ASN.1) encoding trait for keys and signatures.
  *
- * @author Rich Morgan <rich@richmorgan.me>
+ * @author Rich Morgan
  */
 trait ASN1
 {
