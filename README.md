@@ -1,6 +1,6 @@
 [![Phactor Logo](https://raw.githubusercontent.com/ionux/phactor/master/phactor_logo.png)](https://github.com/ionux/phactor)
 
-[![Build Status](https://travis-ci.org/ionux/phactor.svg?branch=master)](https://travis-ci.org/ionux/phactor) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ionux/phactor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ionux/phactor/?branch=master) [![Software License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat)](LICENSE.md) [![Latest Release](https://img.shields.io/github/release/ionux/phactor.svg)](https://github.com/ionux/phactor/releases/latest)
+![Build Status](https://github.com/ionux/phactor/actions/workflows/php.yml/badge.svg) [![Software License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat)](LICENSE.md) [![Latest Release](https://img.shields.io/github/release/ionux/phactor.svg)](https://github.com/ionux/phactor/releases/latest)
 
 ## Description
 
