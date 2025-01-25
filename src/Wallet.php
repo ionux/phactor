@@ -389,7 +389,7 @@ final class Wallet
         $private_key_type = substr($private_key, 0, 2);
 
         if ($private_key_type != '80' && $private_key_type != 'ef') {
-            throw new \Exception('Invalid WIF encoded private key! Network type was not present in value provided. Checked ' . $private_key . ' and found ' . $private_key_type);
+            throw new \Exception('Invalid WIF encoded private key! Network type was not present in value provided.');
         }
 
         $private_key           = substr($private_key, 2);
@@ -400,7 +400,7 @@ final class Wallet
         $new_checksum = substr(hash('sha256', hash('sha256', $this->binConv($private_key_type . $private_key . $compressed_public_key), true)), 0, 8);
 
         if ($new_checksum != $checksum_provided) {
-            throw new \Exception('Invalid WIF encoded private key! Checksum is incorrect! Value encoded with key was: ' . $checksum_provided . ' but this does not match the recalculated value of: ' . $new_checksum . ' from the decoded provided value of: ' . $decoded_key);
+            throw new \Exception('Invalid WIF encoded private key! Checksum is incorrect!');
         }
 
         return $private_key;
