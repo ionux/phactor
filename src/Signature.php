@@ -174,7 +174,7 @@ final class Signature
     public function Verify($sig, $msg, $pubkey)
     {
         if (true === empty($sig) || true === empty($msg) || true === empty($pubkey)) {
-            throw new \Exception('The signature, public key and message parameters are required to verify a signature.  Value received for first parameter was "' . var_export($sig, true) . '", second parameter was "' . var_export($msg, true) . '" and third parameter was "' . var_export($pubkey, true) . '".');
+            throw new \Exception('The signature, public key and message parameters are required to verify a signature.');
         }
 
         $e         = '';
@@ -347,7 +347,7 @@ final class Signature
     private function ecdsaSigTotalLenCheck($value)
     {
         if ($value != '140' && $value != '142' && $value != '144') {
-            throw new \Exception('Invalid ECDSA signature provided!  Length is out of range for a correct signature.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid ECDSA signature provided! Length is out of range for a correct signature.');
         }
     }
 
@@ -360,7 +360,7 @@ final class Signature
     private function derRecordStartCheck($value)
     {
         if ($value != '30') {
-            throw new \Exception('Invalid ECDSA signature provided!  Unknown signature format.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid ECDSA signature provided! Unknown signature format.');
         }
     }
 
@@ -373,7 +373,7 @@ final class Signature
     private function derRecordTotalLenCheck($value)
     {
         if ($value != '44' && $value != '45' && $value != '46') {
-            throw new \Exception('Invalid ECDSA signature provided!  DER record length is invalid.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid ECDSA signature provided! DER record length is invalid.');
         }
     }
 
@@ -386,7 +386,7 @@ final class Signature
     private function derDataTypeCheck($value)
     {
         if ($value != '02') {
-            throw new \Exception('Invalid ECDSA signature provided!  DER record length is invalid.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid ECDSA signature provided! DER data type is invalid.');
         }
     }
 
@@ -399,7 +399,7 @@ final class Signature
     private function derDataLenCheck($value)
     {
         if ($value != '20' && $value != '21') {
-            throw new \Exception('Invalid ECDSA signature provided!  The coordinate length is invalid.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid ECDSA signature provided! The coordinate length is invalid.');
         }
     }
 
