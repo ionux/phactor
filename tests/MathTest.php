@@ -41,6 +41,22 @@ class MathTest extends TestCase
         // No teardown actions required for now.
     }
 
+    public function testMultiplyDec()
+    {
+        // Verify the multiply function correctly multiplies two known decimal values.
+
+        $decimal_a      = '2';
+        $decimal_b      = '3';
+        $expected_dec   = '6';
+        
+        $mock = $this->getMockForTrait('\Phactor\Math');
+
+        $returned_dec = $mock->Multiply($decimal_a, $decimal_b);
+
+        $this->assertNotNull($returned_dec);
+        $this->assertEquals($returned_dec, $expected_dec);
+    }
+
     public function testEncodeHex()
     {
         // Verify the encodeHex function correctly converts a known decimal value to hexadecimal.
