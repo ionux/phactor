@@ -10,6 +10,8 @@
 
 namespace Tests;
 
+use PHPUnit\Framework\TestCase;
+
 use \Phactor\Point;
 use \Phactor\Key;
 use \Phactor\Signature;
@@ -34,13 +36,13 @@ use \Phactor\Secp256k1;
  * public function RangeCheck($value)
  * public function calcYfromX($x_coord, $compressed_bit)
  */
-class PointTest extends \PHPUnit_Framework_TestCase
+class PointTest extends TestCase
 {
     protected $a;
     protected $b;
     protected $mock;
 
-    public function setUp()
+    public function setUp(): void
     {
         // Two randomly generated numers for our math functions.
         $this->a = '957620976190666461915977492034526193591830013034186215918313385644855166379351262190562120407134214207526691350895955';
@@ -48,6 +50,11 @@ class PointTest extends \PHPUnit_Framework_TestCase
 
         // Mock class for the Point trait.
         $this->mock = $this->getMockForTrait('\Phactor\Point');
+    }
+
+    public function tearDown(): void
+    {
+        // No teardown actions required for now.
     }
 
     public function testGenerateNewPointUsingMladder()
