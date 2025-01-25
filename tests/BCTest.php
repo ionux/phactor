@@ -155,4 +155,15 @@ class BCTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $expected_result);
     }
+
+    public function testBcCoprimeException()
+    {
+        // Test that exceptions are thrown
+        // if an invalid value is provided.
+        
+        $this->expectException(\Exception::class);
+        
+        $this->bc->coprime('invalid', $this->b);
+    }
+
 }
