@@ -57,6 +57,22 @@ class MathTest extends TestCase
         $this->assertEquals($returned_dec, $expected_dec);
     }
 
+    public function testMultiplyHex()
+    {
+        // Verify the multiply function correctly multiplies two known decimal values.
+
+        $hexadecimal_a   = '0x2';
+        $hexadecimal_b   = '0x3';
+        $expected_hex    = '0x6';
+        
+        $mock = $this->getMockForTrait('\Phactor\Math');
+
+        $returned_hex = $mock->Multiply($hexadecimal_a, $hexadecimal_b);
+
+        $this->assertNotNull($returned_hex);
+        $this->assertEquals($returned_hex, $expected_hex);
+    }
+
     public function testEncodeHex()
     {
         // Verify the encodeHex function correctly converts a known decimal value to hexadecimal.
