@@ -31,7 +31,7 @@ class MathTest extends TestCase
 
     public function setUp(): void
     {
-        // Two randomly generated numers for our math functions.
+        // Two randomly generated numbers for our math functions.
         $this->a = '957620976190666461915977492034526193591830013034186215918313385644855166379351262190562120407134214207526691350895955';
         $this->b = '157663433277362577011687738037596860467660792611897958941147717548714000615442450180007858983049321228191510557052';
     }
@@ -132,6 +132,6 @@ class MathTest extends TestCase
         $random_number = $mock->SecureRandomNumber();
 
         $this->assertNotNull($random_number);
-        //$this->assertEquals(strlen($random_number), 66);
+        $this->assertMatchesRegularExpression('/^[a-f0-9]{64}$/i', $random_number, 'Random number is not a valid 32-byte hex value');
     }
 }
