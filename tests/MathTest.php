@@ -56,6 +56,17 @@ class MathTest extends TestCase
         $this->assertEquals($returned_hex, $expected_hex);
     }
 
+    public function testEncodeHexThrowsExceptionOnInvalidInput()
+    {
+        // Verify the encodeHex function correctly throws an exception for an invalid value provided.
+        
+        $this->expectException(\Exception::class);
+
+        $mock = $this->getMockForTrait('\Phactor\Math');
+        
+        $mock->encodeHex('not-a-number');
+    }
+
     public function testDecodeHex()
     {
         // Verify the decodeHex function correctly converts a known hexadecimal value to decimal.
