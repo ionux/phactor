@@ -220,7 +220,7 @@ class GMPTest extends TestCase
         $small_a = '3';
         $expected_result = '9';
 
-        $result = $this->gmp->power($small_a '2');
+        $result = $this->gmp->power($small_a, '2');
 
         $this->assertEquals($result, $expected_result);
     }
