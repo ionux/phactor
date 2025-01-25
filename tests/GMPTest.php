@@ -181,7 +181,7 @@ class GMPTest extends TestCase
 
         $expected_result = '1';
 
-        $result = $this->gmp->comp('2', '3');
+        $result = $this->gmp->comp('3', '2');
 
         $this->assertEquals($result, $expected_result);
     }
