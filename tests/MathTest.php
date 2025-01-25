@@ -82,6 +82,17 @@ class MathTest extends TestCase
         $this->assertEquals($returned_dec, $expected_dec);
     }
 
+    public function testDecodeHexThrowsExceptionOnInvalidInput()
+    {
+        // Verify the decodeHex function correctly throws an exception for an invalid value provided.
+        
+        $this->expectException(\Exception::class);
+
+        $mock = $this->getMockForTrait('\Phactor\Math');
+        
+        $mock->decodeHex('not-a-number');
+    }
+
     public function testBaseCheck()
     {
         // Ensure the correct base digits are returned for the requested base
