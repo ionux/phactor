@@ -11,7 +11,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -20,7 +22,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1' # Adjust PHP version as needed
-          extensions: mbstring, gmp, bcmath # Add necessary PHP extensions
+          extensions: openssl, mbstring, gmp, bcmath # Add necessary PHP extensions
 
       - name: Install dependencies
         run: composer install --no-progress --no-suggest
