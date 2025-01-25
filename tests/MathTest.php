@@ -93,6 +93,26 @@ class MathTest extends TestCase
         $mock->decodeHex('not-a-number');
     }
 
+    public function testEncodeAndDecodeHexToEnsureConsistency()
+    {
+        // Verify the encodeHex and decodeHex functions correctly convert a known decimal value to and from hexadecimal in back-to-back calls.
+
+        $decimal      = '123456789123456789';
+        $expected_hex = '0x1b69b4bacd05f15';
+
+        $mock = $this->getMockForTrait('\Phactor\Math');
+
+        $returned_hex = $mock->encodeHex($decimal);
+
+        $this->assertNotNull($returned_hex);
+        $this->assertEquals($returned_hex, $expected_hex);
+
+        $returned_dec = $mock->decodeHex($returned_hex);
+
+        $this->assertNotNull($returned_dec);
+        $this->assertEquals($returned_dec, $decimal);
+    }
+
     public function testBaseCheck()
     {
         // Ensure the correct base digits are returned for the requested base
