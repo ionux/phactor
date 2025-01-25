@@ -63,7 +63,7 @@ class MathTest extends TestCase
 
         $hexadecimal_a   = '0x2';
         $hexadecimal_b   = '0x3';
-        $expected_hex    = '0x6';
+        $expected_hex    = '6';
         
         $mock = $this->getMockForTrait('\Phactor\Math');
 
