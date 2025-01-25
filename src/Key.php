@@ -48,15 +48,18 @@ final class Key
      */
     public function __construct(array $params = null)
     {
+        // Default $params to an empty array if it's null.
+        $params = $params ?? [];
+
         $this->keyInfo = array(
-                               'private_key_hex'       => $this->keyValueCheck($params['private_key_hex']),
-                               'private_key_dec'       => $this->keyValueCheck($params['private_key_dec']),
-                               'public_key'            => $this->keyValueCheck($params['public_key']),
-                               'public_key_compressed' => $this->keyValueCheck($params['public_key_compressed']),
-                               'public_key_x'          => $this->keyValueCheck($params['public_key_x']),
-                               'public_key_y'          => $this->keyValueCheck($params['public_key_y']),
+                               'private_key_hex'       => $this->keyValueCheck($params['private_key_hex']       ?? null),
+                               'private_key_dec'       => $this->keyValueCheck($params['private_key_dec']       ?? null),
+                               'public_key'            => $this->keyValueCheck($params['public_key']            ?? null),
+                               'public_key_compressed' => $this->keyValueCheck($params['public_key_compressed'] ?? null),
+                               'public_key_x'          => $this->keyValueCheck($params['public_key_x']          ?? null),
+                               'public_key_y'          => $this->keyValueCheck($params['public_key_y']          ?? null),
                                'generation_time'       => '',
-                              );
+                               );
     }
 
     /**
