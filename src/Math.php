@@ -292,7 +292,7 @@ trait Math
                 $hex = $this->addHexPrefix($this->prepAndClean($hex));
                 break;
             default:
-                throw new \Exception('Unknown data type passed to the binConv() function.  Value received was "' . var_export($hex, true) . '".');
+                throw new \Exception('Unknown data type passed to the binConv() function.');
         }
 
         return strrev($this->encodeValue($hex, '256'));
@@ -312,7 +312,7 @@ trait Math
         try {
 
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
-                throw new \Exception('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.  Value received was "' . var_export($hex, true) . '".');
+                throw new \Exception('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.');
             }
             
             $orighex = $hex;
@@ -401,7 +401,7 @@ trait Math
         foreach ($params as $key => $value) {
             if ($this->numberCheck($value) === false) {
                 $caller = debug_backtrace();
-                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller) - 1]['function'] . ' function. Argument list received: ' . var_export($caller[count($caller) - 1]['args'], true));
+                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller) - 1]['function'] . ' function.');
             }
         }
     }
