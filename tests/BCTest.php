@@ -10,6 +10,8 @@
 
 namespace Tests;
 
+use PHPUnit\Framework\TestCase;
+
 use \Phactor\Point;
 use \Phactor\Key;
 use \Phactor\Signature;
@@ -43,7 +45,7 @@ use \Phactor\Secp256k1;
  * public function bcNormalize($a)
  * public function coprime($a, $b)
  */
-class BCTest extends \PHPUnit_Framework_TestCase
+class BCTest extends TestCase
 {
     protected $a;
     protected $b;
