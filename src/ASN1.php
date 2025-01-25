@@ -113,7 +113,7 @@ trait ASN1
     private function pemInitialDataCheck($keypair)
     {
         if (true === empty($keypair) || false === is_array($keypair) || strlen($keypair[0]) < 62 || strlen($keypair[1]) < 126) {
-            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.  Value checked was "' . var_export($keypair, true) . '".');
+            throw new \Exception('Invalid or corrupt secp256k1 keypair provided.  Cannot encode the keys to PEM format.');
         }
     }
 
@@ -126,7 +126,7 @@ trait ASN1
     private function pemDataLenCheck($value)
     {
         if (strlen($value) < 220) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Length < 220.  Value received was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. PEM data too short.');
         }
     }
 
@@ -139,7 +139,7 @@ trait ASN1
     private function pemKeyLenCheck($values)
     {
         if (!is_array($values) || strlen($values[0]) < 62 || strlen($values[1]) < 126) {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.  Values checked were "' . var_export($values[0], true) . '" and "' . var_export($values[1], true) . '".');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. Key lengths too short.');
         }
     }
 
@@ -152,7 +152,7 @@ trait ASN1
     private function pemOidCheck($value)
     {
         if ($value != '2b8104000a') {
-            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.  Value checked was "' . var_export($value, true) . '".');
+            throw new \Exception('Invalid or corrupt secp256k1 key provided. Cannot decode the supplied PEM data. OID is not for EC key.');
         }
     }
 
