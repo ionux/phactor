@@ -83,7 +83,7 @@ trait Number
             case '10':
                 return $this->dec_chars;
             default:
-                throw new \Exception('Unknown base parameter passed to Number::BaseCheck() function.  Value received was "' . var_export($base, true) . '".');
+                throw new \Exception('Unknown base parameter passed to Number::BaseCheck() function.');
         }
     }
 
@@ -309,7 +309,7 @@ trait Number
     private function hexLenCheck($hex)
     {
         if (strlen($hex) < 62) {
-            throw new \Exception('The coordinate value checked was not in hex format or was invalid.  Value checked was "' . var_export($hex, true) . '".');
+            throw new \Exception('The coordinate value checked was not in hex format or was invalid.');
         }
     }
 }
