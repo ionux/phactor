@@ -56,6 +56,20 @@ class GMPTest extends TestCase
         $this->assertEquals($result, $expected_result);
     }
 
+    public function testGmpAddSmall()
+    {
+        // Test that our GMP calls are returning the
+        // correct result for addition of small numbers.
+
+        $small_a = '2';
+        $small_b = '3';
+        $expected_result = '5';
+
+        $result = $this->gmp->add($small_a, $small_b);
+
+        $this->assertEquals($result, $expected_result);
+    }
+
     public function testGmpSub()
     {
         // Test that our GMP calls are returning
@@ -64,6 +78,20 @@ class GMPTest extends TestCase
         $expected_result = '957463312757389099338965804296488596731362352241574317959372237927306452378735819740382112548151164886298499840338903';
 
         $result = $this->gmp->sub($this->a, $this->b);
+
+        $this->assertEquals($result, $expected_result);
+    }
+
+    public function testGmpSubSmall()
+    {
+        // Test that our GMP calls are returning the
+        // correct result for subtraction of small numbers.
+
+        $small_a = '3';
+        $small_b = '2';
+        $expected_result = '1';
+
+        $result = $this->gmp->sub($small_a, $small_b);
 
         $this->assertEquals($result, $expected_result);
     }
@@ -80,6 +108,20 @@ class GMPTest extends TestCase
         $this->assertEquals($result, $expected_result);
     }
 
+    public function testGmpMulSmall()
+    {
+        // Test that our GMP calls are returning the
+        // correct result for multiplication of small numbers.
+
+        $small_a = '3';
+        $small_b = '2';
+        $expected_result = '6';
+
+        $result = $this->gmp->mul($small_a, $small_b);
+
+        $this->assertEquals($result, $expected_result);
+    }
+
     public function testGmpDiv()
     {
         // Test that our GMP calls are returning
@@ -88,6 +130,20 @@ class GMPTest extends TestCase
         $expected_result = '6073';
 
         $result = $this->gmp->div($this->a, $this->b);
+
+        $this->assertEquals($result, $expected_result);
+    }
+
+    public function testGmpDivSmall()
+    {
+        // Test that our GMP calls are returning the
+        // correct result for division of small numbers.
+
+        $small_a = '6';
+        $small_b = '2';
+        $expected_result = '3';
+
+        $result = $this->gmp->div($small_a, $small_b);
 
         $this->assertEquals($result, $expected_result);
     }
@@ -117,6 +173,19 @@ class GMPTest extends TestCase
         $this->assertEquals($result, $expected_result);
     }
 
+    public function testGmpCompSmall()
+    {
+        // Test that our GMP calls are returning
+        // the correct result for comparing two
+        // small values.
+
+        $expected_result = '1';
+
+        $result = $this->gmp->comp('2', '3');
+
+        $this->assertEquals($result, $expected_result);
+    }
+
     public function testGmpInv()
     {
         // Test that our GMP calls are returning
@@ -138,6 +207,20 @@ class GMPTest extends TestCase
         $expected_result = '917037934040364982737244091531827293772718769617550961534802228981137468765677724565272391346532251949140929536931667224208094060917023615329647508125531895055074287250548098811179279399871619095442945851773292458773975997781235362025';
 
         $result = $this->gmp->power($this->a, '2');
+
+        $this->assertEquals($result, $expected_result);
+    }
+
+    public function testGmpPowSmall()
+    {
+        // Test that our GMP calls are returning
+        // the correct result for raising a number
+        // to a power.
+
+        $small_a = '3';
+        $expected_result = '9';
+
+        $result = $this->gmp->power($small_a '2');
 
         $this->assertEquals($result, $expected_result);
     }
