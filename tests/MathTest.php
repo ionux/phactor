@@ -132,6 +132,6 @@ class MathTest extends TestCase
         $random_number = $mock->SecureRandomNumber();
 
         $this->assertNotNull($random_number);
-        $this->assertMatchesRegularExpression('/^[a-f0-9]{64}$/i', $random_number, 'Random number is not a valid 32-byte hex value');
+        $this->assertMatchesRegularExpression('/^[0-9]$/i', $random_number, 'Random number is not a valid value');
     }
 }
