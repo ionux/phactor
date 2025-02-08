@@ -27,6 +27,8 @@
 
 namespace Phactor;
 
+use \Phactor\PointException;
+
 /**
  * This trait implements the elliptic curve math functions required to generate
  * new EC points based on the secp256k1 curve parameters.
@@ -46,12 +48,12 @@ trait Point
      * @param  array|string $P The first point to add.
      * @param  array|string $Q The second point to add.
      * @return array        $R The result of the point addition.
-     * @throws \Exception
+     * @throws \Phactor\PointException
      */
     public function pointAddW($P, $Q)
     {
         if ($this->pointType($P) == 'nul' || $this->pointType($Q) == 'nul') {
-            throw new \Exception('You must provide valid point parameters to add.');
+            throw new PointException('You must provide valid point parameters to add.');
         }
 
         $infCheck = $this->infPointCheck($P, $Q);
@@ -71,6 +73,11 @@ trait Point
         try {
             $mm = $this->Subtract($P['y'], $Q['y']);
             $nn = $this->Subtract($P['x'], $Q['x']);
+
+            if ($this->Compare($nn, '0') === 0) {
+                throw new PointException("Invalid point addition: denominator (xP - xQ) is zero.");
+            }
+
             $oo = $this->Invert($nn, $this->p);
             $st = $this->Multiply($mm, $oo);
             $ss = $this->Modulo($st, $this->p);
@@ -81,8 +88,9 @@ trait Point
             return $R;
 
         } catch (\Exception $e) {
-            // TODO: Do something useful with this...
-            throw $e;
+            throw new PointException("Caught the following exception in Point::pointAddW(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new PointException("Fatal error in Point::pointAddW(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -94,7 +102,7 @@ trait Point
      *
      * @param  array|string  $P The point to multiply.
      * @return array|string  $R The multiplied point.
-     * @throws \Exception
+     * @throws \Phactor\PointException
      */
     public function pointDoubleW($P)
     {
@@ -102,7 +110,7 @@ trait Point
             case 'inf':
                 return $this->Inf;
             case 'nul':
-                throw new \Exception('You must provide a valid point parameter to double.');
+                throw new PointException('You must provide a valid point parameter to double.');
             default:
                 // Adding for safety and good form.
                 // TODO: What should this default value check be?
@@ -136,8 +144,9 @@ trait Point
             return $R;
 
         } catch (\Exception $e) {
-            // TODO: Do something useful here...
-            throw $e;
+            throw new PointException("Caught the following exception in Point::pointDoubleW(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new PointException("Fatal error in Point::pointDoubleW(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -147,12 +156,12 @@ trait Point
      *
      * @param  array|string $P  The generated point to test.
      * @return bool             Whether or not the point is valid.
-     * @throws \Exception
+     * @throws \Phactor\PointException
      */
     public function pointTestW($P)
     {
         if (is_array($P) === false) {
-            throw new \Exception('Point test failed! Cannot test a point without coordinates.');
+            throw new PointException('Point test failed! Cannot test a point without coordinates.');
         }
 
         /*
@@ -188,11 +197,12 @@ trait Point
                 return true;
             }
 
-            throw new \Exception('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
+            throw new PointException('Point test failed! Cannot continue. I tested the point: ' . var_export($P, true) . ' but got the point: ' . var_export($test_point, true));
 
         } catch (\Exception $e) {
-            // TODO: Do something useful here...
-            throw $e;
+            throw new PointException("Caught the following exception in Point::pointTestW(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new PointException("Fatal error in Point::pointTestW(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -260,7 +270,7 @@ trait Point
      *
      * @param  boolean   $ladder Whether or not to use the mladder method.
      * @return array             The new EC point.
-     * @throws \Exception
+     * @throws \Phactor\PointException
      */
     public function GenerateNewPoint($ladder = true)
     {
@@ -279,7 +289,7 @@ trait Point
             $Rx_hex = str_pad($this->encodeHex($R['x']), 64, "0", STR_PAD_LEFT);
             $Ry_hex = str_pad($this->encodeHex($R['y']), 64, "0", STR_PAD_LEFT);
         } else {
-            throw new \Exception('Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
+            throw new PointException('Point test failed! Cannot continue. I got the point: ' . var_export($R, true));
         }
 
         return array(
@@ -296,7 +306,7 @@ trait Point
      * @param  string  $x_coord        The x-coordinate.
      * @param  string  $compressed_bit The hex compression value (03 or 02).
      * @return string  $y              The calculated y-coordinate.
-     * @throws \Exception $e
+     * @throws \Phactor\PointException
      */
     public function calcYfromX($x_coord, $compressed_bit)
     {
@@ -308,9 +318,11 @@ trait Point
             $y = ($this->Modulo($y, '2') != $c) ? $this->decodeHex($this->Modulo($this->Multiply('-1', $y), $this->p)) : $this->decodeHex($y);
 
             return $this->encodeHex($y);
+
         } catch (\Exception $e) {
-            // TODO: Ditto...
-            throw $e;
+            throw new PointException("Caught the following exception in Point::calcYfromX(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new PointException("Fatal error in Point::calcYfromX(): " . $e->getMessage(), 0, $e);
         }
     }
 
