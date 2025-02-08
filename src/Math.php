@@ -27,6 +27,8 @@
 
 namespace Phactor;
 
+use \Phactor\MathException;
+
 /**
  * Generic math trait used by all other Phactor classes and proxy for math objects.
  *
@@ -268,8 +270,9 @@ trait Math
             return $bin;
 
         } catch (\Exception $e) {
-            // TODO: Need to do something useful here instead of re-throwing the exception.
-            throw $e;
+            throw new MathException("Caught the following exception in Math::D2B(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new MathException("Fatal error in Math::D2B(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -278,7 +281,7 @@ trait Math
      *
      * @param  string     $hex
      * @return string
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     public function binConv($hex)
     {
@@ -292,7 +295,7 @@ trait Math
                 $hex = $this->addHexPrefix($this->prepAndClean($hex));
                 break;
             default:
-                throw new \Exception('Unknown data type passed to the binConv() function.');
+                throw new MathException('Unknown data type passed to the binConv() function.');
         }
 
         return strrev($this->encodeValue($hex, '256'));
@@ -303,7 +306,7 @@ trait Math
      *
      * @param  string     $hex
      * @return string     $return
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     public function encodeBase58($hex)
     {
@@ -312,7 +315,7 @@ trait Math
         try {
 
             if (strlen($hex) % 2 != 0 || $this->Test($hex) != 'hex') {
-                throw new \Exception('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.');
+                throw new MathException('Uneven number of hex characters or invalid parameter passed to encodeBase58 function.');
             }
             
             $orighex = $hex;
@@ -326,8 +329,9 @@ trait Math
             return $return;
 
         } catch (\Exception $e) {
-            // TODO: Need to do something useful here instead of re-throwing the exception.
-            throw $e;
+            throw new MathException("Caught the following exception in Math::encodeBase58(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new MathException("Fatal error in Math::encodeBase58(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -336,7 +340,7 @@ trait Math
      *
      * @param  string     $base58
      * @return string     $return
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     public function decodeBase58($base58)
     {
@@ -362,15 +366,17 @@ trait Math
             return (strlen($return) % 2 != 0) ? '0' . $return : $return;
 
         } catch (\Exception $e) {
-            // TODO: Need to do something useful here instead of re-throwing the exception.
-            throw $e;
+            throw new MathException("Caught the following exception in Math::decodeBase58(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new MathException("Fatal error in Math::decodeBase58(): " . $e->getMessage(), 0, $e);
         }
     }
 
     /**
      * Internal function to make sure we can find an acceptable math extension to use here.
+     * The preference is to use GMP but will use BC if that's not available.
      *
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     private function MathCheck()
     {
@@ -380,7 +386,7 @@ trait Math
             } else if (function_exists('bcadd')) {
                 $this->math = new BC();
             } else {
-                throw new \Exception('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
+                throw new MathException('Both GMP and BC Math extensions are missing on this system!  Please install one to use the Phactor math library.');
             }
         }
 
@@ -392,7 +398,7 @@ trait Math
      *
      * @param  array   $params  The array of parameters to check.
      * @return boolean          Will only be true, otherwise throws \Exception
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     private function preOpMethodParamsCheck($params)
     {
@@ -401,7 +407,7 @@ trait Math
         foreach ($params as $key => $value) {
             if ($this->numberCheck($value) === false) {
                 $caller = debug_backtrace();
-                throw new \Exception('Empty or invalid parameters passed to ' . $caller[count($caller) - 1]['function'] . ' function.');
+                throw new MathException('Empty or invalid parameters passed to ' . $caller[count($caller) - 1]['function'] . ' function.');
             }
         }
     }
@@ -412,7 +418,7 @@ trait Math
      * @param  string $val  A number to convert.
      * @param  string $base The base to convert it into.
      * @return string       The same number but in a different base.
-     * @throws \Exception
+     * @throws \Phactor\MathException
      */
     private function encodeValue($val, $base)
     {
@@ -434,8 +440,9 @@ trait Math
             return $new;
 
         } catch (\Exception $e) {
-            // TODO: Ditto here as well...
-            throw $e;
+            throw new MathException("Caught the following exception in Math::encodeValue(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new MathException("Fatal error in Math::encodeValue(): " . $e->getMessage(), 0, $e);
         }
     }
 
