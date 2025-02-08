@@ -12,6 +12,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
+use \Phactor\MathException;
 use \Phactor\Point;
 use \Phactor\Key;
 use \Phactor\Signature;
@@ -118,7 +119,7 @@ class MathTest extends TestCase
     {
         // Verify the decodeHex function correctly throws an exception for an invalid value provided.
         
-        $this->expectException(\Exception::class);
+        $this->expectException(\Phactor\MathException::class);
 
         $mock = $this->getMockForTrait('\Phactor\Math');
         
