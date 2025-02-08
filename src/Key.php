@@ -27,6 +27,8 @@
 
 namespace Phactor;
 
+use \Phactor\KeyException;
+
 /**
  * Class for working with asymmetric keypairs in both hex and decimal forms.
  *
