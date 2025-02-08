@@ -27,10 +27,10 @@
 
 namespace Phactor;
 
-use Phactor\Exceptions\BCMathException;
+use BCMathException;
 
-use Error;
-use Exception;
+use \Error;
+use \Exception;
 
 
 /**
