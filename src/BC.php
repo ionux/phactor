@@ -27,7 +27,7 @@
 
 namespace Phactor;
 
-use BCMathException;
+use \Phactor\BCMathException;
 
 use \Error;
 use \Exception;
