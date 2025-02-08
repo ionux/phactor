@@ -25,9 +25,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-namespace Phactor\Exceptions;
+namespace Phactor;
 
-use Exception;
+use \Exception;
 
 class BCMathException extends Exception
 {
