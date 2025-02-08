@@ -27,6 +27,8 @@
 
 namespace Phactor;
 
+use \Phactor\SinException;
+
 /**
  * This class generates Service Identification Numbers (SINs) based on the
  * Identity Protocol v1 spec, @see: https://en.bitcoin.it/wiki/Identity_protocol_v1
@@ -115,12 +117,12 @@ final class Sin
      *
      * @param  string $pubkey The public key to encode.
      * @return string         The encoded SIN string.
-     * @throws \Exception
+     * @throws \Phactor\SinException
      */
     public function Generate($pubkey)
     {
         if (empty($pubkey) === true) {
-            throw new \Exception('Missing or invalid public key parameter for Sin::Generate.');
+            throw new SinException('Missing or invalid public key parameter for Sin::Generate().');
         }
 
         /* take the sha256 hash of the public key in binary form and returning binary */
@@ -148,7 +150,7 @@ final class Sin
         $this->encoded = $this->encodeBase58($this->rawHashes['step6']);
 
         if (empty($this->encoded) === true) {
-            throw new \Exception('Failed to generate valid SIN value. Empty or NULL value was obtained.');
+            throw new SinException('Failed to generate valid SIN value. Empty or NULL value was obtained.');
         }
 
         return $this->encoded;
