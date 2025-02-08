@@ -12,6 +12,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
+use \Phactor\BCMathException;
 use \Phactor\Point;
 use \Phactor\Key;
 use \Phactor\Signature;
