@@ -29,6 +29,11 @@ namespace Phactor;
 
 use \Exception;
 
+/**
+ * This class supports improved error and exception handling.
+ *
+ * @author Rich Morgan
+ */
 class BCMathException extends Exception
 {
 }
