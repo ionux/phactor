@@ -169,7 +169,7 @@ class BCTest extends TestCase
         // Test that exceptions are thrown
         // if an invalid value is provided.
         
-        $this->expectException(\ValueError::class);
+        $this->expectException(\Phactor\BCMathException::class);
         
         $this->bc->coprime('invalid', $this->b);
     }
