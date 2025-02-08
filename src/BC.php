@@ -27,6 +27,12 @@
 
 namespace Phactor;
 
+use Phactor\Exceptions\BCMathException;
+
+use Error;
+use Exception;
+
+
 /**
  * Binary Calculator math class used by the main math class.
  *
@@ -72,9 +78,14 @@ final class BC
      * @param  string $a  The first number.
      * @param  string $b  The second number.
      * @return string
+     * @throws BCMathException if attempting to divide by zero.
      */
     public function div($a, $b)
     {
+        if ($this->bcNormalize($b) === '0') {
+            throw new BCMathException("Division by zero error in BC::div().");
+        }
+
         return bcdiv($this->bcNormalize($a), $this->bcNormalize($b));
     }
 
@@ -158,7 +169,7 @@ final class BC
      * @param  string $number  The number to inverse modulo.
      * @param  string $modulus The modulus.
      * @return string $a       The result.
-     * @throws \Exception
+     * @throws BCMathException
      */
     public function inv($number, $modulus)
     {
@@ -187,9 +198,10 @@ final class BC
 
             return $this->addMod($a, $modulus);
 
-        } catch (\Exception $e) {
-            // TODO: Need to do something useful here instead of re-throwing the exception.
-            throw $e;
+        } catch (Exception $e) {
+            throw new BCMathException("Caught the following exception in BC::inv(): " . $e->getMessage(), 0, $e);
+        } catch (Error $e) {
+            throw new BCMathException("Fatal error in BC::inv(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -200,7 +212,7 @@ final class BC
      * @param  string $a  First param to check.
      * @param  string $b  Second param to check.
      * @return bool       Whether the params are cp.
-     * @throws \Exception
+     * @throws BCMathException
      */
     public function coprime($a, $b)
     {
@@ -212,9 +224,10 @@ final class BC
                 list($a, $b) = $this->coSwitch($a, $b);
             }
 
-        } catch (\Exception $e) {
-            // TODO: Need to do something useful here instead of re-throwing the exception.
-            throw $e;
+        } catch (Exception $e) {
+            throw new BCMathException("Caught the following exception in BC::coprime(): " . $e->getMessage(), 0, $e);
+        } catch (Error $e) {
+            throw new BCMathException("Fatal error in BC::coprime(): " . $e->getMessage(), 0, $e);
         }
 
         return (bccomp($a, '1') == 0) ? true : false;
@@ -293,6 +306,7 @@ final class BC
      * @param  string $a  First param to check.
      * @param  string $b  Second param to check.
      * @return array      Array of smaller, larger % smaller.
+     * @throws BCMathException
      */
     public function coSwitch($a, $b)
     {
@@ -306,7 +320,7 @@ final class BC
             default:
                 // Should never, ever be here but good practice
                 // dictates to always have a default clause.
-                // TODO: Throw exception.
+                throw new BCMathException("Unexpected comparison result in BC::coSwitch(). Should not be here!");
         }
     }
 
