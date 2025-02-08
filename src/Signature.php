@@ -27,6 +27,8 @@
 
 namespace Phactor;
 
+use \Phactor\SignatureException;
+
 /**
  * This class implements the elliptic curve math functions required to generate
  * an ECDSA signature based on a previously generated private key.
@@ -108,7 +110,7 @@ final class Signature
      * @param  string    $message     The message to be signed.
      * @param  string    $private_key The private key in hex.
      * @return string    $signature   The signature data.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     public function Generate($message, $private_key)
     {
@@ -145,8 +147,9 @@ final class Signature
             } while ($this->zeroCompare($r, $s));
 
         } catch (\Exception $e) {
-            // TODO: Do something useful here...
-            throw $e;
+            throw new SignatureException("Caught the following exception in Signature::Generate(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new SignatureException("Fatal error in Signature::Generate(): " . $e->getMessage(), 0, $e);
         }
 
         $signature = array(
@@ -169,12 +172,12 @@ final class Signature
      * @param  string $msg     The message signed.
      * @param  string $pubkey  The uncompressed public key of the signer.
      * @return bool            The result of the verification.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     public function Verify($sig, $msg, $pubkey)
     {
         if (true === empty($sig) || true === empty($msg) || true === empty($pubkey)) {
-            throw new \Exception('The signature, public key and message parameters are required to verify a signature.');
+            throw new SignatureException('The signature, public key and message parameters are required to verify a signature.');
         }
 
         $e         = '';
@@ -227,8 +230,9 @@ final class Signature
             return $congruent;
 
         } catch (\Exception $e) {
-            // TODO: Do something useful here...
-            throw $e;
+            throw new SignatureException("Caught the following exception in Signature::Verify(): " . $e->getMessage(), 0, $e);
+        } catch (\Error $e) {
+            throw new SignatureException("Fatal error in Signature::Verify(): " . $e->getMessage(), 0, $e);
         }
     }
 
@@ -240,7 +244,6 @@ final class Signature
      * @param  string $r  The r coordinate in hex.
      * @param  string $s  The s coordinate in hex.
      * @return string     The DER encoded signature info.
-     * @throws \Exception
      */
     public function Encode($r, $s)
     {
@@ -342,12 +345,12 @@ final class Signature
      * Ensures the total ECDSA signature length is acceptable.
      *
      * @param  string     $value The signature to check.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     private function ecdsaSigTotalLenCheck($value)
     {
         if ($value != '140' && $value != '142' && $value != '144') {
-            throw new \Exception('Invalid ECDSA signature provided! Length is out of range for a correct signature.');
+            throw new SignatureException('Invalid ECDSA signature provided! Length is out of range for a correct signature.');
         }
     }
 
@@ -355,12 +358,12 @@ final class Signature
      * A DER encoded signature should start with 0x30.
      *
      * @param  string     $value The signature to check.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     private function derRecordStartCheck($value)
     {
         if ($value != '30') {
-            throw new \Exception('Invalid ECDSA signature provided! Unknown signature format.');
+            throw new SignatureException('Invalid ECDSA signature provided! Unknown signature format.');
         }
     }
 
@@ -368,12 +371,12 @@ final class Signature
      * Ensures the DER total record length is acceptable.
      *
      * @param  string     $value The record to check.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     private function derRecordTotalLenCheck($value)
     {
         if ($value != '44' && $value != '45' && $value != '46') {
-            throw new \Exception('Invalid ECDSA signature provided! DER record length is invalid.');
+            throw new SignatureException('Invalid ECDSA signature provided! DER record length is invalid.');
         }
     }
 
@@ -381,12 +384,12 @@ final class Signature
      * Ensures the DER variable data type is acceptable.
      *
      * @param  string     $value The variable to check.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     private function derDataTypeCheck($value)
     {
         if ($value != '02') {
-            throw new \Exception('Invalid ECDSA signature provided! DER data type is invalid.');
+            throw new SignatureException('Invalid ECDSA signature provided! DER data type is invalid.');
         }
     }
 
@@ -394,12 +397,12 @@ final class Signature
      * Ensures the DER variable data length is acceptable.
      *
      * @param  string     $value The variable to check.
-     * @throws \Exception
+     * @throws \Phactor\SignatureException
      */
     private function derDataLenCheck($value)
     {
         if ($value != '20' && $value != '21') {
-            throw new \Exception('Invalid ECDSA signature provided! The coordinate length is invalid.');
+            throw new SignatureException('Invalid ECDSA signature provided! The coordinate length is invalid.');
         }
     }
 
